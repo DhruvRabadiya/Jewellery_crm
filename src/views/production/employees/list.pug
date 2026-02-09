@@ -1,0 +1,46 @@
+extends ../layout
+
+block content
+    .page-wrapper
+        .content
+            .d-flex.align-items-center.justify-content-between.flex-wrap.gap-3.mb-4
+                .mb-3
+                    h1.mb-1 Employees
+                    p.fw-medium Manage workers for job sheets
+                .d-flex.gap-2
+                    a.btn.btn-primary(href="/employees/new")
+                        i.ti.ti-plus.me-2
+                        | Add Employee
+                    a.btn.btn-secondary(href="/jobsheets/new")
+                        i.ti.ti-file-plus.me-2
+                        | Create Job Sheet
+            .card
+                .card-body
+                    if employees.length
+                        .table-responsive
+                            table.table.table-hover.mb-0
+                                thead.table-light
+                                    tr
+                                        th Name
+                                        th Rate
+                                        th Actions
+                                tbody
+                                    each emp in employees
+                                        tr
+                                            td
+                                                strong= emp.name
+                                            td= emp.rate ? emp.rate.toFixed(2) : '0.00'
+                                            td
+                                                a.btn.btn-sm.btn-outline-primary.me-2(href=`/employees/${emp.id}/edit`)
+                                                    i.ti.ti-pencil
+                                                    | Edit
+                                                form.d-inline(method="post" action=`/employees/${emp.id}/delete`)
+                                                    button.btn.btn-sm.btn-outline-danger(type="submit" onclick="return confirm('Delete this employee?');")
+                                                        i.ti.ti-trash
+                                                        | Delete
+                    else
+                        .text-center.py-5
+                            p.text-gray-9 No employees yet
+                            a.btn.btn-primary(href="/employees/new") Add First Employee
+        .copyright-footer.d-flex.align-items-center.justify-content-between.border-top.bg-white.gap-3.flex-wrap
+            p.fs-13.text-gray-9.mb-0 2025- 2026 © DreamsPOS. All Right Reserved

@@ -1,0 +1,162 @@
+extends ../layout
+
+block content
+    style.
+        .print-hide { display: inline-flex; gap: .5rem; }
+        @media print {
+            body { background: #fff; }
+            .sidebar, .header, .print-hide, .copyright-footer { display: none !important; }
+            .page-wrapper { margin: 0; padding: 0; }
+            .print-sheet { box-shadow: none; border: 1px solid #000; }
+        }
+    .page-wrapper
+        .content
+            .d-flex.align-items-center.justify-content-between.flex-wrap.gap-3.mb-4
+                .mb-3
+                    h1.mb-1 Job Sheet
+                    p.fw-medium Print-ready slip
+                .print-hide
+                    a.btn.btn-secondary(href="/jobsheets")
+                        i.ti.ti-arrow-left.me-2
+                        | Back to List
+                    button.btn.btn-primary(type="button" onclick="window.print()")
+                        i.ti.ti-printer.me-2
+                        | Print
+            .print-sheet.p-4.bg-white.rounded.border
+                .d-flex.justify-content-between.align-items-start.mb-3
+                    div
+                        h4.mb-1.text-uppercase Job Sheet
+                        p.mb-0.text-gray-9 Multi-step production workflow
+                    div.text-end
+                        p.mb-1.text-gray-9 Job No
+                        h4.mb-0.fw-bold= jobsheet.jobNo
+                        p.mb-0.text-gray-9 Status: 
+                            if jobsheet.status === 'Completed'
+                                span.badge.bg-success= jobsheet.status
+                            else if jobsheet.status === 'In-Progress'
+                                span.badge.bg-warning= jobsheet.status
+                            else
+                                span.badge.bg-secondary= jobsheet.status
+                
+                //- Workflow Progress
+                .mb-4
+                    h5.mb-3 
+                        i.ti.ti-timeline.me-2
+                        | Workflow Progress
+                    .row.g-2
+                        - const stepLabels = { melting: '🔥 Melting', rolling: '📏 Rolling', press: '🔨 Press', TPP: '⚙️ T+P+P', packing: '📦 Packing' }
+                        each step in jobsheet.JobSheetSteps
+                            .col-md-2
+                                .card(class=step.status === 'completed' ? 'border-success' : step.status === 'in-progress' ? 'border-warning' : 'border-secondary')
+                                    .card-body.p-2.text-center
+                                        div= stepLabels[step.stepName]
+                                        if step.status === 'completed'
+                                            small.badge.bg-success ✓ Done
+                                            small.text-muted.d-block Loss: #{step.loss.toFixed(3)}g
+                                        else if step.status === 'in-progress'
+                                            small.badge.bg-warning ⏳ Active
+                                        else
+                                            small.badge.bg-secondary ⭕ Pending
+                
+                table.table.table-sm.table-bordered.mb-3
+                    tbody
+                        tr
+                            th(style="width: 25%") Employee
+                            td= jobsheet.Employee ? jobsheet.Employee.name : '-'
+                        tr
+                            th Current Step
+                            - const currentStepLabel = { melting: '🔥 Melting', rolling: '📏 Rolling', press: '🔨 Press', TPP: '⚙️ T+P+P', packing: '📦 Packing', completed: '✅ Completed' }
+                            td= currentStepLabel[jobsheet.currentStep] || '-'
+                        tr
+                            th Material
+                            td= `${jobsheet.metalType} (${jobsheet.purity})`
+                        tr
+                            th Size
+                            td= jobsheet.size || '-'
+                        tr
+                            th Issued Date
+                            td= jobsheet.issueDate ? new Date(jobsheet.issueDate).toLocaleString('en-IN') : '-'
+                        if jobsheet.completedDate
+                            tr
+                                th Completed Date
+                                td= new Date(jobsheet.completedDate).toLocaleString('en-IN')
+                
+                .row.g-3.mb-3
+                    .col-md-3
+                        .border.p-3
+                            p.mb-1.text-gray-9 Issued Weight
+                            h3.mb-0= jobsheet.issueWeight.toFixed(3) + ' g'
+                    .col-md-3
+                        .border.p-3
+                            p.mb-1.text-gray-9 Final Weight
+                            h3.mb-0= (jobsheet.returnWeight || 0).toFixed(3) + ' g'
+                    .col-md-3
+                        .border.p-3
+                            p.mb-1.text-gray-9 Total Loss
+                            h3.mb-1
+                                if jobsheet.totalLoss > 0
+                                    span.text-danger= jobsheet.totalLoss.toFixed(3) + ' g'
+                                else
+                                    span.text-success 0.000 g
+                            small.text-muted Loss %: #{(jobsheet.issueWeight > 0 ? ((jobsheet.totalLoss / jobsheet.issueWeight) * 100).toFixed(2) : '0.00')}%
+                    .col-md-3
+                        .border.p-3
+                            p.mb-1.text-gray-9 Final Pieces
+                            h3.mb-0= jobsheet.returnPieces || 0
+                
+                //- Step Details Table
+                if jobsheet.JobSheetSteps && jobsheet.JobSheetSteps.length > 0
+                    .mb-3
+                        h5.mb-2 Step-wise Details
+                        table.table.table-sm.table-bordered
+                            thead
+                                tr
+                                    th Step
+                                    th Employee
+                                    th Issue (g)
+                                    th Return (g)
+                                    th Scrap (g)
+                                    th Dust (g)
+                                    th Loss (g)
+                                    th Status
+                            tbody
+                                each step in jobsheet.JobSheetSteps
+                                    tr
+                                        td= stepLabels[step.stepName]
+                                        td= step.Employee ? step.Employee.name : '-'
+                                        td= step.issueWeight.toFixed(3)
+                                        td= step.returnWeight.toFixed(3)
+                                        td= step.scrapWeight.toFixed(3)
+                                        td= step.dustWeight.toFixed(3)
+                                        td(class=step.loss > 0 ? 'text-danger' : '')= step.loss.toFixed(3)
+                                        td
+                                            if step.status === 'completed'
+                                                span.badge.bg-success ✓
+                                            else if step.status === 'in-progress'
+                                                span.badge.bg-warning ⏳
+                                            else
+                                                span.badge.bg-secondary ⭕
+                
+                .row.g-3
+                    .col-md-12
+                        .d-flex.justify-content-between.mt-3
+                            .text-center
+                                p.mb-5 ______________________
+                                p.mb-0.text-gray-9 Issued By
+                            .text-center
+                                p.mb-5 ______________________
+                                p.mb-0.text-gray-9 Supervisor
+                            .text-center
+                                p.mb-5 ______________________
+                                p.mb-0.text-gray-9 Manager
+            
+            if jobsheet.status === 'In-Progress'
+                .alert.alert-info.mt-3.print-hide
+                    .d-flex.justify-content-between.align-items-center
+                        div
+                            i.ti.ti-info-circle.me-2
+                            | Current step: 
+                            strong= currentStepLabel[jobsheet.currentStep]
+                        a.btn.btn-primary(href=`/jobsheets/${jobsheet.id}/complete-step`)
+                            i.ti.ti-check.me-2
+                            | Complete Current Step

@@ -1,0 +1,191 @@
+//  Header 
+.header
+	.main-header
+		//  Logo 
+		.header-left.active
+			a.logo.logo-normal(href="/")
+				img(src="/assets/img/logo.svg" alt="Img")
+			a.logo.logo-white(href="/")
+				img(src="/assets/img/logo-white.svg" alt="Img")
+			a.logo-small(href="/")
+				img(src="/assets/img/logo-small.png" alt="Img")
+			a.logo-small-white(href="/")
+				img(src="/assets/img/logo-small-white.png" alt="Img")
+		//  /Logo 
+		a#mobile_btn.mobile_btn(href="/production#sidebar")
+			span.bar-icon
+				span
+				span
+				span
+		//  Header Menu 
+		ul.nav.user-menu
+			//  Search 
+			li.nav-item.nav-searchinputs
+				.top-nav-search
+					a.responsive-search(href="javascript:void(0);")
+						i.fa.fa-search
+					form.dropdown(action="index.html#")
+						.searchinputs.input-group.dropdown-toggle#dropdownMenuClickable(data-bs-toggle="dropdown" data-bs-auto-close="outside")
+							input(type="text" placeholder="Search")
+							.search-addon
+								span
+									i.ti.ti-search
+							span.input-group-text
+								kbd.d-flex.align-items-center
+									img.me-1(src="/assets/img/icons/command.svg" alt="img")
+									| K
+						.dropdown-menu.search-dropdown(aria-labelledby="dropdownMenuClickable")
+							.search-info
+								h6
+									span
+										i.feather-16(data-feather="search")
+									| Recent Searches
+
+								ul.search-tags
+									li
+										a(href="javascript:void(0);") Products
+									li
+										a(href="javascript:void(0);") Sales
+									li
+										a(href="javascript:void(0);") Applications
+							.search-info
+								h6
+									span
+										i.feather-16(data-feather="help-circle")
+									| Help
+								p How to Change Product Volume from 0 to 200 on Inventory management
+								p Change Product Name
+							.search-info
+								h6
+									span
+										i.feather-16(data-feather="user")
+									| Customers
+								ul.customers
+									li
+										a(href="javascript:void(0);")
+											| Aron Varu
+											img.img-fluid(src="/assets/img/profiles/avator1.jpg" alt="Img")
+									li
+										a(href="javascript:void(0);")
+											| Jonita
+											img.img-fluid(src="/assets/img/profiles/avatar-01.jpg" alt="Img")
+									li
+										a(href="javascript:void(0);")
+											| Aaron
+											img.img-fluid(src="/assets/img/profiles/avatar-10.jpg" alt="Img")
+			//  /Search 
+			li.nav-item.dropdown.link-nav
+				a.btn.btn-primary.btn-md.d-inline-flex.align-items-center(href="javascript:void(0);" data-bs-toggle="dropdown")
+					i.ti.ti-circle-plus.me-1
+					| Add New
+
+				.dropdown-menu.dropdown-xl.dropdown-menu-center
+					.row.g-2
+						.col-md-2
+							a.link-item(href="category-list.html")
+								span.link-icon
+									i.ti.ti-brand-codepen
+								p Category
+						.col-md-2
+							a.link-item(href="add-product.html")
+								span.link-icon
+									i.ti.ti-square-plus
+								p Product
+						.col-md-2
+							a.link-item(href="category-list.html")
+								span.link-icon
+									i.ti.ti-shopping-bag
+								p Purchase
+						.col-md-2
+							a.link-item(href="online-orders.html")
+								span.link-icon
+									i.ti.ti-shopping-cart
+								p Sale
+						.col-md-2
+							a.link-item(href="expense-list.html")
+								span.link-icon
+									i.ti.ti-file-text
+								p Expense
+						.col-md-2
+							a.link-item(href="quotation-list.html")
+								span.link-icon
+									i.ti.ti-device-floppy
+								p Quotation
+						.col-md-2
+							a.link-item(href="sales-returns.html")
+								span.link-icon
+									i.ti.ti-copy
+								p Return
+						.col-md-2
+							a.link-item(href="users.html")
+								span.link-icon
+									i.ti.ti-user
+								p User
+						.col-md-2
+							a.link-item(href="customers.html")
+								span.link-icon
+									i.ti.ti-users
+								p Customer
+						.col-md-2
+							a.link-item(href="sales-report.html")
+								span.link-icon
+									i.ti.ti-shield
+								p Biller
+						.col-md-2
+							a.link-item(href="suppliers.html")
+								span.link-icon
+									i.ti.ti-user-check
+								p Supplier
+						.col-md-2
+							a.link-item(href="stock-transfer.html")
+								span.link-icon
+									i.ti.ti-truck
+								p Transfer
+			li.nav-item.pos-nav
+				a.btn.btn-dark.btn-md.d-inline-flex.align-items-center(href="/pos")
+					i.ti.ti-device-laptop.me-1
+					| POS
+
+			//  /Flag 
+			li.nav-item.nav-item-box
+				a#btnFullscreen(href="javascript:void(0);")
+					i.ti.ti-maximize
+			li.nav-item.nav-item-box
+				a(href="general-settings.html")
+					i.ti.ti-settings
+			li.nav-item.dropdown.has-arrow.main-drop.profile-nav
+				a.nav-link.userset(href="javascript:void(0);" data-bs-toggle="dropdown")
+					span.user-info.p-0
+						span.user-letter
+							img.img-fluid(src="/assets/img/profiles/avator1.jpg" alt="Img")
+				.dropdown-menu.menu-drop-user
+					.profileset.d-flex.align-items-center
+						span.user-img.me-2
+							img(src="/assets/img/profiles/avator1.jpg" alt="Img")
+						div
+							h6.fw-medium admin
+							p Admin
+					a.dropdown-item(href="profile.html")
+						i.ti.ti-user-circle.me-2
+						| MyProfile
+					a.dropdown-item(href="sales-report.html")
+						i.ti.ti-file-text.me-2
+						| Reports
+					a.dropdown-item(href="general-settings.html")
+						i.ti.ti-settings-2.me-2
+						| Settings
+					hr.my-2
+					a.dropdown-item.logout(href="signin.html")
+						i.ti.ti-logout.me-2
+						| Logout
+		//  /Header Menu 
+		//  Mobile Menu 
+		.dropdown.mobile-user-menu
+			a.nav-link.dropdown-toggle(href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false")
+				i.fa.fa-ellipsis-v
+			.dropdown-menu.dropdown-menu-right
+				a.dropdown-item(href="profile.html") My Profile
+				a.dropdown-item(href="general-settings.html") Settings
+				a.dropdown-item(href="signin.html") Logout
+		//  /Mobile Menu 
+		//  /Header 

@@ -1,0 +1,98 @@
+//  Header 
+.header.pos-header
+  //  Logo 
+  .header-left.active
+    a.logo.logo-normal(href="/")
+      img(src="assets/img/logo.svg" alt="Img")
+    a.logo.logo-white(href="/")
+      img(src="assets/img/logo-white.svg" alt="Img")
+    a.logo-small(href="/")
+      img(src="assets/img/logo-small.png" alt="Img")
+    a.logo-small-white(href="/")
+      img(src="assets/img/logo-small-white.png" alt="Img")
+  //  /Logo 
+  a#mobile_btn.mobile_btn.d-none(href="/pos#sidebar")
+    span.bar-icon
+      span
+      span
+      span
+  //  Header Menu 
+  ul.nav.user-menu
+    //  Search 
+    li.nav-item.time-nav
+      span.bg-teal.text-white.d-inline-flex.align-items-center
+        img.me-2(src="assets/img/icons/clock-icon.svg" alt="img")
+        span#liveTime 09:25:32
+    script.
+      function updateTime() {
+        const now = new Date();
+        const time = now.toLocaleTimeString('en-US', { hour12: false });
+        document.getElementById('liveTime').textContent = time;
+      }
+      setInterval(updateTime, 1000);
+      updateTime();
+    //  /Search 
+    li.nav-item.pos-nav
+      a.btn.btn-purple.btn-md.d-inline-flex.align-items-center(href="/production")
+        i.ti.ti-world.me-1
+        | Production
+
+
+    //  /Select Store 
+    li.nav-item.nav-item-box
+      a.bg-orange.border-orange.text-white(href="pos.html#" data-bs-toggle="modal" data-bs-target="#calculator")
+        i.ti.ti-calculator
+    li.nav-item.nav-item-box
+      a#btnFullscreen(href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Maximize")
+        i.ti.ti-maximize
+    li.nav-item.nav-item-box(data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Cash Register")
+      a(href="pos.html#" data-bs-toggle="modal" data-bs-target="#cash-register")
+        i.ti.ti-cash
+    li.nav-item.nav-item-box(data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Print Last Reciept")
+      a(href="pos.html#")
+        i.ti.ti-printer
+    li.nav-item.nav-item-box(data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Today's Sale")
+      a(href="pos.html#" data-bs-toggle="modal" data-bs-target="#today-sale")
+        i.ti.ti-progress
+    li.nav-item.nav-item-box(data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Today's Profit")
+      a(href="pos.html#" data-bs-toggle="modal" data-bs-target="#today-profit")
+        i.ti.ti-chart-infographic
+    li.nav-item.nav-item-box(data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="POS Settings")
+      a(href="pos-settings.html")
+        i.ti.ti-settings
+    li.nav-item.dropdown.has-arrow.main-drop.profile-nav
+      a.nav-link.userset(href="javascript:void(0);" data-bs-toggle="dropdown")
+        span.user-info.p-0
+          span.user-letter
+            img.img-fluid(src="assets/img/profiles/avator1.jpg" alt="Img")
+      .dropdown-menu.menu-drop-user
+        .profilename
+          .profileset
+            span.user-img
+              img(src="assets/img/profiles/avator1.jpg" alt="Img")
+              span.status.online
+            .profilesets
+              h6 Admin
+              h5 Super Admin
+          hr.m-0
+          a.dropdown-item(href="profile.html")
+            i.me-2(data-feather="user")
+            | My Profile
+          a.dropdown-item(href="general-settings.html")
+            i.me-2(data-feather="settings")
+            | Settings
+          hr.m-0
+          a.dropdown-item.logout(href="signin.html")
+            img.me-2(src="assets/img/icons/log-out.svg" alt="img")
+            | Logout
+  //  /Header Menu 
+  //  Mobile Menu 
+  .dropdown.mobile-user-menu
+    a.nav-link.dropdown-toggle(href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false")
+      i.fa.fa-ellipsis-v
+    .dropdown-menu.dropdown-menu-right
+      a.dropdown-item(href="profile.html") My Profile
+      a.dropdown-item(href="general-settings.html") Settings
+      a.dropdown-item(href="signin.html") Logout
+  //  / 
+//  /Header

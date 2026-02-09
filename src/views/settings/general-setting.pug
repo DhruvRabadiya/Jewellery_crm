@@ -1,0 +1,240 @@
+extends ../layout
+
+block content
+	.page-wrapper
+		.content.settings-content
+			.page-header
+				.add-item.d-flex
+					.page-title
+						h4.fw-bold Settings
+						h6 Manage your settings on portal
+				ul.table-top-head
+					li
+						a(data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh")
+							i.ti.ti-refresh
+					li
+						a#collapse-header(data-bs-toggle="tooltip" data-bs-placement="top" title="Collapse")
+							i.ti.ti-chevron-up
+			.row
+				.col-xl-12
+					.settings-wrapper.d-flex
+						.settings-sidebar#sidebar2
+							.sidebar-inner.slimscroll
+								#sidebar-menu5.sidebar-menu
+									h4.fw-bold.fs-18.mb-2.pb-2 Settings
+									ul
+										li.submenu-open
+											ul
+												li.submenu
+													a.active.subdrop(href="javascript:void(0);")
+														i.ti.ti-settings.fs-18
+														span.fs-14.fw-medium.ms-2 General Settings
+														span.menu-arrow
+													ul
+														li
+															a.active(href="/general-settings") Profile
+														li
+															a(href="/security-settings") Security
+														li
+															a(href="/notification") Notifications
+														li
+															a(href="/connected-apps") Connected Apps
+												li.submenu
+													a(href="javascript:void(0);")
+														i.ti.ti-world.fs-18
+														span.fs-14.fw-medium.ms-2 Website Settings
+														span.menu-arrow
+													ul
+														li
+															a(href="system-settings.html") System Settings
+														li
+															a(href="company-settings.html") Company Settings
+														li
+															a(href="localization-settings.html") Localization
+														li
+															a(href="prefixes.html") Prefixes
+														li
+															a(href="preference.html") Preference
+														li
+															a(href="appearance.html") Appearance
+														li
+															a(href="social-authentication.html") Social Authentication
+														li
+															a(href="language-settings.html") Language
+												li.submenu
+													a(href="javascript:void(0);")
+														i.ti.ti-device-mobile.fs-18
+														span.fs-14.fw-medium.ms-2 App Settings
+														span.menu-arrow
+													ul
+														li
+															a(href="invoice-settings.html") Invoice Settings
+														li
+															a(href="invoice-templates.html") Invoice Templates
+														li
+															a(href="printer-settings.html") Printer
+														li
+															a(href="pos-settings.html") POS
+														li
+															a(href="signatures.html") Signatures
+														li
+															a(href="custom-fields.html") Custom Fields
+												li.submenu
+													a(href="javascript:void(0);")
+														i.ti.ti-device-desktop.fs-18
+														span.fs-14.fw-medium.ms-2 System Settings
+														span.menu-arrow
+													ul
+														li.submenu.submenu-two
+															a(href="javascript:void(0);")
+																| Email
+																span.menu-arrow.inside-submenu
+															ul
+																li
+																	a(href="email-settings.html") Email Settings
+																li
+																	a(href="email-templates.html") Email Templates
+														li.submenu.submenu-two
+															a(href="javascript:void(0);")
+																| SMS
+																span.menu-arrow.inside-submenu
+															ul
+																li
+																	a(href="sms-settings.html") SMS Settings
+																li
+																	a(href="sms-templates.html") SMS Templates
+														li
+															a(href="otp-settings.html") OTP
+														li
+															a(href="gdpr-settings.html") GDPR Cookies
+												li.submenu
+													a(href="javascript:void(0);")
+														i.ti.ti-settings-dollar.fs-18
+														span.fs-14.fw-medium.ms-2 Financial Settings
+														span.menu-arrow
+													ul
+														li
+															a(href="payment-gateway-settings.html") Payment Gateway
+														li
+															a(href="bank-settings-grid.html") Bank Accounts
+														li
+															a(href="tax-rates.html") Tax Rates
+														li
+															a(href="currency-settings.html") Currencies
+												li.submenu
+													a(href="javascript:void(0);")
+														i.ti.ti-settings-2.fs-18
+														span.fs-14.fw-medium.ms-2 Other Settings
+														span.menu-arrow
+													ul
+														li
+															a(href="storage-settings.html") Storage
+														li
+															a(href="ban-ip-address.html") Ban IP Address
+						.card.flex-fill.mb-0
+							.card-header
+								h4.fs-18.fw-bold Profile
+							.card-body
+								form(action="general-settings.html")
+									.card-title-head
+										h6.fs-16.fw-bold.mb-3
+											span.fs-16.me-2
+												i.ti.ti-user
+											| Basic Information
+
+									.profile-pic-upload
+										.profile-pic
+											span
+												i.ti.ti-circle-plus.mb-1.fs-16
+												|  Add Image
+
+										.new-employee-field
+											.mb-0
+												.image-upload.mb-0
+													input(type="file")
+													.image-uploads
+														h4 Upload Image
+												span.fs-13.fw-medium.mt-2 Upload an image below 2 MB, Accepted File format JPG, PNG
+
+									.row.mb-3
+										.col-md-4
+											.mb-3
+												label.form-label First Name 
+													span.text-danger *
+												input.form-control(type="text")
+										.col-md-4
+											.mb-3
+												label.form-label Last Name 
+													span.text-danger *
+												input.form-control(type="text")
+										.col-md-4
+											.mb-3
+												label.form-label User Name 
+													span.text-danger *
+												input.form-control(type="text")
+										.col-md-4
+											.mb-3
+												label.form-label Phone Number 
+													span.text-danger *
+												input.form-control(type="text")
+										.col-md-4
+											.mb-3
+												label.form-label Email 
+													span.text-danger *
+												input.form-control(type="email")
+
+									.card-title-head
+										h6.fs-16.fw-bold.mb-3
+											span.fs-16.me-2
+												i.ti.ti-map-pin
+											| Address Information
+
+									.row
+										.col-md-12
+											.mb-3
+												label.form-label Address 
+													span.text-danger *
+												input.form-control(type="text")
+										.col-md-6
+											.mb-3
+												label.form-label Country 
+													span.text-danger *
+												select.select
+													option Select
+													option USA
+													option India
+													option French
+													option Australia
+										.col-md-6
+											.mb-3
+												label.form-label State 
+													span.text-danger *
+												select.select
+													option Select
+													option Alaska
+													option Mexico
+													option Tasmania
+										.col-md-6
+											.mb-3
+												label.form-label City 
+													span.text-danger *
+												select.select
+													option Select
+													option Anchorage
+													option Tijuana
+													option Hobart
+										.col-md-6
+											.mb-3
+												label.form-label Postal Code 
+													span.text-danger *
+												input.form-control(type="text")
+
+									.text-end.settings-bottom-btn.mt-0
+										button.btn.btn-secondary.me-2(type="button") Cancel
+										button.btn.btn-primary(type="submit") Save Changes
+
+			.footer.d-sm-flex.align-items-center.justify-content-between.border-top.bg-white.p-3
+				p.mb-0 2014 - 2025 © DreamsPOS. All Right Reserved
+				p
+					| Designed & Developed by 
+					a.text-primary(href="javascript:void(0);") Dreams

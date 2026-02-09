@@ -1,0 +1,121 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width,initial-scale=1")
+    title= title
+    link(rel="stylesheet", href="/assets/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/assets/css/style.css")
+    link(rel="stylesheet", href="/assets/plugins/fontawesome/css/all.min.css")
+    style.
+      .info-card { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+      .info-label { color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+      .info-value { font-size: 18px; font-weight: bold; color: #333; margin-top: 5px; }
+      .profit-positive { color: #28a745; }
+      .profit-negative { color: #dc3545; }
+
+  body
+    .container-lg
+      .page-wrapper
+        .content
+          .page-header
+            .row.align-items-center
+              .col
+                h2.page-title= title
+                nav(aria-label="breadcrumb")
+                  ol.breadcrumb
+                    li.breadcrumb-item Home
+                    li.breadcrumb-item
+                      a(href="/products") Products
+                    li.breadcrumb-item.active= title
+
+          .row
+            .col-md-8
+              .card
+                .card-header
+                  h3.card-title Product Details
+
+                .card-body
+                  .row
+                    .col-md-6
+                      .info-card
+                        .info-label Product Name
+                        .info-value= product.name
+                    .col-md-6
+                      .info-card
+                        .info-label SKU
+                        .info-value= product.sku
+                    .col-md-6
+                      .info-card
+                        .info-label Category
+                        .info-value= product.category || 'Uncategorized'
+                    .col-md-6
+                      .info-card
+                        .info-label Status
+                        .info-value
+                          if product.isActive
+                            span.badge.bg-success Active
+                          else
+                            span.badge.bg-secondary Inactive
+                    .col-md-6
+                      .info-card
+                        .info-label Price (Selling)
+                        .info-value= '₹' + product.price.toFixed(2)
+                    .col-md-6
+                      .info-card
+                        .info-label Cost
+                        .info-value= '₹' + product.cost.toFixed(2)
+                    .col-md-6
+                      .info-card
+                        .info-label Stock Quantity
+                        .info-value= product.stock
+                    .col-md-6
+                      .info-card
+                        .info-label Total Stock Value
+                        .info-value= '₹' + (product.stock * product.price).toFixed(2)
+
+                  if product.description
+                    .mt-4
+                      .info-label Description
+                      p= product.description
+
+            .col-md-4
+              .card
+                .card-header
+                  h3.card-title Actions
+
+                .card-body.d-grid.gap-2
+                  a.btn.btn-warning(href=`/products/${product.id}/edit`)
+                    i.fas.fa-edit
+                    |  Edit
+                  form.mt-2(method="post", action=`/products/${product.id}/delete`, onsubmit="return confirm('Are you sure you want to delete this product?');")
+                    button.btn.btn-danger.w-100(type="submit")
+                      i.fas.fa-trash
+                      |  Delete
+                  a.btn.btn-secondary.mt-2(href="/products")
+                    i.fas.fa-arrow-left
+                    |  Back to List
+
+              .card.mt-3
+                .card-header
+                  h4.card-title Profitability
+
+                .card-body
+                  .row
+                    .col-6
+                      .info-card
+                        .info-label Profit Per Unit
+                        .info-value(class=profit >= 0 ? 'profit-positive' : 'profit-negative')
+                          = '₹' + profit.toFixed(2)
+                    .col-6
+                      .info-card
+                        .info-label Profit Margin
+                        .info-value(class=profitMargin >= 0 ? 'profit-positive' : 'profit-negative')
+                          = profitMargin + '%'
+                  .info-card.mt-3
+                    .info-label Total Profit (at current stock)
+                    .info-value(class=profit * product.stock >= 0 ? 'profit-positive' : 'profit-negative')
+                      = '₹' + (profit * product.stock).toFixed(2)
+
+    script(src="/assets/js/jquery-3.7.1.min.js")
+    script(src="/assets/js/bootstrap.bundle.min.js")

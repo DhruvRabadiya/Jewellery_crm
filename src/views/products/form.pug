@@ -1,0 +1,80 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width,initial-scale=1")
+    title= title
+    link(rel="stylesheet", href="/assets/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/assets/css/style.css")
+    link(rel="stylesheet", href="/assets/plugins/fontawesome/css/all.min.css")
+
+  body
+    .container-lg
+      .page-wrapper
+        .content
+          .page-header
+            .row.align-items-center
+              .col
+                h2.page-title= title
+                nav(aria-label="breadcrumb")
+                  ol.breadcrumb
+                    li.breadcrumb-item Home
+                    li.breadcrumb-item
+                      a(href="/products") Products
+                    li.breadcrumb-item.active= isEdit ? 'Edit' : 'Add'
+
+          .card
+            .card-header
+              h3.card-title= isEdit ? 'Edit Product' : 'Add New Product'
+
+            .card-body
+              form.row.g-3(method="post", action=isEdit ? `/products/${product.id}/edit` : "/products")
+                .col-md-6
+                  label.form-label Product Name
+                  input.form-control(type="text", name="name", required, placeholder="Product name", value=product.name)
+
+                .col-md-6
+                  label.form-label SKU (Stock Keeping Unit)
+                  input.form-control(type="text", name="sku", required, placeholder="e.g., PRD-001", value=product.sku, pattern="[A-Za-z0-9-]*")
+
+                .col-md-6
+                  label.form-label Category
+                  input.form-control(type="text", name="category", list="categories", placeholder="Rings, Bracelets, etc.", value=product.category)
+                  datalist#categories
+                    each cat in categories
+                      option(value=cat)
+
+                .col-md-3
+                  label.form-label Price (₹)
+                  input.form-control(type="number", name="price", step="0.01", required, placeholder="0.00", value=product.price)
+
+                .col-md-3
+                  label.form-label Cost (₹)
+                  input.form-control(type="number", name="cost", step="0.01", placeholder="0.00", value=product.cost)
+
+                .col-md-6
+                  label.form-label Stock Quantity
+                  input.form-control(type="number", name="stock", required, placeholder="0", value=product.stock)
+
+                .col-md-6
+                  label.form-label Image URL
+                  input.form-control(type="url", name="image", placeholder="https://...", value=product.image)
+
+                .col-12
+                  label.form-label Description
+                  textarea.form-control(name="description", rows="4", placeholder="Product description...")= product.description
+
+                .col-12
+                  .form-check
+                    input#isActive.form-check-input(type="checkbox", name="isActive", checked=product.isActive)
+                    label.form-check-label(for="isActive") Active (Available for sale)
+
+                .col-12
+                  .d-flex.gap-2
+                    button.btn.btn-primary(type="submit")
+                      i.fas.fa-save
+                      |  Save Product
+                    a.btn.btn-secondary(href="/products") Cancel
+
+    script(src="/assets/js/jquery-3.7.1.min.js")
+    script(src="/assets/js/bootstrap.bundle.min.js")

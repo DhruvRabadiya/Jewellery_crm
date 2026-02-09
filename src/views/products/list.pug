@@ -1,0 +1,100 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width,initial-scale=1")
+    title= title
+    link(rel="stylesheet", href="/assets/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/assets/css/style.css")
+    link(rel="stylesheet", href="/assets/plugins/fontawesome/css/all.min.css")
+    style.
+      .badge-active { background-color: #28a745; }
+      .badge-inactive { background-color: #6c757d; }
+      .action-buttons { display: flex; gap: 5px; }
+
+  body
+    .container-lg
+      .page-wrapper
+        .content
+          .page-header
+            .row.align-items-center
+              .col
+                h2.page-title Products
+                nav(aria-label="breadcrumb")
+                  ol.breadcrumb
+                    li.breadcrumb-item Home
+                    li.breadcrumb-item.active Products
+
+          .card
+            .card-header
+              .row.align-items-center
+                .col
+                  h3.card-title Product List
+                .col-auto
+                  a.btn.btn-primary(href="/products/add")
+                    i.fas.fa-plus
+                    |  Add Product
+
+            .card-body
+              //- Search & Filter
+              form.row.mb-3(method="get", action="/products")
+                .col-md-5
+                  input.form-control(type="text", name="search", placeholder="Search by name, SKU, or description", value=filters.search)
+                .col-md-3
+                  select.form-control(name="category")
+                    option(value="") All Categories
+                    each cat in categories
+                      option(value=cat, selected=filters.category === cat)= cat
+                .col-md-2
+                  select.form-control(name="active")
+                    option(value="") All
+                    option(value="true", selected=filters.active === 'true') Active
+                    option(value="false", selected=filters.active === 'false') Inactive
+                .col-md-2
+                  button.btn.btn-info.w-100(type="submit")
+                    i.fas.fa-search
+                    |  Filter
+
+              if products.length === 0
+                .alert.alert-info No products found
+              else
+                .table-responsive
+                  table.table.table-hover
+                    thead
+                      tr
+                        th Product Name
+                        th SKU
+                        th Category
+                        th Price
+                        th Cost
+                        th Stock
+                        th Status
+                        th Actions
+                    tbody
+                      each product in products
+                        tr
+                          td
+                            strong= product.name
+                          td
+                            code= product.sku
+                          td= product.category || '-'
+                          td= '₹' + product.price.toFixed(2)
+                          td= '₹' + product.cost.toFixed(2)
+                          td
+                            strong= product.stock
+                          td
+                            if product.isActive
+                              span.badge.badge-active Active
+                            else
+                              span.badge.badge-inactive Inactive
+                          td.action-buttons
+                            a.btn.btn-sm.btn-primary(href=`/products/${product.id}`, title="View")
+                              i.fas.fa-eye
+                            a.btn.btn-sm.btn-warning(href=`/products/${product.id}/edit`, title="Edit")
+                              i.fas.fa-edit
+                            form.d-inline(method="post", action=`/products/${product.id}/delete`, onsubmit="return confirm('Delete this product?');")
+                              button.btn.btn-sm.btn-danger(type="submit", title="Delete")
+                                i.fas.fa-trash
+
+    script(src="/assets/js/jquery-3.7.1.min.js")
+    script(src="/assets/js/bootstrap.bundle.min.js")

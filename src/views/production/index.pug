@@ -1,0 +1,71 @@
+extends ./layout
+
+block content    
+    .page-wrapper
+        .content
+            .d-flex.align-items-center.justify-content-between.flex-wrap.gap-3.mb-2
+                .mb-3
+                    h1.mb-1 Welcome, Admin
+                .input-icon-start.position-relative.mb-3
+                    span.input-icon-addon.fs-16.text-gray-9
+                        i.ti.ti-calendar
+                    input.form-control.date-range.bookingrange(type="text" placeholder="Search Product")
+
+
+        .copyright-footer.d-flex.align-items-center.justify-content-between.border-top.bg-white.gap-3.flex-wrap
+            p.fs-13.text-gray-9.mb-0 2025- 2026 © DreamsPOS. All Right Reserved
+            p
+                | Designed & Developed By 
+                a.link-primary(href="javascript:void(0);") Dreams
+        //  /Main Wrapper 
+        //  Add Stock 
+        .modal.fade#add-stock
+            .modal-dialog.modal-dialog-centered
+                .modal-content
+                    .modal-header
+                        .page-title
+                            h4 Add Stock
+                        button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+                            span(aria-hidden="true") ×
+                    form(action="index.html")
+                        .modal-body
+                            .row
+                                .col-lg-12
+                                    .mb-3
+                                        label.form-label
+                                            | Warehouse 
+                                            span.text-danger.ms-1 *
+                                        select.select
+                                            option Select
+                                            option Lobar Handy
+                                            option Quaint Warehouse
+                                .col-lg-12
+                                    .mb-3
+                                        label.form-label
+                                            | Store 
+                                            span.text-danger.ms-1 *
+                                        select.select
+                                            option Select
+                                            option Selosy
+                                            option Logerro
+                                .col-lg-12
+                                    .mb-3
+                                        label.form-label
+                                            | Responsible Person 
+                                            span.text-danger.ms-1 *
+                                        select.select
+                                            option Select
+                                            option Steven
+                                            option Gravely
+                                .col-lg-12
+                                    .search-form.mb-0
+                                        label.form-label
+                                            | Product 
+                                            span.text-danger.ms-1 *
+                                        .position-relative
+                                            input.form-control(type="text" placeholder="Select Product")
+                                            i.feather-search(data-feather="search")
+                        .modal-footer
+                            button.btn.btn-md.btn-dark.me-2(type="button" data-bs-dismiss="modal") Cancel
+                            button.btn.btn-md.btn-primary(type="submit") Add Stock
+        //  /Add Stock 

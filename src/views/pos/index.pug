@@ -1,0 +1,2457 @@
+extends ./layout
+
+block content
+	.page-wrapper.pos-pg-wrapper.ms-0
+	.content.pos-design.p-0
+		.row.pos-wrapper
+			//  Products 
+			.col-md-12.col-lg-7.col-xl-8.d-flex
+				.pos-categories.tabs_wrapper.p-0.flex-fill
+					.content-wrap
+						.tab-wrap
+							ul#categoryTabs.tabs.owl-carousel.pos-category5
+								li#all.active
+									a(href="javascript:void(0);")
+										img(src="assets/img/products/pos-product-01.png" alt="Categories")
+									h6
+										a(href="javascript:void(0);") All
+						.tab-content-wrap
+							.d-flex.align-items-center.justify-content-between.flex-wrap.mb-2
+								.mb-3
+									h5.mb-1 Welcome, Admin
+									p= new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+								.d-flex.align-items-center.flex-wrap.mb-2
+									.input-icon-start.search-pos.position-relative.mb-2.me-3
+										span.input-icon-addon
+											i.ti.ti-search
+										input#searchProduct.form-control(type="text" placeholder="Search Product")
+									a.btn.btn-sm.btn-dark.mb-2.me-2(href="javascript:void(0);")
+										i.ti.ti-tag.me-1
+										| View All Brands
+									a.btn.btn-sm.btn-primary.mb-2(href="javascript:void(0);")
+										i.ti.ti-star.me-1
+										| Featured
+							.pos-products
+								.tabs_container#productsContainer
+									.tab_content.active(data-tab="all")
+										.row.g-3
+											// Products will be loaded here by JavaScript
+			//  /Products
+			.col-md-12.col-lg-5.col-xl-4.ps-0.theiaStickySidebar.d-lg-flex
+				aside.product-order-list.bg-secondary-transparent.flex-fill
+					.card
+						.card-body
+							.order-head.d-flex.align-items-center.justify-content-between.w-100
+								div
+									h3 Order List
+								.d-flex.align-items-center.gap-2
+									span.badge.badge-dark.fs-10.fw-medium.badge-xs #ORD123
+									a.link-danger.fs-16(href="javascript:void(0);")
+										i.ti.ti-trash-x-filled
+							.customer-info.block-section
+								h5.mb-2 Customer Information
+								.d-flex.align-items-center.gap-2
+									.flex-grow-1
+										select.select
+											option Walk in Customer
+											option John
+											option Smith
+											option Ana
+											option Elza
+									a.btn.btn-teal.btn-icon.fs-20(href="pos.html#" data-bs-toggle="modal" data-bs-target="#create")
+										i.ti.ti-user-plus
+									a.btn.btn-info.btn-icon.fs-20(href="pos.html#" data-bs-toggle="modal" data-bs-target="#barcode")
+										i.ti.ti-scan
+							.product-added.block-section
+								.head-text.d-flex.align-items-center.justify-content-between.mb-3
+									.d-flex.align-items-center
+										h5.me-2 Order Details
+										.badge.bg-light.text-gray-9.fs-12.fw-semibold.py-2.border.rounded
+											| Items : 
+											span.text-teal 3
+									a.d-flex.align-items-center.bg-danger.text-white.clear-icon.fs-10.fw-medium(href="javascript:void(0);") Clear all
+								.product-wrap
+									.empty-cart
+										.fs-24.mb-1
+											i.ti.ti-shopping-cart
+										p.fw-bold No Products Selected
+									.product-list.border-0.p-0
+										.table-responsive
+											table.table.table-borderless
+												thead
+													tr
+														th.fw-bold.bg-light Item
+														th.fw-bold.bg-light QTY
+														th.fw-bold.bg-light.text-end Cost
+												tbody
+													tr
+														td
+															.d-flex.align-items-center
+																a.delete-icon(href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete")
+																	i.ti.ti-trash-x-filled
+																h6.fs-13.fw-normal
+																	a.link-default(href="pos.html#" data-bs-toggle="modal" data-bs-target="#products") Gold Chain 22K
+														td
+															.qty-item.m-0
+																a.dec.dark.d-flex.justify-content-center.align-items-center(href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="minus")
+																	i.ti.ti-minus
+																input.form-control.text-center(type="text" name="qty" value="1")
+																a.inc.dark.d-flex.justify-content-center.align-items-center(href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="plus")
+																	i.ti.ti-plus
+														td.fs-13.fw-semibold.text-gray-9.text-end ₹58,000
+													tr
+														td
+															.d-flex.align-items-center
+																a.delete-icon(href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete")
+																	i.ti.ti-trash-x-filled
+																h6.fs-13.fw-normal
+																	a.link-default(href="pos.html#" data-bs-toggle="modal" data-bs-target="#products") Diamond Ring (0.5 CT)
+														td
+															.qty-item.m-0
+																a.dec.dark.d-flex.justify-content-center.align-items-center(href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="minus")
+																	i.ti.ti-minus
+																input.form-control.text-center(type="text" name="qty" value="1")
+																a.inc.dark.d-flex.justify-content-center.align-items-center(href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="plus")
+																	i.ti.ti-plus
+														td.fs-13.fw-semibold.text-gray-9.text-end ₹1,25,000
+													tr
+														td
+															.d-flex.align-items-center
+																a.delete-icon(href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete")
+																	i.ti.ti-trash-x-filled
+																h6.fs-13.fw-normal
+																	a.link-default(href="pos.html#" data-bs-toggle="modal" data-bs-target="#products") Silver Bracelet 925
+														td
+															.qty-item.m-0
+																a.dec.dark.d-flex.justify-content-center.align-items-center(href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="minus")
+																	i.ti.ti-minus
+																input.form-control.text-center(type="text" name="qty" value="2")
+																a.inc.dark.d-flex.justify-content-center.align-items-center(href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="plus")
+																	i.ti.ti-plus
+														td.fs-13.fw-semibold.text-gray-9.text-end ₹8,500
+													tr
+														td
+															.d-flex.align-items-center
+																a.delete-icon(href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete")
+																	i.ti.ti-trash-x-filled
+																h6.fs-13.fw-normal
+																	a.link-default(href="pos.html#" data-bs-toggle="modal" data-bs-target="#products") Pearl Necklace
+														td
+															.qty-item.m-0
+																a.dec.dark.d-flex.justify-content-center.align-items-center(href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="minus")
+																	i.ti.ti-minus
+																input.form-control.text-center(type="text" name="qty" value="1")
+																a.inc.dark.d-flex.justify-content-center.align-items-center(href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="plus")
+																	i.ti.ti-plus
+														td.fs-13.fw-semibold.text-gray-9.text-end ₹32,500
+													
+													.order-total.bg-total.bg-white.p-0
+														h5.mb-3 Payment Summary
+														table.table.table-responsive.table-borderless
+															tbody
+																tr
+																	td
+																		| Shipping
+																		a.ms-3.link-default(href="pos.html#" data-bs-toggle="modal" data-bs-target="#shipping-cost")
+																			i.ti.ti-edit
+																	td.text-gray-9.text-end ₹200
+																tr
+																	td
+																		| GST (18%)
+																		a.ms-3.link-default(href="pos.html#" data-bs-toggle="modal" data-bs-target="#order-tax")
+																			i.ti.ti-edit
+																	td.text-gray-9.text-end ₹32,580
+																tr
+																	td
+																		| Hallmark Certificate
+																		a.ms-3.link-default(href="pos.html#" data-bs-toggle="modal" data-bs-target="#coupon-code")
+																			i.ti.ti-edit
+																	td.text-gray-9.text-end ₹500
+																tr
+																	td
+																		span.text-danger Discount
+																		a.ms-3.link-default(href="pos.html#" data-bs-toggle="modal" data-bs-target="#discount")
+																			i.ti.ti-edit
+																	td.text-danger.text-end -₹12,300
+																tr
+																	td
+																		.form-check.form-switch
+																			input.form-check-input#round(type="checkbox" role="switch", checked)
+																			label.form-check-label(for="round") Roundoff
+																	td.text-gray-9.text-end +₹20
+																tr
+																	td Sub Total
+																	td.text-gray-9.text-end ₹2,23,700
+																tr
+																	td.fw-bold.border-top.border-dashed Total Payable
+																	td.text-gray-9.fw-bold.text-end.border-top.border-dashed ₹2,24,700
+									.card.payment-method
+										.card-body
+											h5.mb-3 Select Payment
+											.row.align-items-center.methods.g-2
+												.col-sm-6.col-md-4.d-flex
+													a.payment-item.d-flex.align-items-center.justify-content-center.p-2.flex-fill(href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#payment-cash")
+														img.me-2(src="assets/img/icons/cash-icon.svg" alt="img")
+														p.fs-14.fw-medium Cash
+												.col-sm-6.col-md-4.d-flex
+													a.payment-item.d-flex.align-items-center.justify-content-center.p-2.flex-fill(href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#payment-card")
+														img.me-2(src="assets/img/icons/card.svg" alt="img")
+														p.fs-14.fw-medium Card
+												.col-sm-6.col-md-4.d-flex
+													a.payment-item.d-flex.align-items-center.justify-content-center.p-2.flex-fill(href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#payment-points")
+														img.me-2(src="assets/img/icons/points.svg" alt="img")
+														p.fs-14.fw-medium Points
+												.col-sm-6.col-md-4.d-flex
+													a.payment-item.d-flex.align-items-center.justify-content-center.p-2.flex-fill(href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#payment-deposit")
+														img.me-2(src="assets/img/icons/deposit.svg" alt="img")
+														p.fs-14.fw-medium Deposit
+												.col-sm-6.col-md-4.d-flex
+													a.payment-item.d-flex.align-items-center.justify-content-center.p-2.flex-fill(href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#payment-cheque")
+														img.me-2(src="assets/img/icons/cheque.svg" alt="img")
+														p.fs-14.fw-medium Cheque
+												.col-sm-6.col-md-4.d-flex
+													a.payment-item.d-flex.align-items-center.justify-content-center.p-2.flex-fill(href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#gift-payment")
+														img.me-2(src="assets/img/icons/giftcard.svg" alt="img")
+														p.fs-14.fw-medium Gift Card
+												.col-sm-6.col-md-4.d-flex
+													a.payment-item.d-flex.align-items-center.justify-content-center.p-2.flex-fill(href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#scan-payment")
+														img.me-2(src="assets/img/icons/scan-icon.svg" alt="img")
+														p.fs-14.fw-medium Scan
+												.col-sm-6.col-md-4.d-flex
+													a.payment-item.d-flex.align-items-center.justify-content-center.p-2.flex-fill(href="javascript:void(0);")
+														img.me-2(src="assets/img/icons/paylater.svg" alt="img")
+														p.fs-14.fw-medium Pay Later
+												.col-sm-6.col-md-4.d-flex
+													a.payment-item.d-flex.align-items-center.justify-content-center.p-2.flex-fill(href="javascript:void(0);")
+														img.me-2(src="assets/img/icons/external.svg" alt="img")
+														p.fs-14.fw-medium External
+												.col-sm-6.col-md-4.d-flex
+													a.payment-item.d-flex.align-items-center.justify-content-center.p-2.flex-fill(href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#split-payment")
+														img.me-2(src="assets/img/icons/split-bill.svg" alt="img")
+														p.fs-14.fw-medium Split Bill
+									.btn-row.d-flex.align-items-center.justify-content-between.gap-3
+										a.btn.btn-white.d-flex.align-items-center.justify-content-center.flex-fill.m-0(href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#hold-order")
+											i.ti.ti-printer.me-2
+											| Print Order
+										a.btn.btn-secondary.d-flex.align-items-center.justify-content-center.flex-fill.m-0(href="javascript:void(0);")
+											i.ti.ti-shopping-cart.me-2
+											| Place Order
+			//  /Order Details 
+		.pos-footer.bg-white.p-3.border-top
+			.d-flex.align-items-center.justify-content-center.flex-wrap.gap-2
+				a.btn.btn-orange.d-inline-flex.align-items-center.justify-content-center(href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#hold-order")
+					i.ti.ti-player-pause.me-2
+					| Hold
+				a.btn.btn-info.d-inline-flex.align-items-center.justify-content-center(href="javascript:void(0);")
+					i.ti.ti-trash.me-2
+					| Void
+				a.btn.btn-cyan.d-flex.align-items-center.justify-content-center(href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#payment-completed")
+					i.ti.ti-cash-banknote.me-2
+					| Payment
+				a.btn.btn-secondary.d-inline-flex.align-items-center.justify-content-center(href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#orders")
+					i.ti.ti-shopping-cart.me-2
+					| View Orders
+				a.btn.btn-indigo.d-inline-flex.align-items-center.justify-content-center(href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#reset")
+					i.ti.ti-reload.me-2
+					| Reset
+				a.btn.btn-danger.d-inline-flex.align-items-center.justify-content-center(href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#recents")
+					i.ti.ti-refresh-dot.me-2
+					| Transaction
+		//  Payment Completed 
+	.modal.fade.modal-default#payment-completed(aria-labelledby="payment-completed")
+		.modal-dialog.modal-dialog-centered
+			.modal-content
+				.modal-body.p-0
+					.success-wrap.text-center
+						form(action="pos.html")
+							.icon-success.bg-success.text-white.mb-2
+								i.ti.ti-check
+							h3.mb-2 Payment Completed
+							p.mb-3 Do you want to Print Receipt for the Completed Order
+							.d-flex.align-items-center.justify-content-center.gap-2.flex-wrap
+								button.btn.btn-md.btn-secondary(type="button" data-bs-toggle="modal" data-bs-target="#print-receipt")
+									| Print Receipt
+									i.feather-arrow-right-circle.icon-me-5
+								button.btn.btn-md.btn-primary(type="submit") Next Order
+	//  /Payment Completed 
+	//  Print Receipt 
+	.modal.fade.modal-default#print-receipt(aria-labelledby="print-receipt")
+		.modal-dialog.modal-dialog-centered
+			.modal-content
+				.modal-body
+					.icon-head.text-center
+						a(href="javascript:void(0);")
+							img(src="assets/img/logo.svg" width="100" height="30" alt="Receipt Logo")
+					.text-center.info.text-center
+						h6 Dreamguys Technologies Pvt Ltd.,
+						p.mb-0 Phone Number: +1 5656665656
+						p.mb-0
+							| Email: 
+							a(href="https://dreamspos.dreamstechnologies.com/cdn-cgi/l/email-protection#75100d1418051910351218141c195b161a18")
+								span.__cf_email__(data-cfemail="214459404c514d4461464c40484d0f424e4c") [email protected]
+					.tax-invoice
+						h6.text-center Tax Invoice
+						.row
+							.col-sm-12.col-md-6
+								.invoice-user-name
+									span Name: 
+									| John Doe
+								.invoice-user-name
+									span Invoice No: 
+									| CS132453
+							.col-sm-12.col-md-6
+								.invoice-user-name
+									span Customer Id: 
+									| #LL93784
+								.invoice-user-name
+									span Date: 
+									| 01.07.2022
+					table.table-borderless.w-100.table-fit
+						thead
+							tr
+								th # Item
+								th Price
+								th Qty
+								th.text-end Total
+						tbody
+							tr
+								td 1. Red Nike Laser
+								td $50
+								td 3
+								td.text-end $150
+							tr
+								td 2. Iphone 14
+								td $50
+								td 2
+								td.text-end $100
+							tr
+								td 3. Apple Series 8
+								td $50
+								td 3
+								td.text-end $150
+							tr
+								td(colspan="4")
+									table.table-borderless.w-100.table-fit
+										tbody
+											tr
+												td.fw-bold Sub Total :
+												td.text-end $700.00
+											tr
+												td.fw-bold Discount :
+												td.text-end -$50.00
+											tr
+												td.fw-bold Shipping :
+												td.text-end 0.00
+											tr
+												td.fw-bold Tax (5%) :
+												td.text-end $5.00
+											tr
+												td.fw-bold Total Bill :
+												td.text-end $655.00
+											tr
+												td.fw-bold Due :
+												td.text-end $0.00
+											tr
+												td.fw-bold Total Payable :
+												td.text-end $655.00
+					.text-center.invoice-bar
+						.border-bottom.border-dashed
+							p **VAT against this challan is payable through central registration. Thank you for your business!
+						a(href="javascript:void(0);")
+							img(src="assets/img/barcode/barcode-03.jpg" alt="Barcode")
+						p.text-dark.fw-bold Sale 31
+						p Thank You For Shopping With Us. Please Come Again
+						a.btn.btn-md.btn-primary(href="javascript:void(0);") Print Receipt
+	//  /Print Receipt 
+	//  Products 
+	.modal.fade.modal-default.pos-modal#products(aria-labelledby="products")
+		.modal-dialog.modal-dialog-centered
+			.modal-content
+				.modal-header.d-flex.align-items-center.justify-content-between
+					.d-flex.align-items-center
+						h5.me-4 Products
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				.modal-body
+					.card.bg-light.mb-3
+						.card-body
+							.d-flex.align-items-center.justify-content-between.gap-3.flex-wrap.mb-3
+								span.badge.bg-dark.fs-12 Order ID : #45698
+								p.fs-16 Number of Products : 02
+							.product-wrap.h-auto
+								.product-list.bg-white.align-items-center.justify-content-between
+									.d-flex.align-items-center.product-info(data-bs-toggle="modal" data-bs-target="#products")
+										a.pro-img(href="javascript:void(0);")
+											img(src="assets/img/products/pos-product-16.png" alt="Products")
+										.info
+											h6
+												a(href="javascript:void(0);") Red Nike Laser
+											p Quantity : 04
+									p.text-teal.fw-bold $2000
+								.product-list.bg-white.align-items-center.justify-content-between
+									.d-flex.align-items-center.product-info(data-bs-toggle="modal" data-bs-target="#products")
+										a.pro-img(href="javascript:void(0);")
+											img(src="assets/img/products/pos-product-17.png" alt="Products")
+										.info
+											h6
+												a(href="javascript:void(0);") Iphone 11S
+											p Quantity : 04
+									p.text-teal.fw-bold $3000
+	//  /Products 
+	.modal.fade#create(tabindex="-1" aria-labelledby="create" aria-hidden="true")
+		.modal-dialog.modal-lg.modal-dialog-centered(role="document")
+			.modal-content
+				.modal-header
+					h5.modal-title Create
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				form(action="pos.html")
+					.modal-body.pb-1
+						.row
+							.col-lg-6.col-sm-12.col-12
+								.mb-3
+									label.form-label
+										| Customer Name 
+										span.text-danger *
+									input.form-control(type="text")
+							.col-lg-6.col-sm-12.col-12
+								.mb-3
+									label.form-label
+										| Phone 
+										span.text-danger *
+									input.form-control(type="text")
+							.col-lg-12
+								.mb-3
+									label.form-label Email
+									input.form-control(type="email")
+							.col-lg-12
+								.mb-3
+									label.form-label Address
+									input.form-control(type="text")
+							.col-lg-6.col-sm-12.col-12
+								.mb-3
+									label.form-label City
+									input.form-control(type="text")
+							.col-lg-6.col-sm-12.col-12
+								.mb-3
+									label.form-label Country
+									input.form-control(type="text")
+					.modal-footer.d-flex.justify-content-end.gap-2.flex-wrap
+						button.btn.btn-md.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+						button.btn.btn-md.btn-primary(type="submit") Submit
+	//  Hold 
+	.modal.fade.modal-default.pos-modal#hold-order(aria-labelledby="hold-order")
+		.modal-dialog.modal-dialog-centered
+			.modal-content
+				.modal-header
+					h5.modal-title Hold order
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				form(action="pos.html")
+					.modal-body
+						.bg-light.br-10.p-4.text-center.mb-3
+							h2.display-1 4500.00
+						.mb-3
+							label.form-label
+								| Order Reference 
+								span.text-danger *
+							input.form-control(type="text", placeholder)
+						p The current order will be set on hold. You can retreive this order from the pending order button. Providing a reference to it might help you to identify the order more quickly.
+					.modal-footer.d-flex.justify-content-end.gap-2
+						button.btn.btn-md.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+						button.btn.btn-md.btn-primary(type="submit") Confirm
+	//  /Hold 
+	//  Edit Product 
+	.modal.fade.modal-default.pos-modal#edit-product(aria-labelledby="edit-product")
+		.modal-dialog.modal-dialog-centered
+			.modal-content
+				.modal-header
+					h5.modal-title Edit Product
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				form(action="pos.html")
+					.modal-body.pb-1
+						.row
+							.col-lg-12
+								.mb-3
+									label.form-label
+										| Product Name 
+										span.text-danger *
+									input.form-control(type="text" value="Red Nike Laser Show", disabled)
+							.col-lg-6.col-sm-12.col-12
+								.mb-3
+									label.form-label
+										| Product Price 
+										span.text-danger *
+									.input-icon-start.position-relative
+										span.input-icon-addon.text-gray-9
+											i.ti.ti-currency-dollar
+										input.form-control(type="text" value="1800")
+							.col-lg-6.col-sm-12.col-12
+								.mb-3
+									label.form-label
+										| Tax Type 
+										span.text-danger *
+									select.select
+										option Exclusive
+										option Inclusive
+							.col-lg-6.col-sm-12.col-12
+								.mb-3
+									label.form-label
+										| Tax 
+										span.text-danger *
+									.input-icon-start.position-relative
+										span.input-icon-addon.text-gray-9
+											i.ti.ti-percentage
+										input.form-control(type="text" value="15")
+							.col-lg-6.col-sm-12.col-12
+								.mb-3
+									label.form-label
+										| Discount Type 
+										span.text-danger *
+									select.select
+										option Percentage
+										option Early payment discounts
+							.col-lg-6.col-sm-12.col-12
+								.mb-3
+									label.form-label
+										| Discount 
+										span.text-danger *
+									input.form-control(type="text" value="15")
+							.col-lg-6.col-sm-12.col-12
+								.mb-3
+									label.form-label
+										| Sale Unit 
+										span.text-danger *
+									select.select
+										option Kilogram
+										option Grams
+					.modal-footer.d-flex.justify-content-end.flex-wrap.gap-2
+						button.btn.btn-md.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+						button.btn.btn-md.btn-primary(type="submit") Submit
+	//  /Edit Product 
+	//  Delete Product 
+	.modal.fade.modal-default#delete(aria-labelledby="payment-completed")
+		.modal-dialog.modal-dialog-centered
+			.modal-content
+				.modal-body.p-0
+					.success-wrap.text-center
+						form(action="pos.html")
+							.icon-success.bg-danger-transparent.text-danger.mb-2
+								i.ti.ti-trash
+							h3.mb-2 Are you Sure!
+							p.fs-16.mb-3.
+								The current order will be deleted as no payment has been made so far.
+
+							.d-flex.align-items-center.justify-content-center.gap-2.flex-wrap
+								button.btn.btn-md.btn-secondary(type="button" data-bs-dismiss="modal") No, Cancel
+								button.btn.btn-md.btn-primary(type="submit") Yes, Delete
+	//  /Delete Product 
+	//  Reset 
+	.modal.fade.modal-default#reset(aria-labelledby="payment-completed")
+		.modal-dialog.modal-dialog-centered
+			.modal-content
+				.modal-body.p-0
+					.success-wrap.text-center
+						form(action="pos.html")
+							.icon-success.bg-purple-transparent.text-purple.mb-2
+								i.ti.ti-transition-top
+							h3.mb-2 Confirm Your Action
+							p.fs-16.mb-3 The current order will be cleared. But not deleted if it's persistent. Would you like to proceed ?
+							.d-flex.align-items-center.justify-content-center.gap-2.flex-wrap
+								button.btn.btn-md.btn-secondary(type="button" data-bs-dismiss="modal") No, Cancel
+								button.btn.btn-md.btn-primary(type="submit") Yes, Proceed
+	//  /Reset 
+	//  Recent Transactions 
+	.modal.fade.pos-modal#recents(tabindex="-1" aria-hidden="true")
+		.modal-dialog.modal-lg.modal-dialog-centered(role="document")
+			.modal-content
+				.modal-header
+					h5.modal-title Recent Transactions
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				.modal-body
+					.tabs-sets
+						ul.nav.nav-tabs#myTab(role="tablist")
+							li.nav-item(role="presentation")
+								button.nav-link.active#purchase-tab(data-bs-toggle="tab" data-bs-target="#purchase" type="button" aria-controls="purchase" aria-selected="true" role="tab") Purchase
+							li.nav-item(role="presentation")
+								button.nav-link#payment-tab(data-bs-toggle="tab" data-bs-target="#payment" type="button" aria-controls="payment" aria-selected="false" role="tab") Payment
+							li.nav-item(role="presentation")
+								button.nav-link#return-tab(data-bs-toggle="tab" data-bs-target="#return" type="button" aria-controls="return" aria-selected="false" role="tab") Return
+						.tab-content
+							.tab-pane.fade.show.active#purchase(role="tabpanel" aria-labelledby="purchase-tab")
+								.card.mb-0
+									.card-header.d-flex.align-items-center.justify-content-between.flex-wrap.row-gap-3
+										.search-set
+											.search-input
+												span.btn-searchset
+													i.ti.ti-search.fs-14.feather-search
+										ul.table-top-head
+											li
+												a(data-bs-toggle="tooltip" data-bs-placement="top" title="Pdf")
+													img(src="assets/img/icons/pdf.svg" alt="img")
+											li
+												a(data-bs-toggle="tooltip" data-bs-placement="top" title="Excel")
+													img(src="assets/img/icons/excel.svg" alt="img")
+											li
+												a(data-bs-toggle="tooltip" data-bs-placement="top" title="Print")
+													i.ti.ti-printer
+									.card-body
+										.table-responsive
+											table.table.datatable.border
+												thead.thead-light
+													tr
+														th.no-sort
+															label.checkboxs
+																input.select-all(type="checkbox")
+																span.checkmarks
+														th Customer
+														th Reference
+														th Date
+														th Amount
+														th.no-sort Action
+												tbody
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-27.jpg" alt="product")
+																a(href="javascript:void(0);") Carl Evans
+														td INV/SL0101
+														td 24 Dec 2024
+														td $1000
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-02.jpg" alt="product")
+																a(href="javascript:void(0);") Minerva Rameriz
+														td INV/SL0102
+														td 10 Dec 2024
+														td $1500
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-05.jpg" alt="product")
+																a(href="javascript:void(0);") Robert Lamon
+														td INV/SL0103
+														td 27 Nov 2024
+														td $1500
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-22.jpg" alt="product")
+																a(href="javascript:void(0);") Patricia Lewis
+														td INV/SL0104
+														td 18 Nov 2024
+														td $2000
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-03.jpg" alt="product")
+																a(href="javascript:void(0);") Mark Joslyn
+														td INV/SL0105
+														td 06 Nov 2024
+														td $800
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-12.jpg" alt="product")
+																a(href="javascript:void(0);") Marsha Betts
+														td INV/SL0106
+														td 25 Oct 2024
+														td $750
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-06.jpg" alt="product")
+																a(href="javascript:void(0);") Daniel Jude
+														td INV/SL0107
+														td 14 Oct 2024
+														td $1300
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+							.tab-pane.fade#payment(role="tabpanel")
+								.card.mb-0
+									.card-header.d-flex.align-items-center.justify-content-between.flex-wrap.row-gap-3
+										.search-set
+											.search-input
+												span.btn-searchset
+													i.ti.ti-search.fs-14.feather-search
+										ul.table-top-head
+											li
+												a(data-bs-toggle="tooltip" data-bs-placement="top" title="Pdf")
+													img(src="assets/img/icons/pdf.svg" alt="img")
+											li
+												a(data-bs-toggle="tooltip" data-bs-placement="top" title="Excel")
+													img(src="assets/img/icons/excel.svg" alt="img")
+											li
+												a(data-bs-toggle="tooltip" data-bs-placement="top" title="Print")
+													i.ti.ti-printer
+									.card-body
+										.table-responsive
+											table.table.datatable.border
+												thead.thead-light
+													tr
+														th.no-sort
+															label.checkboxs
+																input.select-all(type="checkbox")
+																span.checkmarks
+														th Customer
+														th Reference
+														th Date
+														th Amount
+														th.no-sort Action
+												tbody
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-27.jpg" alt="product")
+																a(href="javascript:void(0);") Carl Evans
+														td INV/SL0101
+														td 24 Dec 2024
+														td $1000
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-02.jpg" alt="product")
+																a(href="javascript:void(0);") Minerva Rameriz
+														td INV/SL0102
+														td 10 Dec 2024
+														td $1500
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-05.jpg" alt="product")
+																a(href="javascript:void(0);") Robert Lamon
+														td INV/SL0103
+														td 27 Nov 2024
+														td $1500
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-22.jpg" alt="product")
+																a(href="javascript:void(0);") Patricia Lewis
+														td INV/SL0104
+														td 18 Nov 2024
+														td $2000
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-03.jpg" alt="product")
+																a(href="javascript:void(0);") Mark Joslyn
+														td INV/SL0105
+														td 06 Nov 2024
+														td $800
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-12.jpg" alt="product")
+																a(href="javascript:void(0);") Marsha Betts
+														td INV/SL0106
+														td 25 Oct 2024
+														td $750
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-06.jpg" alt="product")
+																a(href="javascript:void(0);") Daniel Jude
+														td INV/SL0107
+														td 14 Oct 2024
+														td $1300
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+							.tab-pane.fade#return(role="tabpanel")
+								.card.mb-0
+									.card-header.d-flex.align-items-center.justify-content-between.flex-wrap.row-gap-3
+										.search-set
+											.search-input
+												span.btn-searchset
+													i.ti.ti-search.fs-14.feather-search
+										ul.table-top-head
+											li
+												a(data-bs-toggle="tooltip" data-bs-placement="top" title="Pdf")
+													img(src="assets/img/icons/pdf.svg" alt="img")
+											li
+												a(data-bs-toggle="tooltip" data-bs-placement="top" title="Excel")
+													img(src="assets/img/icons/excel.svg" alt="img")
+											li
+												a(data-bs-toggle="tooltip" data-bs-placement="top" title="Print")
+													i.ti.ti-printer
+									.card-body
+										.table-responsive
+											table.table.datatable.border
+												thead.thead-light
+													tr
+														th.no-sort
+															label.checkboxs
+																input.select-all(type="checkbox")
+																span.checkmarks
+														th Customer
+														th Reference
+														th Date
+														th Amount
+														th.no-sort Action
+												tbody
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-27.jpg" alt="product")
+																a(href="javascript:void(0);") Carl Evans
+														td INV/SL0101
+														td 24 Dec 2024
+														td $1000
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-02.jpg" alt="product")
+																a(href="javascript:void(0);") Minerva Rameriz
+														td INV/SL0102
+														td 10 Dec 2024
+														td $1500
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-05.jpg" alt="product")
+																a(href="javascript:void(0);") Robert Lamon
+														td INV/SL0103
+														td 27 Nov 2024
+														td $1500
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-22.jpg" alt="product")
+																a(href="javascript:void(0);") Patricia Lewis
+														td INV/SL0104
+														td 18 Nov 2024
+														td $2000
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-03.jpg" alt="product")
+																a(href="javascript:void(0);") Mark Joslyn
+														td INV/SL0105
+														td 06 Nov 2024
+														td $800
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-12.jpg" alt="product")
+																a(href="javascript:void(0);") Marsha Betts
+														td INV/SL0106
+														td 25 Oct 2024
+														td $750
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+													tr
+														td
+															label.checkboxs
+																input(type="checkbox")
+																span.checkmarks
+														td
+															.d-flex.align-items-center
+																a.avatar.avatar-md.me-2(href="javascript:void(0);")
+																	img(src="assets/img/users/user-06.jpg" alt="product")
+																a(href="javascript:void(0);") Daniel Jude
+														td INV/SL0107
+														td 14 Oct 2024
+														td $1300
+														td.action-table-data
+															.edit-delete-action
+																a.me-2.edit-icon.p-2(href="javascript:void(0);")
+																	i.feather-eye(data-feather="eye")
+																a.me-2.p-2(href="javascript:void(0);")
+																	i.feather-edit(data-feather="edit")
+																a.p-2(href="javascript:void(0);")
+																	i.feather-trash-2(data-feather="trash-2")
+	//  /Recent Transactions 
+	//  Orders 
+	.modal.fade.pos-modal#orders(tabindex="-1" aria-hidden="true")
+		.modal-dialog.modal-md.modal-dialog-centered(role="document")
+			.modal-content
+				.modal-header
+					h5.modal-title Orders
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				.modal-body
+					.tabs-sets
+						ul.nav.nav-tabs#myTabs(role="tablist")
+							li.nav-item(role="presentation")
+								button.nav-link.active#onhold-tab(data-bs-toggle="tab" data-bs-target="#onhold" type="button" aria-controls="onhold" aria-selected="true" role="tab") Onhold
+							li.nav-item(role="presentation")
+								button.nav-link#unpaid-tab(data-bs-toggle="tab" data-bs-target="#unpaid" type="button" aria-controls="unpaid" aria-selected="false" role="tab") Unpaid
+							li.nav-item(role="presentation")
+								button.nav-link#paid-tab(data-bs-toggle="tab" data-bs-target="#paid" type="button" aria-controls="paid" aria-selected="false" role="tab") Paid
+						.tab-content
+							.tab-pane.fade.show.active#onhold(role="tabpanel" aria-labelledby="onhold-tab")
+								.input-icon-start.pos-search.position-relative.mb-3
+									span.input-icon-addon
+										i.ti.ti-search
+									input.form-control(type="text" placeholder="Search Product")
+								.order-body
+									.card.bg-light.mb-3
+										.card-body
+											span.badge.bg-dark.fs-12.mb-2 Order ID : #45698
+											.row.g-3
+												.col-md-6
+													p.fs-15.mb-1
+														span.fs-14.fw-bold.text-gray-9 Cashier :
+														|  admin
+													p.fs-15
+														span.fs-14.fw-bold.text-gray-9 Total :
+														|  $900
+												.col-md-6
+													p.fs-15.mb-1
+														span.fs-14.fw-bold.text-gray-9 Customer :
+														|  Botsford
+													p.fs-15
+														span.fs-14.fw-bold.text-gray-9 Date :
+														|  24 Dec 2024 13:39:11
+											.bg-info-transparent.p-1.rounded.text-center.my-3
+												p.text-info.fw-medium Customer need to recheck the product once
+											.d-flex.align-items-center.justify-content-center.flex-wrap.gap-2
+												a.btn.btn-md.btn-orange(href="javascript:void(0);") Open Order
+												a.btn.btn-md.btn-teal(href="javascript:void(0);" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#products") View Products
+												a.btn.btn-md.btn-indigo(href="javascript:void(0);") Print
+									.card.bg-light.mb-0
+										.card-body
+											span.badge.bg-dark.fs-12.mb-2 Order ID : #666659
+											.mb-3
+												.row.g-3
+													.col-md-6
+														p.fs-15.mb-1
+															span.fs-14.fw-bold.text-gray-9 Cashier :
+															|  admin
+														p.fs-15
+															span.fs-14.fw-bold.text-gray-9 Total :
+															|  $900
+													.col-md-6
+														p.fs-15.mb-1
+															span.fs-14.fw-bold.text-gray-9 Customer :
+															|  Botsford
+														p.fs-15
+															span.fs-14.fw-bold.text-gray-9 Date :
+															|  24 Dec 2024 13:39:11
+							.tab-pane.fade#unpaid(role="tabpanel")
+								.input-icon-start.pos-search.position-relative.mb-3
+									span.input-icon-addon
+										i.ti.ti-search
+									input.form-control(type="text" placeholder="Search Product")
+								.order-body
+									.card.bg-light.mb-3
+										.card-body
+											span.badge.bg-dark.fs-12.mb-2 Order ID : #45698
+											.row.g-3
+												.col-md-6
+													p.fs-15.mb-1
+														span.fs-14.fw-bold.text-gray-9 Cashier :
+														|  admin
+													p.fs-15
+														span.fs-14.fw-bold.text-gray-9 Total :
+														|  $900
+												.col-md-6
+													p.fs-15.mb-1
+														span.fs-14.fw-bold.text-gray-9 Customer :
+														|  Anastasia
+													p.fs-15
+														span.fs-14.fw-bold.text-gray-9 Date :
+														|  24 Dec 2024 13:39:11
+											.bg-info-transparent.p-1.rounded.text-center.my-3
+												p.text-info.fw-medium Customer need to recheck the product once
+											.d-flex.align-items-center.justify-content-center.flex-wrap.gap-2
+												a.btn.btn-md.btn-orange(href="javascript:void(0);") Open Order
+												a.btn.btn-md.btn-teal(href="javascript:void(0);" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#products") View Products
+												a.btn.btn-md.btn-indigo(href="javascript:void(0);") Print
+									.card.bg-light.mb-0
+										.card-body
+											span.badge.bg-dark.fs-12.mb-2 Order ID : #666659
+											.row.g-3
+												.col-md-6
+													p.fs-15.mb-1
+														span.fs-14.fw-bold.text-gray-9 Cashier :
+														|  admin
+													p.fs-15
+														span.fs-14.fw-bold.text-gray-9 Total :
+														|  $900
+												.col-md-6
+													p.fs-15.mb-1
+														span.fs-14.fw-bold.text-gray-9 Customer :
+														|  Lucia
+													p.fs-15
+														span.fs-14.fw-bold.text-gray-9 Date :
+														|  24 Dec 2024 13:39:11
+							.tab-pane.fade#paid(role="tabpanel")
+								.input-icon-start.pos-search.position-relative.mb-3
+									span.input-icon-addon
+										i.ti.ti-search
+									input.form-control(type="text" placeholder="Search Product")
+								.order-body
+									.card.bg-light.mb-3
+										.card-body
+											span.badge.bg-dark.fs-12.mb-2 Order ID : #45698
+											.row.g-3
+												.col-md-6
+													p.fs-15.mb-1
+														span.fs-14.fw-bold.text-gray-9 Cashier :
+														|  admin
+													p.fs-15
+														span.fs-14.fw-bold.text-gray-9 Total :
+														|  $1000
+												.col-md-6
+													p.fs-15.mb-1
+														span.fs-14.fw-bold.text-gray-9 Customer :
+														|  Hugo
+													p.fs-15
+														span.fs-14.fw-bold.text-gray-9 Date :
+														|  24 Dec 2024 13:39:11
+											.bg-info-transparent.p-1.rounded.text-center.my-3
+												p.text-info.fw-medium Customer need to recheck the product once
+											.d-flex.align-items-center.justify-content-center.flex-wrap.gap-2
+												a.btn.btn-md.btn-orange(href="javascript:void(0);") Open Order
+												a.btn.btn-md.btn-teal(href="javascript:void(0);" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#products") View Products
+												a.btn.btn-md.btn-indigo(href="javascript:void(0);") Print
+									.card.bg-light.mb-0
+										.card-body
+											span.badge.bg-dark.fs-12.mb-2 Order ID : #666659
+											.row.g-3
+												.col-md-6
+													p.fs-15.mb-1
+														span.fs-14.fw-bold.text-gray-9 Cashier :
+														|  admin
+													p.fs-15
+														span.fs-14.fw-bold.text-gray-9 Total :
+														|  $9100
+												.col-md-6
+													p.fs-15.mb-1
+														span.fs-14.fw-bold.text-gray-9 Customer :
+														|  Antonio
+													p.fs-15
+														span.fs-14.fw-bold.text-gray-9 Date :
+														|  23 Dec 2024 13:39:11
+	//  /Orders 
+	//  Scan 
+	.modal.fade.modal-default#scan-payment
+		.modal-dialog.modal-dialog-centered
+			.modal-content
+				.modal-body.p-0
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+					.success-wrap.scan-wrap.text-center
+						h5
+							span.text-gray-6 Amount to Pay :
+							|  $150
+						.scan-img
+							img.scan-image(src="assets/img/icons/scan-img.svg" alt="img")
+							img.scan-img-white(src="assets/img/icons/scan-img-white.svg" alt="img")
+						p.mb-3 Scan your Phone or UPI App to Complete the payment
+	//  /Scan 
+	//  Order Tax 
+	.modal.fade.modal-default#order-tax
+		.modal-dialog.modal-dialog-centered
+			.modal-content
+				.modal-header
+					h5.modal-title Order Tax
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				form(action="pos.html")
+					.modal-body.pb-1
+						.mb-3
+							label.form-label
+								| Order Tax 
+								span.text-danger *
+							select.select
+								option Select
+								option No Tax
+								option @10
+								option @15
+								option VAT
+								option SLTAX
+					.modal-footer.d-flex.justify-content-end.flex-wrap.gap-2
+						button.btn.btn-md.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+						button.btn.btn-md.btn-primary(type="submit") Submit
+	//  /Order Tax 
+	//  Shipping Cost 
+	.modal.fade.modal-default#shipping-cost
+		.modal-dialog.modal-dialog-centered
+			.modal-content
+				.modal-header
+					h5.modal-title Shipping Cost
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				form(action="pos.html")
+					.modal-body.pb-1
+						.mb-3
+							label.form-label
+								| Shipping Cost 
+								span.text-danger *
+							input.form-control(type="text")
+					.modal-footer.d-flex.justify-content-end.flex-wrap.gap-2
+						button.btn.btn-md.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+						button.btn.btn-md.btn-primary(type="submit") Submit
+	//  /Shipping Cost 
+	//  Coupon Code 
+	.modal.fade.modal-default#coupon-code
+		.modal-dialog.modal-dialog-centered
+			.modal-content
+				.modal-header
+					h5.modal-title Coupon Code
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				form(action="pos.html")
+					.modal-body.pb-1
+						.mb-3
+							label.form-label
+								| Coupon Code 
+								span.text-danger *
+							select.select
+								option Select
+								option NEWYEAR30
+								option CHRISTMAS100
+								option HALLOWEEN20
+								option BLACKFRIDAY50
+					.modal-footer.d-flex.justify-content-end.flex-wrap.gap-2
+						button.btn.btn-md.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+						button.btn.btn-md.btn-primary(type="submit") Submit
+	//  /Coupon Code 
+	//  Discount 
+	.modal.fade.modal-default#discount
+		.modal-dialog.modal-dialog-centered
+			.modal-content
+				.modal-header
+					h5.modal-title Discount
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				form(action="pos.html")
+					.modal-body.pb-1
+						.mb-3
+							label.form-label
+								| Order Discount Type 
+								span.text-danger *
+							select.select
+								option Select
+								option Flat
+								option Percentage
+						.mb-3
+							label.form-label
+								| Value 
+								span.text-danger *
+							input.form-control(type="text")
+					.modal-footer.d-flex.justify-content-end.flex-wrap.gap-2
+						button.btn.btn-md.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+						button.btn.btn-md.btn-primary(type="submit") Submit
+	//  /Discount 
+	//  Cash Payment 
+	.modal.fade.modal-default#cash-payment(aria-labelledby="payment-completed")
+		.modal-dialog.modal-dialog-centered
+			.modal-content
+				.modal-body.p-0
+					.success-wrap
+						.text-center
+							.icon-success.bg-success.text-white.mb-2
+								i.ti.ti-check
+							h3.mb-2 Congratulations, Sale Completed
+							.p-2.d-flex.align-items-center.justify-content-center.gap-2.flex-wrap.mb-3
+								p.fs-13.fw-medium.pe-2.border-end.mb-0
+									| Bill Amount : 
+									span.text-gray-9 $150
+								p.fs-13.fw-medium.pe-2.border-end.mb-0
+									| Total Paid : 
+									span.text-gray-9 $200
+								p.fs-13.fw-medium.mb-0
+									| Change : 
+									span.text-gray-9 $50
+						.bg-success-transparent.p-2.mb-3.br-5.border-start.border-success.d-flex.align-items-center
+							span.avatar.avatar-sm.bg-success.rounded-circle.flex-shrink-0.fs-16.me-2
+								i.ti.ti-mail-opened
+							p.fs-13.fw-medium.text-gray-9
+								| A receipt of this transaction will be sent to the registered info@
+								a.__cf_email__(href="https://dreamspos.dreamstechnologies.com/cdn-cgi/l/email-protection" data-cfemail="f0938583849f9d9582b09588919d809c95de939f9d") [email protected]
+						.resend-form.mb-3
+							input.form-control(type="text" value="infocustomer@example.com")
+							button.btn.btn-primary.btn-xs(type="submit") Resend Email
+						.d-flex.align-items-center.justify-content-center.gap-2.flex-wrap
+							button.btn.btn-md.btn-light.flex-fill(type="button" data-bs-toggle="modal" data-bs-target="#print-receipt")
+								i.ti.ti-printer.me-1
+								| Print Receipt
+							button.btn.btn-md.btn-teal.flex-fill(type="button")
+								i.ti.ti-gift.me-1
+								| Gift Receipt
+							a.btn.btn-md.btn-dark.flex-fill(href="pos.html#")
+								i.ti.ti-shopping-cart.me-1
+								| Next Order
+	//  /Cash Payment 
+	//  Card Payment 
+	.modal.fade.modal-default#card-payment
+		.modal-dialog.modal-dialog-centered
+			.modal-content
+				.modal-body.p-0
+					.success-wrap
+						.text-center
+							.icon-success.bg-success.text-white.mb-2
+								i.ti.ti-check
+							h3.mb-2 Congratulations, Sale Completed
+							.p-2.text-center.mb-3
+								p.fs-13.fw-medium
+									| Bill Amount : 
+									span.text-gray-9 $150
+						.bg-success-transparent.p-2.mb-3.br-5.border-start.border-success.d-flex.align-items-center
+							span.avatar.avatar-sm.bg-success.rounded-circle.flex-shrink-0.fs-16.me-2
+								i.ti.ti-mail-opened
+							p.fs-13.fw-medium.text-gray-9
+								| A receipt of this transaction will be sent to the registered info@
+								a.__cf_email__(href="https://dreamspos.dreamstechnologies.com/cdn-cgi/l/email-protection" data-cfemail="791a0c0a0d16141c0b391c01181409151c571a1614") [email protected]
+						.resend-form.mb-3
+							input.form-control(type="text" value="infocustomer@example.com")
+							button.btn.btn-primary.btn-xs(type="submit") Resend Email
+						.d-flex.align-items-center.justify-content-center.gap-2.flex-wrap
+							button.btn.btn-md.btn-light.flex-fill(type="button" data-bs-toggle="modal" data-bs-target="#print-receipt")
+								i.ti.ti-printer.me-1
+								| Print Receipt
+							button.btn.btn-md.btn-teal.flex-fill(type="button")
+								i.ti.ti-gift.me-1
+								| Gift Receipt
+							a.btn.btn-md.btn-dark.flex-fill(href="pos.html#")
+								i.ti.ti-shopping-cart.me-1
+								| Next Order
+	//  /Card Payment 
+	//  Active Gift Card 
+	.modal.fade.pos-modal#gift-payment(tabindex="-1" aria-hidden="true")
+		.modal-dialog.modal-md.modal-dialog-centered(role="document")
+			.modal-content
+				.modal-header
+					h5.modal-title Pay By Gift Card
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				.modal-body.pb-1
+					.mb-3
+						img(src="assets/img/icons/gift-card.svg" alt="img")
+					.resend-form.mb-3
+						input.form-control(type="text" placeholder="Scan Barcode / Enter Number")
+						button.btn.btn-primary.btn-xs(type="submit" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#redeem-value") Check
+	//  /Active Gift Card 
+	//  Redeem Value 
+	.modal.fade.pos-modal#redeem-value(tabindex="-1" aria-hidden="true")
+		.modal-dialog.modal-md.modal-dialog-centered(role="document")
+			.modal-content
+				.modal-header
+					h5.modal-title Redeem Value
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				form(action="pos.html")
+					.modal-body
+						.bg-info-transparent.p-2.br-8.mb-3
+							p.text-info Balance isn’t enough to pay, you can still make a partial payment
+						.card.bg-light.shadow-none.text-center
+							.card-body
+								p.text-gray-5.mb-1 Gift Card Number
+								h2.display-1 5698
+						.bg-danger-transparent.p-2.mb-3.br-5.border-start.border-danger.d-flex.align-items-center
+							span.avatar.avatar-sm.bg-danger.rounded-circle.fs-16.me-2
+								i.ti.ti-gift
+							p.fs-16.text-gray-9 Available gift card balance : $45.56
+						div
+							input.form-control(type="text" placeholder="Enter Bill Amount")
+					.modal-footer.d-flex.justify-content-end.gap-2.flex-wrap
+						button.btn.btn-md.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+						button.btn.btn-md.btn-primary(type="submit") Make Partial Payment
+	//  /Redeem Value 
+	//  Redeem Value 
+	.modal.fade.pos-modal#redeem-fullpayment(tabindex="-1" aria-hidden="true")
+		.modal-dialog.modal-md.modal-dialog-centered(role="document")
+			.modal-content
+				.modal-header
+					h5.modal-title Redeem Value
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				form(action="pos.html")
+					.modal-body
+						.card.bg-light.shadow-none.text-center
+							.card-body
+								p.text-gray-5.mb-1 Gift Card Number
+								h2.display-1 5698
+						.bg-success-transparent.p-2.mb-3.br-5.border-start.border-success
+							span.avatar.avatar-sm.bg-success.rounded-circle.fs-16.me-2
+								i.ti.ti-gift
+							p.fs-16.text-gray-9 Available gift card balance : $45.56
+						div
+							input.form-control(type="text" placeholder="Enter Bill Amount")
+					.modal-footer.d-flex.justify-content-end.gap-2.flex-wrap
+						button.btn.btn-md.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+						button.btn.btn-md.btn-primary(type="submit") Make Payment
+	//  /Redeem Value 
+	//  Barcode 
+	.modal.fade.pos-modal#barcode(tabindex="-1" aria-hidden="true")
+		.modal-dialog.modal-md.modal-dialog-centered(role="document")
+			.modal-content
+				.modal-header
+					h5.modal-title Barcode
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				form(action="pos.html")
+					.modal-body
+						.mb-3
+							input.form-control(type="text" placeholder="Enter Barcode of the Product")
+						.card.bg-light.shadow-none.border-0.br-0.mb-0
+							.card-body.d-flex.align-items-center.justify-content-between
+								div
+									p.fs-13.mb-1 Tablet 1.02 inch
+									h6.fs-13.fw-semibold $3000
+								.qty-item.m-0
+									a.dec.d-flex.justify-content-center.align-items-center(href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="minus")
+										i.ti.ti-minus
+									input.form-control.text-center(type="text" name="qty" value="4")
+									a.inc.d-flex.justify-content-center.align-items-center(href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="plus")
+										i.ti.ti-plus
+					.modal-footer.d-flex.justify-content-end.gap-2.flex-wrap
+						button.btn.btn-md.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+						button.btn.btn-md.btn-primary(type="submit") Add Item
+	//  /Barcode 
+	//  Split Payment 
+	.modal.fade.pos-modal#split-payment(tabindex="-1" aria-hidden="true")
+		.modal-dialog.modal-md.modal-dialog-centered.modal-lg(role="document")
+			.modal-content
+				.modal-header
+					h5.modal-title Split Payment
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				form(action="pos.html")
+					.modal-body
+						.additem-info
+							.bg-light.p-3.add-info
+								.row.align-items-center.g-2
+									.col-lg-2
+										h6.fs-14.fw-semibold Payment 2
+									.col-lg-4
+										select.select
+											option Cash
+											option Card
+									.col-lg-4
+										input.form-control(type="text" placeholder="Enter Amount")
+									.col-lg-2
+										button.btn.btn-dark.w-100 Charge
+							.bg-light.p-3.add-info
+								.row.align-items-center.g-2
+									.col-lg-2
+										h6.fs-14.fw-semibold Payment 2
+									.col-lg-4
+										select.select
+											option Cash
+											option Card
+									.col-lg-4
+										input.form-control(type="text" placeholder="Enter Amount")
+									.col-lg-2
+										button.btn.btn-dark.w-100 Charge
+						.text-end
+							a.btn.btn-primary.btn-md.add-item(href="pos.html#") Add More
+					.modal-footer.d-flex.justify-content-end.gap-2.flex-wrap
+						button.btn.btn-md.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+						a.btn.btn-md.btn-primary(href="pos.html#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#cash-payment") Complete Sale
+	//  /Split Payment 
+	//  Payment Cash 
+	.modal.fade.modal-default#payment-cash
+		.modal-dialog.modal-dialog-centered.modal-lg
+			.modal-content
+				.modal-header
+					h5.modal-title Finalize Sale
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				form(action="pos-4.html")
+					.modal-body.pb-1
+						.row
+							.col-md-4
+								.mb-3
+									label.form-label
+										| Received Amount 
+										span.text-danger *
+									.input-icon-start.position-relative
+										span.input-icon-addon.text-gray-9
+											i.ti.ti-currency-dollar
+										input.form-control(type="text" value="1800")
+							.col-md-4
+								.mb-3
+									label.form-label
+										| Paying Amount 
+										span.text-danger *
+									.input-icon-start.position-relative
+										span.input-icon-addon.text-gray-9
+											i.ti.ti-currency-dollar
+										input.form-control(type="text" value="1800")
+							.col-md-4
+								.change-item.mb-3
+									label.form-label Change
+									.input-icon-start.position-relative
+										span.input-icon-addon.text-gray-9
+											i.ti.ti-currency-dollar
+										input.form-control(type="text" value="0.00")
+								.point-item.mb-3
+									label.form-label Balance Point
+									input.form-control(type="text" value="200")
+							.col-md-12
+								.mb-3
+									label.form-label
+										| Payment Type 
+										span.text-danger *
+									select.select.select-payment
+										option(value="credit") Credit Card
+										option(value="cash", selected) Cash
+										option(value="cheque") Cheque
+										option(value="deposit") Deposit
+										option(value="points") Points
+								.quick-cash.payment-content.bg-light.mb-3
+									.d-flex.align-items-center.flex-wra.gap-4
+										h5.text-nowrap Quick Cash
+										.d-flex.align-items-center.flex-wrap.gap-3
+											.form-check
+												input.btn-check#cash1(type="radio" name="cash", checked)
+												label.btn.btn-white(for="cash1") 10
+											.form-check
+												input.btn-check#cash2(type="radio" name="cash")
+												label.btn.btn-white(for="cash2") 20
+											.form-check
+												input.btn-check#cash3(type="radio" name="cash")
+												label.btn.btn-white(for="cash3") 50
+											.form-check
+												input.btn-check#cash4(type="radio" name="cash")
+												label.btn.btn-white(for="cash4") 100
+											.form-check
+												input.btn-check#cash5(type="radio" name="cash")
+												label.btn.btn-white(for="cash5") 500
+											.form-check
+												input.btn-check#cash6(type="radio" name="cash")
+												label.btn.btn-white(for="cash6") 1000
+								.point-wrap.payment-content.mb-3
+									.bg-success-transparent.d-flex.align-items-center.justify-content-between.flex-wrap.p-2.gap-2.br-5
+										h6.fs-14.fw-bold.text-success You have 2000 Points to Use
+										a.btn.btn-dark.btn-md(href="javascript:void(0);") Use for this Purchase
+							.col-md-12
+								.mb-3
+									label.form-label Payment Receiver
+									input.form-control(type="text")
+							.col-md-12
+								.mb-3
+									label.form-label Payment Note
+									textarea.form-control(rows="3" placeholder="Type your message")
+							.col-md-12
+								.mb-3
+									label.form-label Sale Note
+									textarea.form-control(rows="3" placeholder="Type your message")
+							.col-md-12
+								.mb-3
+									label.form-label Staff Note
+									textarea.form-control(rows="3" placeholder="Type your message")
+					.modal-footer.d-flex.justify-content-end.flex-wrap.gap-2
+						button.btn.btn-md.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+						button.btn.btn-md.btn-primary(type="submit") Submit
+	//  /Payment Cash  
+	//  Payment Card  
+	.modal.fade.modal-default#payment-card
+		.modal-dialog.modal-dialog-centered.modal-lg
+			.modal-content
+				.modal-header
+					h5.modal-title Finalize Sale
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				form(action="pos-4.html")
+					.modal-body.pb-1
+						.row
+							.col-md-4
+								.mb-3
+									label.form-label
+										| Received Amount 
+										span.text-danger *
+									.input-icon-start.position-relative
+										span.input-icon-addon.text-gray-9
+											i.ti.ti-currency-dollar
+										input.form-control(type="text" value="1800")
+							.col-md-4
+								.mb-3
+									label.form-label
+										| Paying Amount 
+										span.text-danger *
+									.input-icon-start.position-relative
+										span.input-icon-addon.text-gray-9
+											i.ti.ti-currency-dollar
+										input.form-control(type="text" value="1800")
+							.col-md-4
+								.change-item.mb-3
+									label.form-label Change
+									.input-icon-start.position-relative
+										span.input-icon-addon.text-gray-9
+											i.ti.ti-currency-dollar
+										input.form-control(type="text" value="0.00")
+								.point-item.mb-3
+									label.form-label Balance Point
+									input.form-control(type="text" value="200")
+							.col-md-12
+								.mb-3
+									label.form-label
+										| Payment Type 
+										span.text-danger *
+									select.select.select-payment
+										option(value="credit", selected) Credit Card
+										option(value="cash") Cash
+										option(value="cheque") Cheque
+										option(value="deposit") Deposit
+										option(value="points") Points
+								.quick-cash.payment-content.bg-light.mb-3
+									.d-flex.align-items-center.flex-wra.gap-4
+										h5.text-nowrap Quick Cash
+										.d-flex.align-items-center.flex-wrap.gap-3
+											.form-check
+												input.btn-check#cash11(type="radio" name="cash", checked)
+												label.btn.btn-white(for="cash11") 10
+											.form-check
+												input.btn-check#cash12(type="radio" name="cash")
+												label.btn.btn-white(for="cash12") 20
+											.form-check
+												input.btn-check#cash13(type="radio" name="cash")
+												label.btn.btn-white(for="cash13") 50
+											.form-check
+												input.btn-check#cash14(type="radio" name="cash")
+												label.btn.btn-white(for="cash14") 100
+											.form-check
+												input.btn-check#cash15(type="radio" name="cash")
+												label.btn.btn-white(for="cash15") 500
+											.form-check
+												input.btn-check#cash16(type="radio" name="cash")
+												label.btn.btn-white(for="cash16") 1000
+								.point-wrap.payment-content.mb-3
+									.bg-success-transparent.d-flex.align-items-center.justify-content-between.flex-wrap.p-2.gap-2.br-5
+										h6.fs-14.fw-bold.text-success You have 2000 Points to Use
+										a.btn.btn-dark.btn-md(href="javascript:void(0);") Use for this Purchase
+							.col-md-12
+								.mb-3
+									label.form-label Payment Receiver
+									input.form-control(type="text")
+							.col-md-12
+								.mb-3
+									label.form-label Payment Note
+									textarea.form-control(rows="3" placeholder="Type your message")
+							.col-md-12
+								.mb-3
+									label.form-label Sale Note
+									textarea.form-control(rows="3" placeholder="Type your message")
+							.col-md-12
+								.mb-3
+									label.form-label Staff Note
+									textarea.form-control(rows="3" placeholder="Type your message")
+					.modal-footer.d-flex.justify-content-end.flex-wrap.gap-2
+						button.btn.btn-md.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+						button.btn.btn-md.btn-primary(type="submit") Submit
+	//  /Payment Card  
+	//  Payment Cheque 
+	.modal.fade.modal-default#payment-cheque
+		.modal-dialog.modal-dialog-centered.modal-lg
+			.modal-content
+				.modal-header
+					h5.modal-title Finalize Sale
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				form(action="pos-4.html")
+					.modal-body.pb-1
+						.row
+							.col-md-4
+								.mb-3
+									label.form-label
+										| Received Amount 
+										span.text-danger *
+									.input-icon-start.position-relative
+										span.input-icon-addon.text-gray-9
+											i.ti.ti-currency-dollar
+										input.form-control(type="text" value="1800")
+							.col-md-4
+								.mb-3
+									label.form-label
+										| Paying Amount 
+										span.text-danger *
+									.input-icon-start.position-relative
+										span.input-icon-addon.text-gray-9
+											i.ti.ti-currency-dollar
+										input.form-control(type="text" value="1800")
+							.col-md-4
+								.change-item.mb-3
+									label.form-label Change
+									.input-icon-start.position-relative
+										span.input-icon-addon.text-gray-9
+											i.ti.ti-currency-dollar
+										input.form-control(type="text" value="0.00")
+								.point-item.mb-3
+									label.form-label Balance Point
+									input.form-control(type="text" value="200")
+							.col-md-12
+								.mb-3
+									label.form-label
+										| Payment Type 
+										span.text-danger *
+									select.select.select-payment
+										option(value="credit") Credit Card
+										option(value="cash") Cash
+										option(value="cheque", selected) Cheque
+										option(value="deposit") Deposit
+										option(value="points") Points
+								.quick-cash.payment-content.bg-light.mb-3
+									.d-flex.align-items-center.flex-wra.gap-4
+										h5.text-nowrap Quick Cash
+										.d-flex.align-items-center.flex-wrap.gap-3
+											.form-check
+												input.btn-check#cash21(type="radio" name="cash", checked)
+												label.btn.btn-white(for="cash21") 10
+											.form-check
+												input.btn-check#cash22(type="radio" name="cash")
+												label.btn.btn-white(for="cash22") 20
+											.form-check
+												input.btn-check#cash23(type="radio" name="cash")
+												label.btn.btn-white(for="cash23") 50
+											.form-check
+												input.btn-check#cash24(type="radio" name="cash")
+												label.btn.btn-white(for="cash24") 100
+											.form-check
+												input.btn-check#cash25(type="radio" name="cash")
+												label.btn.btn-white(for="cash25") 500
+											.form-check
+												input.btn-check#cash26(type="radio" name="cash")
+												label.btn.btn-white(for="cash26") 1000
+								.point-wrap.payment-content.mb-3
+									.bg-success-transparent.d-flex.align-items-center.justify-content-between.flex-wrap.p-2.gap-2.br-5
+										h6.fs-14.fw-bold.text-success You have 2000 Points to Use
+										a.btn.btn-dark.btn-md(href="javascript:void(0);") Use for this Purchase
+							.col-md-12
+								.mb-3
+									label.form-label Payment Receiver
+									input.form-control(type="text")
+							.col-md-12
+								.mb-3
+									label.form-label Payment Note
+									textarea.form-control(rows="3" placeholder="Type your message")
+							.col-md-12
+								.mb-3
+									label.form-label Sale Note
+									textarea.form-control(rows="3" placeholder="Type your message")
+							.col-md-12
+								.mb-3
+									label.form-label Staff Note
+									textarea.form-control(rows="3" placeholder="Type your message")
+					.modal-footer.d-flex.justify-content-end.flex-wrap.gap-2
+						button.btn.btn-md.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+						button.btn.btn-md.btn-primary(type="submit") Submit
+	//  /Payment Cheque 
+	//   Payment Deposit 
+	.modal.fade.modal-default#payment-deposit
+		.modal-dialog.modal-dialog-centered.modal-lg
+			.modal-content
+				.modal-header
+					h5.modal-title Finalize Sale
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				form(action="pos-4.html")
+					.modal-body.pb-1
+						.row
+							.col-md-4
+								.mb-3
+									label.form-label
+										| Received Amount 
+										span.text-danger *
+									.input-icon-start.position-relative
+										span.input-icon-addon.text-gray-9
+											i.ti.ti-currency-dollar
+										input.form-control(type="text" value="1800")
+							.col-md-4
+								.mb-3
+									label.form-label
+										| Paying Amount 
+										span.text-danger *
+									.input-icon-start.position-relative
+										span.input-icon-addon.text-gray-9
+											i.ti.ti-currency-dollar
+										input.form-control(type="text" value="1800")
+							.col-md-4
+								.change-item.mb-3
+									label.form-label Change
+									.input-icon-start.position-relative
+										span.input-icon-addon.text-gray-9
+											i.ti.ti-currency-dollar
+										input.form-control(type="text" value="0.00")
+								.point-item.mb-3
+									label.form-label Balance Point
+									input.form-control(type="text" value="200")
+							.col-md-12
+								.mb-3
+									label.form-label
+										| Payment Type 
+										span.text-danger *
+									select.select.select-payment
+										option(value="credit") Credit Card
+										option(value="cash") Cash
+										option(value="cheque") Cheque
+										option(value="deposit", selected) Deposit
+										option(value="points") Points
+								.quick-cash.payment-content.bg-light.mb-3
+									.d-flex.align-items-center.flex-wra.gap-4
+										h5.text-nowrap Quick Cash
+										.d-flex.align-items-center.flex-wrap.gap-3
+											.form-check
+												input.btn-check#cash31(type="radio" name="cash", checked)
+												label.btn.btn-white(for="cash31") 10
+											.form-check
+												input.btn-check#cash32(type="radio" name="cash")
+												label.btn.btn-white(for="cash32") 20
+											.form-check
+												input.btn-check#cash33(type="radio" name="cash")
+												label.btn.btn-white(for="cash33") 50
+											.form-check
+												input.btn-check#cash34(type="radio" name="cash")
+												label.btn.btn-white(for="cash34") 100
+											.form-check
+												input.btn-check#cash35(type="radio" name="cash")
+												label.btn.btn-white(for="cash35") 500
+											.form-check
+												input.btn-check#cash36(type="radio" name="cash")
+												label.btn.btn-white(for="cash36") 1000
+								.point-wrap.payment-content.mb-3
+									.bg-success-transparent.d-flex.align-items-center.justify-content-between.flex-wrap.p-2.gap-2.br-5
+										h6.fs-14.fw-bold.text-success You have 2000 Points to Use
+										a.btn.btn-dark.btn-md(href="javascript:void(0);") Use for this Purchase
+							.col-md-12
+								.mb-3
+									label.form-label Payment Receiver
+									input.form-control(type="text")
+							.col-md-12
+								.mb-3
+									label.form-label Payment Note
+									textarea.form-control(rows="3" placeholder="Type your message")
+							.col-md-12
+								.mb-3
+									label.form-label Sale Note
+									textarea.form-control(rows="3" placeholder="Type your message")
+							.col-md-12
+								.mb-3
+									label.form-label Staff Note
+									textarea.form-control(rows="3" placeholder="Type your message")
+					.modal-footer.d-flex.justify-content-end.flex-wrap.gap-2
+						button.btn.btn-md.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+						button.btn.btn-md.btn-primary(type="submit") Submit
+	//  /Payment Deposit 
+	//  Payment Point 
+	.modal.fade.modal-default#payment-points
+		.modal-dialog.modal-dialog-centered.modal-lg
+			.modal-content
+				.modal-header
+					h5.modal-title Finalize Sale
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				form(action="pos-4.html")
+					.modal-body.pb-1
+						.row
+							.col-md-4
+								.mb-3
+									label.form-label
+										| Received Amount 
+										span.text-danger *
+									.input-icon-start.position-relative
+										span.input-icon-addon.text-gray-9
+											i.ti.ti-currency-dollar
+										input.form-control(type="text" value="1800")
+							.col-md-4
+								.mb-3
+									label.form-label
+										| Paying Amount 
+										span.text-danger *
+									.input-icon-start.position-relative
+										span.input-icon-addon.text-gray-9
+											i.ti.ti-currency-dollar
+										input.form-control(type="text" value="1800")
+							.col-md-4
+								.change-item.mb-3
+									label.form-label Change
+									.input-icon-start.position-relative
+										span.input-icon-addon.text-gray-9
+											i.ti.ti-currency-dollar
+										input.form-control(type="text" value="0.00")
+								.point-item.mb-3
+									label.form-label Balance Point
+									input.form-control(type="text" value="200")
+							.col-md-12
+								.mb-3
+									label.form-label
+										| Payment Type 
+										span.text-danger *
+									select.select.select-payment
+										option(value="credit") Credit Card
+										option(value="cash") Cash
+										option(value="cheque") Cheque
+										option(value="deposit") Deposit
+										option(value="points", selected) Points
+								.quick-cash.payment-content.bg-light.mb-3
+									.d-flex.align-items-center.flex-wra.gap-4
+										h5.text-nowrap Quick Cash
+										.d-flex.align-items-center.flex-wrap.gap-3
+											.form-check
+												input.btn-check#cash41(type="radio" name="cash", checked)
+												label.btn.btn-white(for="cash41") 10
+											.form-check
+												input.btn-check#cash42(type="radio" name="cash")
+												label.btn.btn-white(for="cash42") 20
+											.form-check
+												input.btn-check#cash43(type="radio" name="cash")
+												label.btn.btn-white(for="cash43") 50
+											.form-check
+												input.btn-check#cash44(type="radio" name="cash")
+												label.btn.btn-white(for="cash44") 100
+											.form-check
+												input.btn-check#cash45(type="radio" name="cash")
+												label.btn.btn-white(for="cash45") 500
+											.form-check
+												input.btn-check#cash46(type="radio" name="cash")
+												label.btn.btn-white(for="cash46") 1000
+								.point-wrap.payment-content.mb-3
+									.bg-success-transparent.d-flex.align-items-center.justify-content-between.flex-wrap.p-2.gap-2.br-5
+										h6.fs-14.fw-bold.text-success You have 2000 Points to Use
+										a.btn.btn-dark.btn-md(href="javascript:void(0);") Use for this Purchase
+							.col-md-12
+								.mb-3
+									label.form-label Payment Receiver
+									input.form-control(type="text")
+							.col-md-12
+								.mb-3
+									label.form-label Payment Note
+									textarea.form-control(rows="3" placeholder="Type your message")
+							.col-md-12
+								.mb-3
+									label.form-label Sale Note
+									textarea.form-control(rows="3" placeholder="Type your message")
+							.col-md-12
+								.mb-3
+									label.form-label Staff Note
+									textarea.form-control(rows="3" placeholder="Type your message")
+					.modal-footer.d-flex.justify-content-end.flex-wrap.gap-2
+						button.btn.btn-md.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+						button.btn.btn-md.btn-primary(type="submit") Submit
+	//  /Payment Point 
+	//  Calculator 
+	.modal.fade.pos-modal#calculator(tabindex="-1" aria-hidden="true")
+		.modal-dialog.modal-md.modal-dialog-centered(role="document")
+			.modal-content
+				.modal-body.p-0
+					.calculator-wrap
+						.p-3
+							.d-flex.align-items-center
+								h3 Calculator
+								button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+									span(aria-hidden="true") ×
+							div
+								input.input(type="text" placeholder="0", readonly)
+						.calculator-body.d-flex.justify-content-between
+							.text-center
+								button.btn.btn-clear(onclick="if (!window.__cfRLUnblockHandlers) return false; clr()", data-cf-modified-e4304d5d7d0e0ad10faac995-) C
+								button.btn.btn-number(onclick="if (!window.__cfRLUnblockHandlers) return false; dis(\'7\')", data-cf-modified-e4304d5d7d0e0ad10faac995-) 7
+								button.btn.btn-number(onclick="if (!window.__cfRLUnblockHandlers) return false; dis(\'4\')", data-cf-modified-e4304d5d7d0e0ad10faac995-) 4
+								button.btn.btn-number(onclick="if (!window.__cfRLUnblockHandlers) return false; dis(\'1\')", data-cf-modified-e4304d5d7d0e0ad10faac995-) 1
+								button.btn.btn-number(onclick="if (!window.__cfRLUnblockHandlers) return false; dis(\',\')", data-cf-modified-e4304d5d7d0e0ad10faac995-) ,
+							.text-center
+								button.btn.btn-expression(onclick="if (!window.__cfRLUnblockHandlers) return false; dis(\'/\')", data-cf-modified-e4304d5d7d0e0ad10faac995-) ÷
+								button.btn.btn-number(onclick="if (!window.__cfRLUnblockHandlers) return false; dis(\'8\')", data-cf-modified-e4304d5d7d0e0ad10faac995-) 8
+								button.btn.btn-number(onclick="if (!window.__cfRLUnblockHandlers) return false; dis(\'5\')", data-cf-modified-e4304d5d7d0e0ad10faac995-) 5
+								button.btn.btn-number(onclick="if (!window.__cfRLUnblockHandlers) return false; dis(\'2\')", data-cf-modified-e4304d5d7d0e0ad10faac995-) 2
+								button.btn.btn-number(onclick="if (!window.__cfRLUnblockHandlers) return false; dis(\'00\')", data-cf-modified-e4304d5d7d0e0ad10faac995-) 00
+							.text-center
+								button.btn.btn-expression(onclick="if (!window.__cfRLUnblockHandlers) return false; dis(\'%\')", data-cf-modified-e4304d5d7d0e0ad10faac995-) %
+								button.btn.btn-number(onclick="if (!window.__cfRLUnblockHandlers) return false; dis(\'9\')", data-cf-modified-e4304d5d7d0e0ad10faac995-) 9
+								button.btn.btn-number(onclick="if (!window.__cfRLUnblockHandlers) return false; dis(\'6\')", data-cf-modified-e4304d5d7d0e0ad10faac995-) 6
+								button.btn.btn-number(onclick="if (!window.__cfRLUnblockHandlers) return false; dis(\'3\')", data-cf-modified-e4304d5d7d0e0ad10faac995-) 3
+								button.btn.btn-number(onclick="if (!window.__cfRLUnblockHandlers) return false; dis(\'.\')", data-cf-modified-e4304d5d7d0e0ad10faac995-) .
+							.text-center
+								button.btn.btn-clear(onclick="if (!window.__cfRLUnblockHandlers) return false; back()", data-cf-modified-e4304d5d7d0e0ad10faac995-)
+									i.ti.ti-backspace
+								button.btn.btn-expression(onclick="if (!window.__cfRLUnblockHandlers) return false; dis(\'*\')", data-cf-modified-e4304d5d7d0e0ad10faac995-) x
+								button.btn.btn-expression(onclick="if (!window.__cfRLUnblockHandlers) return false; dis(\'-\')", data-cf-modified-e4304d5d7d0e0ad10faac995-) -
+								button.btn.btn-expression(onclick="if (!window.__cfRLUnblockHandlers) return false; dis(\'+\')", data-cf-modified-e4304d5d7d0e0ad10faac995-) +
+								button.btn.btn-clear(onclick="if (!window.__cfRLUnblockHandlers) return false; solve()", data-cf-modified-e4304d5d7d0e0ad10faac995-) =
+	//  /Calculator 
+	//  Cash Register Details 
+	.modal.fade.pos-modal#cash-register(tabindex="-1" aria-hidden="true")
+		.modal-dialog.modal-md.modal-dialog-centered(role="document")
+			.modal-content
+				.modal-header
+					h5.modal-title Cash Register Details
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				.modal-body
+					.table-responsive
+						table.table.table-striped.border
+							tbody
+								tr
+									td Cash in Hand
+									td.text-gray-9.fw-medium.text-end $45689
+								tr
+									td Total Sale Amount
+									td.text-gray-9.fw-medium.text-end $565597.88
+								tr
+									td Total Payment
+									td.text-gray-9.fw-medium.text-end $566867.97
+								tr
+									td Cash Payment
+									td.text-gray-9.fw-medium.text-end $3355.84
+								tr
+									td Total Sale Return
+									td.text-gray-9.fw-medium.text-end $1959
+								tr
+									td Total Expense
+									td.text-gray-9.fw-medium.text-end $0
+								tr
+									td.text-gray-9.fw-bold.bg-secondary-transparent Total Cash
+									td.text-gray-9.fw-bold.text-end.bg-secondary-transparent $587130.97
+				.modal-footer.d-flex.justify-content-end.gap-2.flex-wrap
+					button.btn.btn-md.btn-primary(type="button" data-bs-dismiss="modal") Cancel
+	//  /Cash Register Details 
+	//  Today's Sale 
+	.modal.fade.pos-modal#today-sale(tabindex="-1" aria-hidden="true")
+		.modal-dialog.modal-md.modal-dialog-centered(role="document")
+			.modal-content
+				.modal-header
+					h5.modal-title Today's Sale
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				.modal-body
+					.table-responsive
+						table.table.table-striped.border
+							tbody
+								tr
+									td Total Sale Amount
+									td.text-gray-9.fw-medium.text-end $565597.88
+								tr
+									td Cash Payment
+									td.text-gray-9.fw-medium.text-end $3355.84
+								tr
+									td Credit Card Payment
+									td.text-gray-9.fw-medium.text-end $1959
+								tr
+									td Cheque Payment:
+									td.text-gray-9.fw-medium.text-end $0
+								tr
+									td Deposit Payment
+									td.text-gray-9.fw-medium.text-end $565597.88
+								tr
+									td Points Payment
+									td.text-gray-9.fw-medium.text-end $3355.84
+								tr
+									td Gift Card Payment
+									td.text-gray-9.fw-medium.text-end $565597.88
+								tr
+									td Scan & Pay
+									td.text-gray-9.fw-medium.text-end $3355.84
+								tr
+									td Pay Later
+									td.text-gray-9.fw-medium.text-end $3355.84
+								tr
+									td Total Payment
+									td.text-gray-9.fw-medium.text-end $565597.88
+								tr
+									td Total Sale Return
+									td.text-gray-9.fw-medium.text-end $565597.88
+								tr
+									td Total Expense:
+									td.text-gray-9.fw-medium.text-end $565597.88
+								tr
+									td.text-gray-9.fw-bold.bg-secondary-transparent Total Cash
+									td.text-gray-9.fw-bold.text-end.bg-secondary-transparent $587130.97
+				.modal-footer.d-flex.justify-content-end.gap-2.flex-wrap
+					button.btn.btn-md.btn-primary(type="button" data-bs-dismiss="modal") Cancel
+	//  /Today's Sale 
+	//  Today's Profit 
+	.modal.fade.pos-modal#today-profit(tabindex="-1" aria-hidden="true")
+		.modal-dialog.modal-md.modal-dialog-centered(role="document")
+			.modal-content
+				.modal-header
+					h5.modal-title Today's Profit
+					button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") ×
+				.modal-body
+					.row.justify-content-center.g-3.mb-3
+						.col-lg-4.col-md-6.d-flex
+							.border.border-success.bg-success-transparent.br-8.p-3.flex-fill
+								p.fs-16.text-gray-9.mb-1 Total Sale
+								h3.text-success $89954
+						.col-lg-4.col-md-6.d-flex
+							.border.border-danger.bg-danger-transparent.br-8.p-3.flex-fill
+								p.fs-16.text-gray-9.mb-1 Expense
+								h3.text-danger $89954
+						.col-lg-4.col-md-6.d-flex
+							.border.border-info.bg-info-transparent.br-8.p-3.flex-fill
+								p.fs-16.text-gray-9.mb-1 Total Profit
+								h3.text-info $2145
+					.table-responsive
+						table.table.table-striped.border
+							tbody
+								tr
+									td Product Revenue
+									td.text-gray-9.fw-medium.text-end $565597.88
+								tr
+									td Product Cost
+									td.text-gray-9.fw-medium.text-end $3355.84
+								tr
+									td Expense
+									td.text-gray-9.fw-medium.text-end $1959
+								tr
+									td Total Stock Adjustment
+									td.text-gray-9.fw-medium.text-end $0
+								tr
+									td Deposit Payment
+									td.text-gray-9.fw-medium.text-end $565597.88
+								tr
+									td Total Purchase Shipping Cost
+									td.text-gray-9.fw-medium.text-end $3355.84
+								tr
+									td Total Sell Discount
+									td.text-gray-9.fw-medium.text-end $565597.88
+								tr
+									td Total Sell Return
+									td.text-gray-9.fw-medium.text-end $3355.84
+								tr
+									td Closing Stock
+									td.text-gray-9.fw-medium.text-end $3355.84
+								tr
+									td Total Sales
+									td.text-gray-9.fw-medium.text-end $565597.88
+								tr
+									td Total Sale Return
+									td.text-gray-9.fw-medium.text-end $565597.88
+								tr
+									td Total Expense
+									td.text-gray-9.fw-medium.text-end $565597.88
+								tr
+									td.text-gray-9.fw-bold.bg-secondary-transparent Total Cash
+									td.text-gray-9.fw-bold.text-end.bg-secondary-transparent $587130.97
+				.modal-footer.d-flex.justify-content-end.gap-2.flex-wrap
+					button.btn.btn-md.btn-primary(type="button" data-bs-dismiss="modal") Cancel
+	script(src="/assets/js/jquery-3.7.1.min.js")
+	script(src="/assets/js/bootstrap.bundle.min.js")
+	
+	script.
+		let allProducts = [];
+		let allCategories = [];
+		
+		// Fetch all products from inventory
+		async function loadProducts() {
+			try {
+				const response = await fetch('/inventory/api/all');
+				if (!response.ok) throw new Error('Failed to fetch products');
+				
+				allProducts = await response.json();
+				
+				if (allProducts.length === 0) {
+					document.getElementById('productsContainer').innerHTML = '<p class="text-center">No products available</p>';
+					return;
+				}
+				
+				// Get unique categories
+				const categories = new Set(allProducts.map(p => p.category).filter(Boolean));
+				allCategories = ['All', ...Array.from(categories)];
+				
+				// Generate category tabs
+				generateCategoryTabs(categories);
+				
+				// Display products
+				displayProducts(allProducts);
+				
+				// Setup event listeners
+				setupEventListeners();
+			} catch (error) {
+				console.error('Error loading products:', error);
+				document.getElementById('productsContainer').innerHTML = '<p class="text-center text-danger">Error loading products</p>';
+			}
+		}
+		
+		function generateCategoryTabs(categories) {
+			const tabsList = document.getElementById('categoryTabs');
+			// Clear existing tabs except "All"
+			const allTab = tabsList.querySelector('#all');
+			tabsList.innerHTML = '';
+			tabsList.appendChild(allTab);
+			
+			// Add category tabs
+			categories.forEach(category => {
+				const li = document.createElement('li');
+				const categoryId = category.toLowerCase().replace(/\s+/g, '-');
+				li.id = categoryId;
+				li.innerHTML = `
+					<a href="javascript:void(0);">
+						<img src="assets/img/products/pos-product-01.png" alt="Categories">
+					</a>
+					<h6>
+						<a href="javascript:void(0);">${category}</a>
+					</h6>
+				`;
+				
+				li.addEventListener('click', function() {
+					document.querySelectorAll('#categoryTabs li').forEach(t => t.classList.remove('active'));
+					this.classList.add('active');
+					const tabContent = document.querySelector(\`.tab_content[data-tab="\${categoryId}"]\`);
+					if (tabContent) {
+						document.querySelectorAll('.tab_content').forEach(t => t.classList.remove('active'));
+						tabContent.classList.add('active');
+					}
+				});
+				
+				tabsList.appendChild(li);
+			});
+		}
+		
+		function displayProducts(products) {
+			const container = document.getElementById('productsContainer');
+			container.innerHTML = '';
+			
+			// Create "All" tab
+			const allTab = document.createElement('div');
+			allTab.className = 'tab_content active';
+			allTab.setAttribute('data-tab', 'all');
+			allTab.innerHTML = '<div class="row g-3" id="allProducts"></div>';
+			container.appendChild(allTab);
+			
+			// Create tabs for each category
+			const categories = new Set(products.map(p => p.category).filter(Boolean));
+			categories.forEach(category => {
+				const tab = document.createElement('div');
+				const categoryId = category.toLowerCase().replace(/\s+/g, '-');
+				tab.className = 'tab_content';
+				tab.setAttribute('data-tab', categoryId);
+				tab.innerHTML = \`<div class="row g-3" id="products-\${categoryId}"></div>\`;
+				container.appendChild(tab);
+			});
+			
+			// Populate products
+			const allProductsDiv = document.getElementById('allProducts');
+			const allProductsHTML = products.map(p => createProductHTML(p)).join('');
+			allProductsDiv.innerHTML = allProductsHTML || '<p class="text-center">No products</p>';
+			
+			// Populate category products
+			categories.forEach(category => {
+				const categoryId = category.toLowerCase().replace(/\s+/g, '-');
+				const categoryProducts = products.filter(p => p.category === category);
+				const categoryDiv = document.getElementById(\`products-\${categoryId}\`);
+				const categoryHTML = categoryProducts.map(p => createProductHTML(p)).join('');
+				categoryDiv.innerHTML = categoryHTML || '<p class="text-center">No products in this category</p>';
+			});
+		}
+		
+		function createProductHTML(product) {
+			return \`
+				<div class="col-sm-6 col-md-6 col-lg-6 col-xl-4 col-xxl-3">
+					<div class="product-info card mb-0">
+						<a class="pro-img" href="javascript:void(0);">
+							<img src="assets/img/products/pos-product-01.png" alt="Products">
+							<span>
+								<i class="ti ti-circle-check-filled"></i>
+							</span>
+						</a>
+						<h6 class="cat-name">
+							<a href="javascript:void(0);">${product.category || 'N/A'}</a>
+						</h6>
+						<h6 class="product-name">
+							<a href="javascript:void(0);">${product.productName}</a>
+						</h6>
+						<div class="d-flex align-items-center justify-content-between price">
+							<p class="text-gray-9 mb-0">₹\${parseFloat(product.sellingPrice).toFixed(2)}</p>
+							<div class="qty-item m-0">
+								<a class="dec d-flex justify-content-center align-items-center" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="minus">
+									<i class="ti ti-minus"></i>
+								</a>
+								<input class="form-control text-center" type="text" name="qty" value="1" data-product-id="\${product.id}">
+								<a class="inc d-flex justify-content-center align-items-center" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="plus">
+									<i class="ti ti-plus"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			\`;
+		}
+		
+		function setupEventListeners() {
+			// Search functionality
+			const searchInput = document.getElementById('searchProduct');
+			searchInput.addEventListener('keyup', function() {
+				const searchTerm = this.value.toLowerCase();
+				const filtered = allProducts.filter(p => 
+					p.productName.toLowerCase().includes(searchTerm) ||
+					p.productCode?.toLowerCase().includes(searchTerm) ||
+					p.category?.toLowerCase().includes(searchTerm)
+				);
+				displayProducts(filtered);
+			});
+			
+			// Category tab switching
+			document.querySelectorAll('#categoryTabs li').forEach(tab => {
+				tab.addEventListener('click', function(e) {
+					if (e.target.closest('a')) {
+						e.preventDefault();
+					}
+					document.querySelectorAll('#categoryTabs li').forEach(t => t.classList.remove('active'));
+					this.classList.add('active');
+					
+					const dataTab = this.id;
+					document.querySelectorAll('.tab_content').forEach(t => t.classList.remove('active'));
+					const activeTab = document.querySelector(\`.tab_content[data-tab="\${dataTab}"]\`);
+					if (activeTab) {
+						activeTab.classList.add('active');
+					}
+				});
+			});
+		}
+		
+		// Load products on page load
+		document.addEventListener('DOMContentLoaded', loadProducts);
+	
+	script(src="/assets/js/pos.js")

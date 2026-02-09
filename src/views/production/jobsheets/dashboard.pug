@@ -1,0 +1,73 @@
+extends ../layout
+
+block content
+    .page-wrapper
+        .content
+            .d-flex.align-items-center.justify-content-between.flex-wrap.gap-3.mb-4
+                .mb-3
+                    h1.mb-1 Job Sheet Dashboard
+                    p.fw-medium Track issued weight, returns, and losses
+                a.btn.btn-primary(href="/jobsheets/new")
+                    i.ti.ti-plus.me-2
+                    | New Job Sheet
+            .row
+                .col-xxl-3.col-sm-6.col-12.d-flex
+                    .card.bg-primary.sale-widget.flex-fill
+                        .card-body.d-flex.align-items-center
+                            span.sale-icon.bg-white.text-primary
+                                i.ti.ti-weight.fs-24
+                            .ms-2
+                                p.text-white.mb-1 Total Issued Weight
+                                h4.text-white= totalIssued.toFixed(2) + ' g'
+                .col-xxl-3.col-sm-6.col-12.d-flex
+                    .card.bg-success.sale-widget.flex-fill
+                        .card-body.d-flex.align-items-center
+                            span.sale-icon.bg-white.text-success
+                                i.ti.ti-arrow-back.fs-24
+                            .ms-2
+                                p.text-white.mb-1 Total Returned Weight
+                                h4.text-white= totalReturned.toFixed(2) + ' g'
+                .col-xxl-3.col-sm-6.col-12.d-flex
+                    .card.bg-danger.sale-widget.flex-fill
+                        .card-body.d-flex.align-items-center
+                            span.sale-icon.bg-white.text-danger
+                                i.ti.ti-alert-triangle.fs-24
+                            .ms-2
+                                p.text-white.mb-1 Loss Today
+                                h4.text-white= lossToday.toFixed(2) + ' g'
+                .col-xxl-3.col-sm-6.col-12.d-flex
+                    .card.bg-warning.sale-widget.flex-fill
+                        .card-body.d-flex.align-items-center
+                            span.sale-icon.bg-white.text-warning
+                                i.ti.ti-calendar.fs-24
+                            .ms-2
+                                p.text-white.mb-1 Loss This Month
+                                h4.text-white= lossMonth.toFixed(2) + ' g'
+            .row
+                .col-xxl-6.col-lg-6.d-flex
+                    .card.flex-fill
+                        .card-body
+                            .d-flex.align-items-center.justify-content-between.mb-4
+                                div
+                                    h5.mb-1 Pending Job Sheets
+                                    p.text-gray-9 Awaiting return entry
+                                h3.text-primary= pendingCount
+                            .progress.progress-lg
+                                .progress-bar.bg-primary(role="progressbar" style="width: " + (pendingCount > 0 ? "100" : "0") + "%")
+                .col-xxl-6.col-lg-6.d-flex
+                    .card.flex-fill
+                        .card-header.d-flex.justify-content-between.align-items-center
+                            h5.card-title.mb-0 Quick Actions
+                        .card-body
+                            .list-group
+                                a.list-group-item.list-group-item-action(href="/jobsheets")
+                                    i.ti.ti-list.me-2
+                                    | View All Job Sheets
+                                a.list-group-item.list-group-item-action(href="/jobsheets/new")
+                                    i.ti.ti-plus.me-2
+                                    | Create New Job Sheet
+                                a.list-group-item.list-group-item-action(href="/jobsheets/reports/all")
+                                    i.ti.ti-report.me-2
+                                    | View Reports
+        .copyright-footer.d-flex.align-items-center.justify-content-between.border-top.bg-white.gap-3.flex-wrap
+            p.fs-13.text-gray-9.mb-0 2025- 2026 © DreamsPOS. All Right Reserved

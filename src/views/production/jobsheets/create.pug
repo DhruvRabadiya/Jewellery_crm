@@ -1,0 +1,196 @@
+extends ../layout
+
+block content
+    .page-wrapper
+        .content
+            .d-flex.align-items-center.justify-content-between.flex-wrap.gap-3.mb-3
+                .mb-2
+                    h1.mb-1.fw-bold
+                        i.ti.ti-file-plus.me-2
+                        | New Job Sheet
+                    p.text-muted.mb-0
+                        i.ti.ti-info-circle.me-1
+                        | Issue raw material to employee
+                .d-flex.gap-2
+                    a.btn.btn-light.border(href="/jobsheets")
+                        i.ti.ti-arrow-left.me-2
+                        | Back
+            
+            if error
+                .alert.alert-danger.alert-dismissible.fade.show
+                    i.ti.ti-alert-circle.me-2
+                    = error
+                    button.btn-close(type="button" data-bs-dismiss="alert")
+            
+            .row.g-3
+                .col-xl-8.col-lg-12
+                    .card.shadow-sm
+                        .card-header.bg-primary.text-white.py-3
+                            h5.mb-0
+                                i.ti.ti-file-text.me-2
+                                | Job Information
+                        .card-body.p-4
+                            form#jobsheet-form(action="/jobsheets" method="post")
+                                //- Job Basic Info
+                                .row.g-3.mb-4.pb-3.border-bottom
+                                    .col-md-6
+                                        label.form-label.fw-semibold
+                                            i.ti.ti-hash.me-1
+                                            | Job Number
+                                        .input-group.input-group-lg
+                                            span.input-group-text.bg-light
+                                                i.ti.ti-barcode
+                                            input.form-control.fw-bold(type="text" name="jobNo" value=nextJobNo readonly required)
+                                    .col-md-6
+                                        label.form-label.fw-semibold
+                                            i.ti.ti-calendar.me-1
+                                            | Job Date 
+                                            span.text-danger *
+                                        .input-group.input-group-lg
+                                            span.input-group-text.bg-light
+                                                i.ti.ti-calendar-event
+                                            input.form-control#jobDate(type="date" name="jobDate" value=new Date().toISOString().split('T')[0] required)
+                                
+                                //- Material & Employee
+                                .row.g-3.mb-4.pb-3.border-bottom
+                                    .col-md-6
+                                        label.form-label.fw-semibold
+                                            i.ti.ti-diamond.me-1
+                                            | Material 
+                                            span.text-danger *
+                                        .input-group.input-group-lg
+                                            span.input-group-text.bg-light
+                                                i.ti.ti-coin
+                                            select.form-select#material(name="material" required autofocus)
+                                                option(value="" selected disabled) Choose Material
+                                                option(value="gold") 🟡 Gold (સોનું)
+                                                option(value="silver") ⚪ Silver (ચાંદી)
+                                    .col-md-6
+                                        label.form-label.fw-semibold
+                                            i.ti.ti-user.me-1
+                                            | Employee 
+                                            span.text-danger *
+                                        .input-group.input-group-lg
+                                            span.input-group-text.bg-light
+                                                i.ti.ti-user-circle
+                                            select.form-select#employeeId(name="employeeId" required)
+                                                option(value="" selected disabled) Select Employee
+                                                each emp in employees
+                                                    option(value=emp.id)= emp.name
+                                
+                                //- Work Details
+                                .row.g-3.mb-4.pb-3.border-bottom
+                                    .col-12
+                                        .alert.alert-info
+                                            i.ti.ti-info-circle.me-2
+                                            strong Workflow: 
+                                            | This job will go through all steps: 
+                                            span.badge.bg-primary.mx-1 🔥 Melting
+                                            span.badge.bg-primary.mx-1 📏 Rolling
+                                            span.badge.bg-primary.mx-1 🔨 Press
+                                            span.badge.bg-primary.mx-1 ⚙️ T+P+P
+                                            span.badge.bg-primary.mx-1 📦 Packing
+                                    .col-md-12
+                                        label.form-label.fw-semibold
+                                            i.ti.ti-ruler.me-1
+                                            | Size
+                                        .input-group.input-group-lg
+                                            span.input-group-text.bg-light
+                                                i.ti.ti-dimensions
+                                            select.form-select#size(name="size" required)
+                                                option(value="" selected disabled) Select Size
+                                
+                                //- Weight Information
+                                .row.g-3.mb-4
+                                    .col-12
+                                        .alert.alert-info.mb-3
+                                            i.ti.ti-scale.me-2
+                                            strong Weight Information
+                                    .col-md-12
+                                        label.form-label.fw-semibold.fs-5
+                                            i.ti.ti-weight.me-1
+                                            | Issue Weight (grams) 
+                                            span.text-danger *
+                                        .input-group.input-group-lg
+                                            span.input-group-text.bg-warning.text-dark.fw-bold
+                                                i.ti.ti-scale
+                                            input.form-control.form-control-lg.fw-bold.fs-4#issueWeight(
+                                                type="number" 
+                                                name="issueWeight" 
+                                                min="0" 
+                                                step="0.01" 
+                                                placeholder="0.00" 
+                                                required
+                                            )
+                                            span.input-group-text.bg-warning.text-dark.fw-bold g
+                                
+                                //- Action Buttons
+                                .row.mt-4
+                                    .col-12
+                                        .d-flex.gap-3.justify-content-end
+                                            button.btn.btn-lg.btn-light.border(type="reset")
+                                                i.ti.ti-refresh.me-2
+                                                | Clear Form
+                                            button.btn.btn-lg.btn-primary.px-5(type="submit")
+                                                i.ti.ti-check.me-2
+                                                | Issue Material
+                
+
+    script.
+        // Size options for different materials
+        const sizeOptions = {
+            gold: ['0.05', '0.1 gm', '0.200', '0.5 gm', '1 gm', '2 gm', '5 gm', '10 gm', '20 gm', '25 gm', '50 gm'],
+            silver: ['1g -Bar', '2g -Bar', '5g C|B', '10g -C|B', '10g COLOUR', '20g COLOUR', '50g COLOUR', '20g -C|B', '25g-C|B', '50g -C|B', '100g -C|B', '200g -Bar']
+        };
+
+        function updateSizeOptions() {
+            const material = document.getElementById('material').value;
+            const sizeSelect = document.getElementById('size');
+            
+            // Clear existing options except the first one
+            sizeSelect.innerHTML = '<option value="" selected disabled>Select Size</option>';
+            
+            // Add options based on selected material
+            if (material && sizeOptions[material]) {
+                sizeOptions[material].forEach(size => {
+                    const option = document.createElement('option');
+                    option.value = size;
+                    option.textContent = size;
+                    sizeSelect.appendChild(option);
+                });
+            }
+        }
+        
+        // Auto-focus on material field for quick entry
+        document.addEventListener('DOMContentLoaded', function() {
+            const materialSelect = document.getElementById('material');
+            const sizeSelect = document.getElementById('size');
+            
+            // Add change event listener for material
+            materialSelect.addEventListener('change', updateSizeOptions);
+            
+            materialSelect.focus();
+            
+            // Add enter key navigation
+            const form = document.getElementById('jobsheet-form');
+            const inputs = form.querySelectorAll('input:not([readonly]), select');
+            
+            inputs.forEach((input, index) => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && input.tagName !== 'TEXTAREA') {
+                        e.preventDefault();
+                        const nextInput = inputs[index + 1];
+                        if (nextInput) {
+                            nextInput.focus();
+                        }
+                    }
+                });
+            });
+            
+            // Highlight weight input when focused
+            const weightInput = document.getElementById('issueWeight');
+            weightInput.addEventListener('focus', function() {
+                this.select();
+            });
+        });
+

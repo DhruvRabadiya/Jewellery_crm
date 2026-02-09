@@ -1,0 +1,119 @@
+extends ../layout
+
+block content
+	.page-wrapper
+		.content
+			.d-flex.align-items-center.justify-content-between.flex-wrap.gap-3.mb-4
+				.mb-3
+					h1.mb-1 Job Sheets
+					p.fw-medium Track all issued and returned materials
+				.d-flex.gap-2
+					a.btn.btn-primary(href="/jobsheets/new")
+						i.ti.ti-plus.me-2
+						| New Job Sheet
+					a.btn.btn-secondary(href="/jobsheets/reports/all")
+						i.ti.ti-report.me-2
+						| Reports
+			.card
+				.card-header
+					h5.card-title.mb-0 Filter Job Sheets
+				.card-body
+					form.row.g-3(id="filter-form" method="get")
+						.col-md-3
+							label.form-label Date
+							input.form-control(type="date" name="date")
+						.col-md-3
+							label.form-label Employee
+							select.form-select(name="employeeId")
+								option(value="" selected=!filters || !filters.employeeId) All
+								if employees
+									each emp in employees
+										option(value=emp.id selected=filters && filters.employeeId == emp.id)= emp.name
+						.col-md-3
+							label.form-label Status
+							select.form-select(name="status")
+								option(value="" selected=!filters || !filters.status) All
+								option(value="In-Progress") In Progress
+								option(value="Completed") Completed
+								option(value="Issued") Issued (Legacy)
+						.col-md-3.d-flex.align-items-end.gap-2
+							button.btn.btn-primary(type="submit")
+								i.ti.ti-search.me-2
+								| Filter
+							a.btn.btn-secondary(href="/jobsheets")
+								i.ti.ti-refresh.me-2
+								| Reset
+			.card
+				.card-body
+					if jobsheets.length > 0
+						.table-responsive
+							table.table.table-hover.mb-0
+								thead.table-light
+									tr
+										th Job No
+										th Employee
+										th Issued Weight
+										th Current Step
+										th Total Loss
+										th Status
+										th Date
+										th Action
+								tbody
+									each sheet in jobsheets
+										tr
+											td
+												strong= sheet.jobNo
+											td= sheet.Employee ? sheet.Employee.name : '-'
+											td= sheet.issueWeight.toFixed(3) + ' g'
+											td
+												- const stepLabels = { melting: '🔥 Melting', rolling: '📏 Rolling', press: '🔨 Press', TPP: '⚙️ T+P+P', packing: '📦 Packing', completed: '✅ Completed' }
+												= stepLabels[sheet.currentStep] || '-'
+											td
+												if sheet.totalLoss > 0
+													span.badge.bg-danger= sheet.totalLoss.toFixed(3) + ' g'
+												else
+													span.badge.bg-success 0.000 g
+											td
+												if sheet.status === 'In-Progress'
+													span.badge.bg-warning= sheet.status
+												else if sheet.status === 'Completed'
+													span.badge.bg-success= sheet.status
+												else
+													span.badge.bg-secondary= sheet.status
+											td= new Date(sheet.issueDate).toLocaleDateString('en-IN')
+											td
+												if sheet.status === 'In-Progress'
+													- const hasInProgressStep = sheet.JobSheetSteps && sheet.JobSheetSteps.some(s => s.status === 'in-progress')
+													- const hasCompletedStep = sheet.JobSheetSteps && sheet.JobSheetSteps.some(s => s.status === 'completed')
+													- const hasPendingStep = sheet.JobSheetSteps && sheet.JobSheetSteps.some(s => s.status === 'pending')
+													
+													if hasInProgressStep
+														a.btn.btn-sm.btn-primary.me-2(href=`/jobsheets/${sheet.id}/complete-step`)
+															i.ti.ti-check.me-1
+															| Complete Step
+													else if hasCompletedStep && hasPendingStep
+														form.d-inline(action=`/jobsheets/${sheet.id}/start-next-step` method="post" style="display: inline;")
+															button.btn.btn-sm.btn-success.me-2(type="submit")
+																i.ti.ti-arrow-right.me-1
+																| Start Next Step
+													
+													a.btn.btn-sm.btn-secondary(href=`/jobsheets/${sheet.id}`)
+														i.ti.ti-eye.me-1
+														| Details
+												else if sheet.status === 'Completed'
+													span.badge.bg-success.text-white.me-2.px-3.py-2
+														i.ti.ti-check-circle.me-1
+														| Completed ✓
+													a.btn.btn-sm.btn-secondary(href=`/jobsheets/${sheet.id}`)
+														i.ti.ti-eye.me-1
+														| View
+												else
+													a.btn.btn-sm.btn-secondary(href=`/jobsheets/${sheet.id}`)
+														i.ti.ti-eye.me-1
+														| View
+					else
+						.text-center.py-5
+							p.text-gray-9 No job sheets found
+							a.btn.btn-primary(href="/jobsheets/new") Create First Job Sheet
+		.copyright-footer.d-flex.align-items-center.justify-content-between.border-top.bg-white.gap-3.flex-wrap
+			p.fs-13.text-gray-9.mb-0 2025- 2026 © DreamsPOS. All Right Reserved

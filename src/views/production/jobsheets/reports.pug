@@ -1,0 +1,101 @@
+extends ../layout
+
+block content
+    .page-wrapper
+        .content
+            .d-flex.align-items-center.justify-content-between.flex-wrap.gap-3.mb-4
+                .mb-3
+                    h1.mb-1 Job Sheet Reports
+                    p.fw-medium Analyze loss patterns and karigar performance
+                .d-flex.gap-2
+                    a.btn.btn-primary(href="/jobsheets")
+                        i.ti.ti-arrow-left.me-2
+                        | Back to List
+                    button.btn.btn-secondary(onclick="window.print()")
+                        i.ti.ti-printer.me-2
+                        | Print
+            //- Karigar-wise Loss Report
+            if karigarLoss && karigarLoss.length > 0
+                .card.mb-4
+                    .card-header.d-flex.justify-content-between.align-items-center
+                        h5.card-title.mb-0 Karigar-wise Loss Report
+                        small.text-gray-9 Total loss per karigar
+                    .card-body
+                        .table-responsive
+                            table.table.table-hover.mb-0
+                                thead.table-light
+                                    tr
+                                        th Karigar Name
+                                        th Total Loss
+                                        th Job Count
+                                        th Avg Loss per Job
+                                tbody
+                                    each record in karigarLoss
+                                        tr
+                                            td
+                                                strong= record.name || 'Unassigned'
+                                            td
+                                                span.badge.bg-danger= (record.totalLoss || 0).toFixed(2) + ' g'
+                                            td= record.jobCount || 0
+                                            td= ((record.totalLoss || 0) / (record.jobCount || 1)).toFixed(2) + ' g'
+            
+            //- Daily Loss Report
+            if dailyLoss && dailyLoss.length > 0
+                .card.mb-4
+                    .card-header.d-flex.justify-content-between.align-items-center
+                        h5.card-title.mb-0 Daily Loss Report (Last 30 Days)
+                        small.text-gray-9 Daily loss trend
+                    .card-body
+                        .table-responsive
+                            table.table.table-hover.mb-0
+                                thead.table-light
+                                    tr
+                                        th Date
+                                        th Total Loss
+                                        th Job Count
+                                        th Avg Loss per Job
+                                tbody
+                                    each record in dailyLoss
+                                        tr
+                                            td
+                                                strong= record.date || '-'
+                                            td
+                                                span.badge.bg-danger= (record.totalLoss || 0).toFixed(2) + ' g'
+                                            td= record.jobCount || 0
+                                            td= ((record.totalLoss || 0) / (record.jobCount || 1)).toFixed(2) + ' g'
+            
+            //- Work-type Loss Report
+            if worktypeLoss && worktypeLoss.length > 0
+                .card.mb-4
+                    .card-header.d-flex.justify-content-between.align-items-center
+                        h5.card-title.mb-0 Work-type Loss Report
+                        small.text-gray-9 Loss by jewelry type
+                    .card-body
+                        .table-responsive
+                            table.table.table-hover.mb-0
+                                thead.table-light
+                                    tr
+                                        th Work Type
+                                        th Total Loss
+                                        th Job Count
+                                        th Avg Loss per Job
+                                tbody
+                                    each record in worktypeLoss
+                                        tr
+                                            td
+                                                strong= record.workType || 'Other'
+                                            td
+                                                span.badge.bg-danger= (record.totalLoss || 0).toFixed(2) + ' g'
+                                            td= record.jobCount || 0
+                                            td= ((record.totalLoss || 0) / (record.jobCount || 1)).toFixed(2) + ' g'
+            
+            if (!karigarLoss || karigarLoss.length === 0) && (!dailyLoss || dailyLoss.length === 0) && (!worktypeLoss || worktypeLoss.length === 0)
+                .card
+                    .card-body.text-center.py-5
+                        p.text-gray-9 No data available for reports yet.
+                        a.btn.btn-primary(href="/jobsheets/new")
+                            i.ti.ti-plus.me-2
+                            | Create First Job Sheet
+
+        .copyright-footer.d-flex.align-items-center.justify-content-between.border-top.bg-white.gap-3.flex-wrap
+            p.fs-13.text-gray-9.mb-0 2025- 2026 © DreamsPOS. All Right Reserved

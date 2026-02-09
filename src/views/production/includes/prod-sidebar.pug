@@ -1,0 +1,104 @@
+﻿//  Sidebar 
+.sidebar#sidebar
+	//  Logo 
+	.sidebar-logo.active
+		a.logo.logo-normal(href="/")
+			img(src="/assets/img/logo.svg" alt="Img")
+		a.logo.logo-white(href="/")
+			img(src="/assets/img/logo-white.svg" alt="Img")
+		a.logo-small(href="/")
+			img(src="/assets/img/logo-small.png" alt="Img")
+		a.logo-small-white(href="/")
+			img(src="/assets/img/logo-small-white.png" alt="Img")
+		a#toggle_btn(href="javascript:void(0);")
+			i.feather-16(data-feather="chevrons-left")
+	//  /Logo 
+	.modern-profile.p-3.pb-0
+		.text-center.rounded.bg-light.p-3.mb-4.user-profile
+			.avatar.avatar-lg.online.mb-3
+				img.img-fluid.rounded-circle(src="/assets/img/customer/customer15.jpg" alt="Img")
+			h6.fs-14.fw-bold.mb-1 Adrian Herman
+			p.fs-12.mb-0 System Admin
+		.sidebar-nav.mb-3
+			ul.nav.nav-tabs.nav-tabs-solid.nav-tabs-rounded.nav-justified.bg-transparent(role="tablist")
+				li.nav-item
+					a.nav-link.active.border-0(href="#") Menu
+				li.nav-item
+					a.nav-link.border-0(href="#") Chats
+				li.nav-item
+					a.nav-link.border-0(href="#") Inbox
+	.sidebar-header.p-3.pb-0.pt-2
+		.text-center.rounded.bg-light.p-2.mb-4.sidebar-profile.d-flex.align-items-center
+			.avatar.avatar-md.onlin
+				img.img-fluid.rounded-circle(src="/assets/img/customer/customer15.jpg" alt="Img")
+			.text-start.sidebar-profile-info.ms-2
+				h6.fs-14.fw-bold.mb-1 Adrian Herman
+				p.fs-12 System Admin
+		.d-flex.align-items-center.justify-content-between.menu-item.mb-3
+			div
+				a.btn.btn-sm.btn-icon.bg-light(href="#")
+					i.ti.ti-layout-grid-remove
+			div
+				a.btn.btn-sm.btn-icon.bg-light(href="#")
+					i.ti.ti-brand-hipchat
+			div
+				a.btn.btn-sm.btn-icon.bg-light.position-relative(href="#")
+					i.ti.ti-message
+			.notification-item
+				a.btn.btn-sm.btn-icon.bg-light.position-relative(href="#")
+					i.ti.ti-bell
+					span.notification-status-dot
+			.me-0
+				a.btn.btn-sm.btn-icon.bg-light(href="#")
+					i.ti.ti-settings
+	.sidebar-inner.slimscroll
+		#sidebar-menu.sidebar-menu
+			ul
+				li.submenu-open
+					h6.submenu-hdr Main
+					ul
+						li
+							a(href="/production")
+								i.ti.ti-layout-grid.fs-16.me-2
+								span Dashboard
+
+						li.submenu
+							a(href="/jobsheets")
+								i.ti.ti-file-text.fs-16.me-2
+								span Job Sheets
+								span.menu-arrow
+							ul
+								li
+									a(href="/jobsheets/dashboard") Dashboard
+								li
+									a(href="/jobsheets/new") Create New
+								li
+									a(href="/jobsheets") List
+								li
+									a(href="/jobsheets/reports/all") Reports
+
+						li.submenu
+							a(href="/inventory/dashboard")
+								i.ti.ti-archive.fs-16.me-2
+								span Inventory 
+								span.menu-arrow
+							ul
+								li
+									a(href="/inventory/dashboard") Dashboard
+								li
+									a(href="/inventory") View All Items
+								li
+									a(href="/inventory/add") Add New Item
+								li
+									a(href="/inventory?lowStock=true") Low Stock Alert
+
+						li.submenu
+							a(href="/employees")
+								i.ti.ti-users.fs-16.me-2
+								span Employees
+								span.menu-arrow
+							ul
+								li
+										a(href="/employees") List
+								li
+										a(href="/employees/new") Add New
