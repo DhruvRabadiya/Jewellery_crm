@@ -63,7 +63,7 @@ export async function startServer(port = PORT) {
   }
 }
 
-// startServer()
+startServer()
 
 export default app
 

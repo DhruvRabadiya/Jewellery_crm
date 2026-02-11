@@ -195,12 +195,12 @@ router.get("/:id", async (req, res) => {
   res.render("production/jobsheets/view", {
     title: `Job ${jobsheet.jobNo}`,
     jobsheet,
+    message: req.query.message,
   });
 });
 
 // GET complete current step form
 router.get("/:id/complete-step", async (req, res) => {
-
   const jobsheet = await models.JobSheet.findByPk(req.params.id, {
     include: [
       { model: models.Employee },
@@ -254,15 +254,8 @@ router.get("/:id/complete-step", async (req, res) => {
 
 // POST complete current step
 router.post("/:id/complete-step", async (req, res) => {
-  const {
-    returnWeight,
-    scrapWeight,
-    dustWeight,
-    pieces,
-    returnPieces,
-    employeeId,
-    notes,
-  } = req.body;
+  const { returnWeight, scrapWeight, pieces, returnPieces, employeeId, notes } =
+    req.body;
 
   try {
     const jobsheet = await models.JobSheet.findByPk(req.params.id, {
@@ -314,7 +307,7 @@ router.post("/:id/complete-step", async (req, res) => {
 
     const returned = parseFloat(returnWeight || 0);
     const scrap = parseFloat(scrapWeight || 0);
-    const dust = parseFloat(dustWeight || 0);
+    const dust = 0; // Dust weight is now merged into scrap or ignored as per new requirement
 
     // Validation: total output cannot exceed input
     const totalOutput = returned + scrap + dust;
@@ -381,31 +374,16 @@ router.post("/:id/complete-step", async (req, res) => {
       // Step completed but not last
 
       if (nextStep) {
-        // Auto-start next step
-        await nextStep.update({
-          status: "in-progress",
-          issueWeight: returned, // Carry over weight
-          startDate: new Date(),
-        });
+        // Do NOT auto-start next step. Just update status to indicate we are waiting.
+        // The next step remains "pending" until manually started.
 
         await jobsheet.update({
-          currentStep: nextStep.stepName, // Update to NEW step
-          status: "In-Progress",
+          currentStep: nextStep.stepName, // Show what the next step IS
+          status: "In-Progress", // Job is still technically in progress
           totalLoss: newTotalLoss,
           scrapWeight: newScrapWeight,
           dustWeight: newDustWeight,
           lastReturnWeight: returned,
-        });
-
-        // Log step start
-        await models.AuditLog.create({
-          jobSheetId: jobsheet.id,
-          action: "step_started",
-          changedFields: {
-            step: nextStep.stepName,
-            stepOrder: nextStep.stepOrder,
-            issueWeight: nextStep.issueWeight,
-          },
         });
       } else {
         // Fallback (should not happen given isLastStep logic, but safe to keep)
@@ -520,7 +498,14 @@ router.post("/:id/start-next-step", async (req, res) => {
       },
     });
 
-    res.redirect(`/jobsheets/${jobsheet.id}/complete-step`);
+    if (
+      req.query.ajax === "true" ||
+      req.headers.accept?.includes("application/json")
+    ) {
+      return res.json({ success: true, message: "Step started successfully" });
+    }
+
+    res.redirect(`/jobsheets/${jobsheet.id}?message=Step started successfully`);
   } catch (err) {
     console.error("Error starting next step:", err);
     res.status(400).send(err.message);

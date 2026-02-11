@@ -67,7 +67,20 @@ block content
 											td= sheet.issueWeight.toFixed(3) + ' g'
 											td
 												- const stepLabels = { melting: '🔥 Melting', rolling: '📏 Rolling', press: '🔨 Press', TPP: '⚙️ T+P+P', packing: '📦 Packing', completed: '✅ Completed' }
-												= stepLabels[sheet.currentStep] || '-'
+												- const activeStep = sheet.JobSheetSteps && sheet.JobSheetSteps.find(s => s.status === 'in-progress')
+												if activeStep
+													= stepLabels[activeStep.stepName]
+												else if sheet.status === 'In-Progress'
+													//- Find next pending step
+													- const completedSteps = sheet.JobSheetSteps.filter(s => s.status === 'completed').sort((a,b) => b.stepOrder - a.stepOrder)
+													- const lastCompleted = completedSteps[0]
+													- const nextStep = lastCompleted ? sheet.JobSheetSteps.find(s => s.stepOrder === lastCompleted.stepOrder + 1 && s.status === 'pending') : sheet.JobSheetSteps.find(s => s.stepOrder === 1 && s.status === 'pending')
+													if nextStep
+														span.text-muted Waiting: #{stepLabels[nextStep.stepName]}
+													else
+														= stepLabels[sheet.currentStep] || '-'
+												else
+													= stepLabels[sheet.currentStep] || '-'
 											td
 												if sheet.totalLoss > 0
 													span.badge.bg-danger= sheet.totalLoss.toFixed(3) + ' g'
@@ -75,7 +88,11 @@ block content
 													span.badge.bg-success 0.000 g
 											td
 												if sheet.status === 'In-Progress'
-													span.badge.bg-warning= sheet.status
+													- const activeStep = sheet.JobSheetSteps && sheet.JobSheetSteps.find(s => s.status === 'in-progress')
+													if activeStep
+														span.badge.bg-warning= sheet.status
+													else
+														span.badge.bg-info.text-dark Waiting Approval
 												else if sheet.status === 'Completed'
 													span.badge.bg-success= sheet.status
 												else
@@ -92,10 +109,9 @@ block content
 															i.ti.ti-check.me-1
 															| Complete Step
 													else if hasCompletedStep && hasPendingStep
-														form.d-inline(action=`/jobsheets/${sheet.id}/start-next-step` method="post" style="display: inline;")
-															button.btn.btn-sm.btn-success.me-2(type="submit")
-																i.ti.ti-arrow-right.me-1
-																| Start Next Step
+														button.btn.btn-sm.btn-success.me-2.start-next-step-btn(type="button" data-url=`/jobsheets/${sheet.id}/start-next-step`)
+															i.ti.ti-arrow-right.me-1
+															| Start Next Step
 													
 													a.btn.btn-sm.btn-secondary(href=`/jobsheets/${sheet.id}`)
 														i.ti.ti-eye.me-1
@@ -117,3 +133,39 @@ block content
 							a.btn.btn-primary(href="/jobsheets/new") Create First Job Sheet
 		.copyright-footer.d-flex.align-items-center.justify-content-between.border-top.bg-white.gap-3.flex-wrap
 			p.fs-13.text-gray-9.mb-0 2025- 2026 © DreamsPOS. All Right Reserved
+
+	script.
+		document.addEventListener('DOMContentLoaded', function() {
+			const buttons = document.querySelectorAll('.start-next-step-btn');
+			buttons.forEach(btn => {
+				btn.addEventListener('click', async function(e) {
+					e.preventDefault();
+					if(!confirm('Start the next step?')) return;
+					
+					const url = this.getAttribute('data-url');
+					try {
+						const response = await fetch(url + '?ajax=true', {
+							method: 'POST',
+							headers: {
+								'Accept': 'application/json'
+							}
+						});
+						
+						if (response.ok) {
+							const data = await response.json();
+							if (data.success) {
+								alert(data.message);
+								window.location.reload();
+							} else {
+								alert('Failed to start step: ' + (data.message || 'Unknown error'));
+							}
+						} else {
+							alert('Error starting step');
+						}
+					} catch (error) {
+						console.error('Error:', error);
+						alert('An error occurred while starting the step');
+					}
+				});
+			});
+		});
