@@ -1,74 +1,67 @@
 extends ../layout
 
 block content
-	.page-wrapper
-		.content
-			.d-flex.align-items-center.justify-content-between.flex-wrap.gap-3.mb-4
-				.mb-3
-					h1.mb-1= title
-					p.fw-medium= isEdit ? 'Update inventory item details' : 'Add new inventory item to system'
-				a.btn.btn-secondary(href="/inventory")
-					i.ti.ti-arrow-left.me-2
-					| Back to Inventory
+  .page-wrapper
+    .content
+      .row
+        .col-md-8.mx-auto
+          .card
+            .card-header
+              h5.card-title.mb-0= title
+            .card-body
+              form(method="POST" action=isEdit ? `/inventory/${item.id}/edit` : "/inventory")
+                
+                //- Row 1: Product Name (Gold/Silver) & Unit
+                .row.mb-3
+                  .col-md-6
+                    label.form-label Metal (Product Name) *
+                    select.form-control(name="productName" required)
+                      option(value="Gold" selected=item.productName === 'Gold') Gold
+                      option(value="Silver" selected=item.productName === 'Silver') Silver
+                  
+                  .col-md-6
+                    label.form-label Unit
+                    select.form-control(name="unit")
+                      option(value="KG" selected=item.unit === 'KG') KG
+                      option(value="gram" selected=item.unit === 'gram') Gram
 
-			.row
-				.col-lg-8
-					.card
-						.card-header
-							h5.card-title.mb-0= isEdit ? 'Edit Inventory Item' : 'Add New Item'
-						.card-body
-							form.row.g-3(method="post", action=isEdit ? `/inventory/${item.id}/edit` : "/inventory")
-								//- TODO 
-								.col-md-6
-									label.form-label GOLD / SILVER
-									input.form-control(type="text" name="productName", required, placeholder="e.g., Gold Ring 22K", value=item.productName)
+                //- Row 2: Weight & Supplier
+                .row.mb-3
+                  .col-md-6
+                    label.form-label Weight *
+                    input.form-control(type="number" step="0.001" name="quantity" value=item.quantity required)
+                  
+                  .col-md-6
+                    label.form-label Supplier
+                    select.form-control(name="supplier")
+                      option(value="") Select Supplier
+                      if suppliers
+                        each s in suppliers
+                           option(value=s.name selected=item.supplier === s.name)= s.name
 
-								.col-md-6
-									label.form-label Category
-									input.form-control(type="text" name="category" list="categories" placeholder="Gold, Silver, etc.", value=item.category)
-									datalist#categories
-										each cat in categories
-											option(value=cat)
+                //- Row 3: Price & Rate
+                .row.mb-3
+                  .col-md-6
+                    label.form-label Price (Buying) *
+                    input.form-control(type="number" step="0.01" name="price" value=item.costPrice required)
+                  .col-md-6
+                    label.form-label Rate (Current) *
+                    input.form-control(type="number" step="0.01" name="rate" value=item.sellingPrice required)
 
-								.col-md-3
-									label.form-label Unit
-									select.form-control(name="unit")
-										option(value="gm", selected=item.unit === 'gm') Grams (gm)
-										option(value="kg", selected=item.unit === 'kg') Kilograms (kg)
+                //- Row 4: Payment Type
+                .row.mb-3
+                  .col-md-6
+                    label.form-label Payment Type
+                    select.form-control(name="paymentType")
+                       option(value="Cash" selected=item.paymentType === 'Cash') Cash
+                       option(value="RTGS" selected=item.paymentType === 'RTGS') RTGS
+                       option(value="NEFT" selected=item.paymentType === 'NEFT') NEFT
+                       option(value="Cheque" selected=item.paymentType === 'Cheque') Cheque
+                       option(value="Credit" selected=item.paymentType === 'Credit') Credit
 
-								.col-md-6
-									label.form-label Cost Price (₹)
-									input.form-control(type="number" name="costPrice" step="0.01", required, placeholder="0.00", value=item.costPrice)
-
-								.col-md-6
-									label.form-label Selling Price (₹)
-									input.form-control(type="number" name="sellingPrice" step="0.01", required, placeholder="0.00", value=item.sellingPrice)
-
-								.col-md-6
-									label.form-label Supplier
-									//- name 
-									//- phone no
-									//- office no
-									//- office address
-									//- gst no
-									//- pan no (if)
-									input.form-control(type="text" name="supplier" placeholder="Supplier name", value=item.supplier)
-
-								.col-md-12
-									label.form-label Payment Type 
-									//- CASH
-									//- ONLINE (RTGS)
-									textarea.form-control(name="description" rows="3" placeholder="Item details...")= item.description
-
-								.col-md-12
-									label.form-label Remark
-									textarea.form-control(name="description" rows="3" placeholder="Item details...")= item.description
-
-								.col-12
-									.d-flex.gap-2
-										button.btn.btn-primary(type="submit")
-											i.ti.ti-check.me-2
-											| #{isEdit ? 'Update Item' : 'Add Item'}
-										a.btn.btn-secondary(href="/inventory")
-											i.ti.ti-x.me-2
-											| Cancel
+                .d-flex.justify-content-end.gap-2.mt-4
+                  a.btn.btn-secondary(href="/inventory") Cancel
+                  button.btn.btn-primary(type="submit")= isEdit ? 'Update Item' : 'Add Item'
+    
+    .copyright-footer.d-flex.align-items-center.justify-content-between.border-top.bg-white.gap-3.flex-wrap
+       p.fs-13.text-gray-9.mb-0 2025-2026 © Jewellery CRM. All Right Reserved

@@ -1,132 +1,45 @@
 extends ../layout
 
 block content
-    .page-wrapper
-        .content
-            .d-flex.align-items-center.justify-content-between.flex-wrap.gap-3.mb-4
-                .mb-3
-                    h1.mb-1 Inventory Dashboard
-                    p.fw-medium Track stock levels, manage inventory, and monitor low stock items
-                a.btn.btn-primary(href="/inventory/add")
-                    i.ti.ti-plus.me-2
-                    | Add New Item
-            
-            // Stats Cards
-            .row
-                .col-xxl-3.col-sm-6.col-12.d-flex
-                    .card.bg-primary.sale-widget.flex-fill
-                        .card-body.d-flex.align-items-center
-                            span.sale-icon.bg-white.text-primary
-                                i.ti.ti-box.fs-24
-                            .ms-2
-                                p.text-white.mb-1 Total Products
-                                h4.text-white= stats.totalProducts
+  .page-wrapper
+    .content
+      .row.mb-4
+        .col-12
+          h2 Inventory Dashboard
+          p.text-muted Real-time stock overview of Gold and Silver
+      
+      .row
+        //- Total Products
+        .col-xxl-3.col-sm-6.col-12.d-flex
+          .card.bg-primary.sale-widget.flex-fill.border-0
+            .card-body.d-flex.align-items-center
+              span.sale-icon.bg-white.text-primary.rounded-circle.p-3
+                i.ti.ti-box.fs-24
+              .ms-3
+                h6.text-white.mb-1 Total Items
+                h3.text-white.fw-bold= stats.totalProducts
 
-                .col-xxl-3.col-sm-6.col-12.d-flex
-                    .card.bg-danger.sale-widget.flex-fill
-                        .card-body.d-flex.align-items-center
-                            span.sale-icon.bg-white.text-danger
-                                i.ti.ti-alert-triangle.fs-24
-                            .ms-2
-                                p.text-white.mb-1 Low Stock Items
-                                h4.text-white= stats.lowStockCount
+        //- Gold Stock
+        .col-xxl-3.col-sm-6.col-12.d-flex
+          .card.bg-warning.sale-widget.flex-fill.border-0
+            .card-body.d-flex.align-items-center
+              span.sale-icon.bg-white.text-warning.rounded-circle.p-3
+                i.ti.ti-aperture.fs-24
+              .ms-3
+                h6.text-white.mb-1 Total Gold Stock
+                h3.text-white.fw-bold= stats.goldStock + ' g'
 
-                .col-xxl-3.col-sm-6.col-12.d-flex
-                    .card.bg-success.sale-widget.flex-fill
-                        .card-body.d-flex.align-items-center
-                            span.sale-icon.bg-white.text-success
-                                i.ti.ti-cube.fs-24
-                            .ms-2
-                                p.text-white.mb-1 Total Quantity
-                                h4.text-white= stats.totalValue.toFixed(0) + ' gm'
-
-                .col-xxl-3.col-sm-6.col-12.d-flex
-                    .card.bg-info.sale-widget.flex-fill
-                        .card-body.d-flex.align-items-center
-                            span.sale-icon.bg-white.text-info
-                                i.ti.ti-coin.fs-24
-                            .ms-2
-                                p.text-white.mb-1 Total Investment
-                                h4.text-white= '₹' + (stats.totalInvestment / 1000).toFixed(1) + 'K'
-
-            // Quick Actions & Status
-            .row
-                .col-xxl-6.col-lg-6.d-flex
-                    .card.flex-fill
-                        .card-body
-                            .d-flex.align-items-center.justify-content-between.mb-4
-                                div
-                                    h5.mb-1 Low Stock Alert
-                                    p.text-gray-9 Items requiring reorder
-                                h3.text-danger= stats.lowStockCount
-                            .progress.progress-lg
-                                .progress-bar.bg-danger(role="progressbar" style="width: " + (stats.lowStockCount > 0 ? "100" : "0") + "%")
-
-                .col-xxl-6.col-lg-6.d-flex
-                    .card.flex-fill
-                        .card-header.d-flex.justify-content-between.align-items-center
-                            h5.card-title.mb-0 Quick Actions
-                        .card-body
-                            .list-group
-                                a.list-group-item.list-group-item-action(href="/inventory")
-                                    i.ti.ti-list.me-2
-                                    | View All Items
-                                a.list-group-item.list-group-item-action(href="/inventory/add")
-                                    i.ti.ti-plus.me-2
-                                    | Add New Item
-                                a.list-group-item.list-group-item-action(href="/inventory?lowStock=true")
-                                    i.ti.ti-bell.me-2
-                                    | Low Stock Items
-                                a.list-group-item.list-group-item-action(href="/inventory")
-                                    i.ti.ti-report.me-2
-                                    | View Reports
-
-            // Low Stock Items Table
-            if lowStockItems.length > 0
-                .row
-                    .col-12
-                        .card
-                            .card-header.d-flex.align-items-center.justify-content-between
-                                h5.card-title.mb-0
-                                    i.ti.ti-alert-triangle.me-2.text-danger
-                                    | Low Stock Alert - Items Requiring Reorder
-                            .card-body
-                                .table-responsive
-                                    table.table.table-hover.table-sm
-                                        thead
-                                            tr
-                                                th Product Name
-                                                th Category
-                                                th Current Stock
-                                                th Reorder Level
-                                                th Unit
-                                                th Supplier
-                                                th Action
-                                        tbody
-                                            each item in lowStockItems
-                                                tr
-                                                    td
-                                                        strong= item.productName
-                                                        br
-                                                        small.text-muted= '(' + (item.productCode || 'N/A') + ')'
-                                                    td
-                                                        span.badge.bg-light.text-dark= item.category || '-'
-                                                    td
-                                                        strong.text-danger= item.quantity
-                                                    td= item.reorderLevel
-                                                    td= item.unit || 'gm'
-                                                    td= item.supplier || '-'
-                                                    td
-                                                        a.btn.btn-sm.btn-primary(href=`/inventory/${item.id}`)
-                                                            i.ti.ti-eye
-            else
-                .row
-                    .col-12
-                        .alert.alert-success.d-flex.align-items-center
-                            i.ti.ti-check-circle.me-3.fs-20
-                            div
-                                h5.mb-0 All items are in good stock!
-                                p.mb-0.small No low stock items at the moment
-
-        .copyright-footer.d-flex.align-items-center.justify-content-between.border-top.bg-white.gap-3.flex-wrap
-            p.fs-13.text-gray-9.mb-0 2025-2026 © Jewellery CRM. All Right Reserved
+        //- Silver Stock
+        .col-xxl-3.col-sm-6.col-12.d-flex
+          .card.bg-secondary.sale-widget.flex-fill.border-0
+            .card-body.d-flex.align-items-center
+              span.sale-icon.bg-white.text-secondary.rounded-circle.p-3
+                i.ti.ti-brand-qq.fs-24
+              .ms-3
+                h6.text-white.mb-1 Total Silver Stock
+                h3.text-white.fw-bold= stats.silverStock + ' g'
+      
+      //- Recent Activity or other widgets could go here
+      
+    .copyright-footer.d-flex.align-items-center.justify-content-between.border-top.bg-white.gap-3.flex-wrap.mt-5
+        p.fs-13.text-gray-9.mb-0 2025-2026 © Jewellery CRM. All Right Reserved

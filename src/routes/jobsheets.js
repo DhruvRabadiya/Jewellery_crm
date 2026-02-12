@@ -119,6 +119,49 @@ router.post("/", async (req, res) => {
 
   try {
     const issue = parseFloat(issueWeight);
+    const targetMetal = material === "gold" ? "Gold" : "Silver";
+
+    // --- VALIDATION: Check Stock Before Creating Job ---
+    // Fetch all stock items to calculate total available weight in GRAMS
+    // --- VALIDATION: Check Stock Before Creating Job ---
+    // Fetch all stock items to calculate total available weight in GRAMS
+    // Include Scrap items by using LIKE operator
+    const allStockItems = await models.Inventory.findAll({
+      where: {
+        productName: { [Op.like]: `%${targetMetal}%` },
+      },
+    });
+
+    let totalStockGrams = 0;
+    allStockItems.forEach((item) => {
+      let qty = parseFloat(item.quantity) || 0;
+      if (item.unit === "KG") {
+        qty = qty * 1000;
+      }
+      totalStockGrams += qty;
+    });
+
+    if (totalStockGrams < issue) {
+      // Fetch data needed to re-render form
+      const employees = await models.Employee.findAll({
+        order: [["name", "ASC"]],
+      });
+      const lastJobSheet = await models.JobSheet.findOne({
+        order: [["createdAt", "DESC"]],
+      });
+      const nextJobNo = lastJobSheet
+        ? `JOB-${parseInt(lastJobSheet.jobNo.split("-")[1]) + 1}`
+        : "JOB-1001";
+
+      return res.render("production/jobsheets/create", {
+        title: "Create Job Sheet",
+        employees,
+        nextJobNo,
+        error: `Insufficient Stock! Available ${targetMetal}: ${totalStockGrams.toFixed(3)} g, Required: ${issue.toFixed(3)} g`,
+        form: req.body, // Pass back input data
+      });
+    }
+    // ---------------------------------------------------
 
     // Create job sheet with multi-step workflow
     const jobsheet = await models.JobSheet.create({
@@ -137,6 +180,70 @@ router.post("/", async (req, res) => {
       dustWeight: 0,
       returnWeight: 0,
     });
+
+    // --- STOCK DEDUCTION LOGIC ---
+    // Find inventory item to deduct from.
+    // Strategy: Find item with productName = Metal Type (Gold/Silver)
+
+    // Find potential stock items
+    // We need to be careful with units here too.
+    // Strategy: Prefer items that have enough stock (converting if needed).
+
+    const stockItems = await models.Inventory.findAll({
+      where: {
+        productName: { [Op.like]: `%${targetMetal}%` },
+      },
+      order: [["quantity", "DESC"]], // This might prioritize 1 KG over 500g, which is fine
+    });
+
+    let sourceItem = null;
+    let deductionAmount = 0; // In item's unit
+
+    // First pass: Find item with enough stock
+    for (const item of stockItems) {
+      let availableGrams = item.quantity;
+      if (item.unit === "KG") availableGrams *= 1000;
+
+      if (availableGrams >= issue) {
+        sourceItem = item;
+        // Calculate deduction amount in item's unit
+        if (item.unit === "KG") {
+          deductionAmount = issue / 1000;
+        } else {
+          deductionAmount = issue;
+        }
+        break;
+      }
+    }
+
+    if (sourceItem) {
+      await sourceItem.update({
+        quantity: sourceItem.quantity - deductionAmount,
+        lastUpdated: new Date(),
+      });
+      console.log(
+        `Deducted ${deductionAmount} ${sourceItem.unit} (${issue}g) ${targetMetal} from inventory item ${sourceItem.id}`,
+      );
+    } else {
+      // Fallback: Deduct from largest available item, converting units properly
+      const largestItem = stockItems[0]; // We fetched all above, ordered by qty
+
+      if (largestItem) {
+        let amountToDeduct = issue;
+        if (largestItem.unit === "KG") amountToDeduct = issue / 1000;
+
+        await largestItem.update({
+          quantity: largestItem.quantity - amountToDeduct,
+          lastUpdated: new Date(),
+        });
+        console.log(
+          `Deducted ${amountToDeduct} ${largestItem.unit} ${targetMetal} from inventory item ${largestItem.id} (Negative/Partial Stock)`,
+        );
+      } else {
+        console.warn(`No inventory item found for ${targetMetal}.`);
+      }
+    }
+    // -----------------------------
 
     // Create all steps for the workflow
     const steps = [
@@ -168,6 +275,7 @@ router.post("/", async (req, res) => {
 
     res.redirect("/jobsheets");
   } catch (err) {
+    console.error(err);
     const employees = await models.Employee.findAll({
       order: [["name", "ASC"]],
     });
@@ -414,6 +522,45 @@ router.post("/:id/complete-step", async (req, res) => {
         finalStatus: isLastStep ? "Completed" : "In-Progress",
       },
     });
+
+    // --- STOCK RETURN LOGIC (Scrap/Dust) ---
+    // If scrap or dust is generated, add it back to inventory.
+    const totalScrapReturn = scrap + dust;
+
+    if (totalScrapReturn > 0) {
+      const metalCategory = jobsheet.metalType === "GOLD" ? "Gold" : "Silver";
+      // We can just add it back to a generic "Gold" or "Silver" item, OR a specific "Scrap" item.
+      // User simplified inventory, so let's check if they want separate "Scrap Gold" or just "Gold".
+      // For now, I'll stick to "Gold" (Raw Material) to keep it simple as per "remove Category" instruction.
+      // Or I can name it "Scrap Gold" to distinguish source. Let's stick to "Gold" to allow reuse?
+      // Actually, safely, let's look for "Gold" with supplier="Scrap" or just "Scrap Gold".
+      // Given the "remove category" simplification, I will create/add to an item named "Gold" but maybe with description "Scrap"?
+      // safer: "Scrap Gold".
+
+      const scrapItemName = `Scrap ${metalCategory}`;
+
+      let scrapItem = await models.Inventory.findOne({
+        where: { productName: scrapItemName },
+      });
+
+      if (!scrapItem) {
+        scrapItem = await models.Inventory.create({
+          productName: scrapItemName,
+          category: metalCategory,
+          quantity: 0,
+          unit: "gram",
+          costPrice: 0,
+          sellingPrice: 0,
+          paymentType: "Internal",
+        });
+      }
+
+      await scrapItem.update({
+        quantity: scrapItem.quantity + totalScrapReturn,
+        lastUpdated: new Date(),
+      });
+    }
+    // ---------------------------------------
 
     res.redirect(`/jobsheets/${jobsheet.id}`);
   } catch (err) {

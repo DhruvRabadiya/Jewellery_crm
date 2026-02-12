@@ -16,6 +16,7 @@ block content
                         i.ti.ti-arrow-left.me-2
                         | Back
             
+            //- Standard Alert (Fallback)
             if error
                 .alert.alert-danger.alert-dismissible.fade.show
                     i.ti.ti-alert-circle.me-2
@@ -40,7 +41,7 @@ block content
                                         .input-group.input-group-lg
                                             span.input-group-text.bg-light
                                                 i.ti.ti-barcode
-                                            input.form-control.fw-bold(type="text" name="jobNo" value=nextJobNo readonly required)
+                                            input.form-control.fw-bold(type="text" name="jobNo" value=(form && form.jobNo) ? form.jobNo : nextJobNo readonly required)
                                     .col-md-6
                                         label.form-label.fw-semibold
                                             i.ti.ti-calendar.me-1
@@ -49,7 +50,7 @@ block content
                                         .input-group.input-group-lg
                                             span.input-group-text.bg-light
                                                 i.ti.ti-calendar-event
-                                            input.form-control#jobDate(type="date" name="jobDate" value=new Date().toISOString().split('T')[0] required)
+                                            input.form-control#jobDate(type="date" name="jobDate" value=(form && form.jobDate) ? form.jobDate : new Date().toISOString().split('T')[0] required)
                                 
                                 //- Material & Employee
                                 .row.g-3.mb-4.pb-3.border-bottom
@@ -62,9 +63,9 @@ block content
                                             span.input-group-text.bg-light
                                                 i.ti.ti-coin
                                             select.form-select#material(name="material" required autofocus)
-                                                option(value="" selected disabled) Choose Material
-                                                option(value="gold") 🟡 Gold (સોનું)
-                                                option(value="silver") ⚪ Silver (ચાંદી)
+                                                option(value="" disabled selected=(!form || !form.material)) Choose Material
+                                                option(value="gold" selected=(form && form.material === 'gold')) 🟡 Gold (સોનું)
+                                                option(value="silver" selected=(form && form.material === 'silver')) ⚪ Silver (ચાંદી)
                                     .col-md-6
                                         label.form-label.fw-semibold
                                             i.ti.ti-user.me-1
@@ -74,9 +75,9 @@ block content
                                             span.input-group-text.bg-light
                                                 i.ti.ti-user-circle
                                             select.form-select#employeeId(name="employeeId" required)
-                                                option(value="" selected disabled) Select Employee
+                                                option(value="" disabled selected=(!form || !form.employeeId)) Select Employee
                                                 each emp in employees
-                                                    option(value=emp.id)= emp.name
+                                                    option(value=emp.id selected=(form && form.employeeId == emp.id))= emp.name
                                 
                                 //- Work Details
                                 .row.g-3.mb-4.pb-3.border-bottom
@@ -98,7 +99,10 @@ block content
                                             span.input-group-text.bg-light
                                                 i.ti.ti-dimensions
                                             select.form-select#size(name="size" required)
-                                                option(value="" selected disabled) Select Size
+                                                - var currentSize = (form && form.size) ? form.size : ''
+                                                option(value="" disabled selected=(!currentSize)) Select Size
+                                                if currentSize
+                                                    option(value=currentSize selected)= currentSize
                                 
                                 //- Weight Information
                                 .row.g-3.mb-4
@@ -119,6 +123,7 @@ block content
                                                 name="issueWeight" 
                                                 min="0" 
                                                 step="0.01" 
+                                                value=(form && form.issueWeight) ? form.issueWeight : ''
                                                 placeholder="0.00" 
                                                 required
                                             )
@@ -134,7 +139,25 @@ block content
                                             button.btn.btn-lg.btn-primary.px-5(type="submit")
                                                 i.ti.ti-check.me-2
                                                 | Issue Material
-                
+            
+            //- Bootstrap Modal for Errors (Offline Friendly)
+            .modal.fade#errorModal(tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true")
+                .modal-dialog.modal-dialog-centered
+                    .modal-content.border-0.shadow-lg
+                        .modal-header.bg-danger.text-white
+                            h5.modal-title#errorModalLabel
+                                i.ti.ti-alert-octagon.me-2
+                                | Action Failed
+                            button.btn-close.btn-close-white(type="button" data-bs-dismiss="modal" aria-label="Close")
+                        .modal-body.text-center.py-5
+                            .mb-3.text-danger
+                                i.ti.ti-alert-circle.fs-48(style="font-size: 3rem;")
+                            h4.fw-bold.mb-3.text-danger Insufficient Stock!
+                            p.text-muted.fs-16.mb-0= error ? error : 'There was an issue processing your request.'
+                        .modal-footer.justify-content-center.bg-light
+                            button.btn.btn-secondary.px-4(type="button" data-bs-dismiss="modal") 
+                                i.ti.ti-x.me-2
+                                | Close & Adjust
 
     script.
         // Size options for different materials
@@ -146,9 +169,16 @@ block content
         function updateSizeOptions() {
             const material = document.getElementById('material').value;
             const sizeSelect = document.getElementById('size');
+            const currentSize = sizeSelect.getAttribute('data-selected-value') || "#{form && form.size ? form.size : ''}"; 
             
             // Clear existing options except the first one
-            sizeSelect.innerHTML = '<option value="" selected disabled>Select Size</option>';
+            // We'll rebuild options, but if we have a persisted value, we should select it.
+            
+            sizeSelect.innerHTML = '<option value="" disabled>Select Size</option>';
+            // Add a placeholder/selected option if valid
+             if (!material) {
+                // do nothing
+             }
             
             // Add options based on selected material
             if (material && sizeOptions[material]) {
@@ -156,12 +186,14 @@ block content
                     const option = document.createElement('option');
                     option.value = size;
                     option.textContent = size;
+                    if (size === currentSize) {
+                        option.selected = true;
+                    }
                     sizeSelect.appendChild(option);
                 });
             }
         }
         
-        // Auto-focus on material field for quick entry
         document.addEventListener('DOMContentLoaded', function() {
             const materialSelect = document.getElementById('material');
             const sizeSelect = document.getElementById('size');
@@ -169,7 +201,26 @@ block content
             // Add change event listener for material
             materialSelect.addEventListener('change', updateSizeOptions);
             
-            materialSelect.focus();
+            // Initial call to populate sizes if material is already selected (re-render case)
+            if (materialSelect.value) {
+                // We need to know the selected size from server to re-select it
+                // We passed it via data-attribute or just relying on the logic above
+                // logic above uses pug interpolation which isn't ideal in client script for updates
+                // But for initial load, the PUG loop above populated the single selected option.
+                // We should run updateSizeOptions to populate the REST of the options
+                updateSizeOptions();
+            } else {
+                 materialSelect.focus();
+            }
+            
+            // Trigger Modal if Error Exists
+            if ("#{error}") { 
+                var errorModalEl = document.getElementById('errorModal');
+                if (errorModalEl) {
+                    var errorModal = new bootstrap.Modal(errorModalEl);
+                    errorModal.show();
+                }
+            }
             
             // Add enter key navigation
             const form = document.getElementById('jobsheet-form');
@@ -193,4 +244,3 @@ block content
                 this.select();
             });
         });
-

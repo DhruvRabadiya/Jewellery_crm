@@ -1,0 +1,59 @@
+extends ../layout
+
+block content
+  .page-wrapper
+    .content
+      .d-flex.align-items-center.justify-content-between.flex-wrap.gap-3.mb-4
+        .mb-3
+          h1.mb-1 Bullion Merchants
+          p.fw-medium Manage suppliers for Gold and Silver
+        a.btn.btn-primary(href="/bullion-merchants/add")
+          i.ti.ti-plus.me-2
+          | Add New Merchant
+
+      // Filter
+      .card.mb-4
+        .card-body
+          form.row.g-3(method="get" action="/bullion-merchants")
+            .col-md-10
+              input.form-control(type="text" name="search" placeholder="Search by Merchant Name, Person Name or Mobile", value=search)
+            .col-md-2
+              button.btn.btn-primary.w-100(type="submit") Search
+
+      // Merchants Table
+      .card
+        .card-header
+          h5.card-title.mb-0 Merchant List
+        .card-body
+          if merchants.length === 0
+            .alert.alert-info.mb-0 No merchants found.
+          else
+            .table-responsive
+              table.table.table-hover
+                thead
+                  tr
+                    th Business Name
+                    th Contact Person
+                    th Mobile / Phone
+                    th GST Number
+                    th Address
+                    th Actions
+                tbody
+                  each m in merchants
+                    tr
+                      td.fw-bold= m.name
+                      td= m.personName || '-'
+                      td
+                        div= m.mobile
+                        small.text-muted= m.phone
+                      td= m.gstNumber || '-'
+                      td.text-truncate(style="max-width: 200px;")= m.address || '-'
+                      td
+                        a.btn.btn-sm.btn-warning.me-1(href=`/bullion-merchants/${m.id}/edit`)
+                          i.ti.ti-edit
+                        form.d-inline(action=`/bullion-merchants/${m.id}/delete` method="POST" onsubmit="return confirm('Are you sure?')")
+                          button.btn.btn-sm.btn-danger(type="submit")
+                            i.ti.ti-trash
+      
+    .copyright-footer.d-flex.align-items-center.justify-content-between.border-top.bg-white.gap-3.flex-wrap
+       p.fs-13.text-gray-9.mb-0 2025-2026 © Jewellery CRM. All Right Reserved

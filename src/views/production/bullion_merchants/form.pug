@@ -1,0 +1,45 @@
+extends ../layout
+
+block content
+  .page-wrapper
+    .content
+      .row
+        .col-md-8.mx-auto
+          .card
+            .card-header
+              h5.card-title.mb-0= title
+            .card-body
+              if error
+                .alert.alert-danger= error
+              
+              form(method="POST" action=isEdit ? `/bullion-merchants/${merchant.id}/edit` : "/bullion-merchants")
+                .row.mb-3
+                  .col-md-6
+                    label.form-label Business Name *
+                    input.form-control(type="text" name="name" value=merchant.name required)
+                  .col-md-6
+                    label.form-label Contact Person Name
+                    input.form-control(type="text" name="personName" value=merchant.personName)
+                
+                .row.mb-3
+                  .col-md-6
+                    label.form-label Mobile Number
+                    input.form-control(type="text" name="mobile" value=merchant.mobile)
+                  .col-md-6
+                    label.form-label Telephone Number
+                    input.form-control(type="text" name="phone" value=merchant.phone)
+
+                .mb-3
+                  label.form-label GST Number
+                  input.form-control(type="text" name="gstNumber" value=merchant.gstNumber)
+                
+                .mb-3
+                  label.form-label Address
+                  textarea.form-control(name="address" rows="3")= merchant.address
+                
+                .d-flex.justify-content-end.gap-2
+                  a.btn.btn-secondary(href="/bullion-merchants") Cancel
+                  button.btn.btn-primary(type="submit")= isEdit ? 'Update Merchant' : 'Create Merchant'
+
+    .copyright-footer.d-flex.align-items-center.justify-content-between.border-top.bg-white.gap-3.flex-wrap
+       p.fs-13.text-gray-9.mb-0 2025-2026 © Jewellery CRM. All Right Reserved

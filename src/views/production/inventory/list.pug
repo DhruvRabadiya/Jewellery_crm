@@ -5,107 +5,52 @@ block content
 		.content
 			.d-flex.align-items-center.justify-content-between.flex-wrap.gap-3.mb-4
 				.mb-3
-					h1.mb-1 Inventory Management
-					p.fw-medium Browse and manage all inventory items
+					h1.mb-1 Inventory
+					p.fw-medium Manage Gold and Silver Stock
 				a.btn.btn-primary(href="/inventory/add")
 					i.ti.ti-plus.me-2
-					| Add New Item
-
-			// Stats Row
-			.row.mb-4
-				.col-xxl-3.col-sm-6.col-12.d-flex
-					.card.bg-primary.sale-widget.flex-fill
-						.card-body.d-flex.align-items-center
-							span.sale-icon.bg-white.text-primary
-								i.ti.ti-box.fs-24
-							.ms-2
-								p.text-white.mb-1 Total Products
-								h4.text-white= inventory.length
-
-				.col-xxl-3.col-sm-6.col-12.d-flex
-					.card.bg-danger.sale-widget.flex-fill
-						.card-body.d-flex.align-items-center
-							span.sale-icon.bg-white.text-danger
-								i.ti.ti-alert-triangle.fs-24
-							.ms-2
-								p.text-white.mb-1 Low Stock Items
-								h4.text-white= lowStockCount
-
-			// Filters Card
-			.card.mb-4
-				.card-header
-					h5.card-title.mb-0
-						i.ti.ti-filter.me-2
-						| Filter Items
-				.card-body
-					form.row.g-3(method="get" action="/inventory")
-						.col-md-4
-							input.form-control(type="text" name="search" placeholder="Search by name or code", value=filters.search)
-						.col-md-4
-							select.form-control(name="category")
-								option(value="") All Categories
-								each cat in categories
-									option(value=cat, selected=filters.category === cat)= cat
-						.col-md-2
-							.form-check.mt-2
-								input#lowStock.form-check-input(type="checkbox" name="lowStock" value="true", checked=filters.lowStock === 'true')
-								label.form-check-label(for="lowStock") Low Stock Only
-						.col-md-2
-							button.btn.btn-primary.w-100(type="submit")
-								i.ti.ti-search.me-2
-								| Search
+					| Add Stock
 
 			// Inventory Table
 			.card
 				.card-header.d-flex.justify-content-between.align-items-center
-					h5.card-title.mb-0 Inventory List
+					h5.card-title.mb-0 Stock List
 				.card-body
 					if inventory.length === 0
 						.alert.alert-info.mb-0
 							i.ti.ti-info-circle.me-2
-							| No items found
+							| No stock items found
 					else
 						.table-responsive
 							table.table.table-hover.table-sm
 								thead
 									tr
-										th Product Name
-										th Code
-										th Category
-										th Quantity
-										th Reorder Level
+										th Metal
+										th Weight
 										th Unit
-										th Cost Price
+										th Supplier
+										th Price (Buy)
+										th Rate (Cur)
+										th Payment
 										th Actions
 								tbody
 									each item in inventory
 										tr
 											td
-												strong= item.productName
+												strong.text-dark= item.productName
 											td
-												code.text-muted= item.productCode || 'N/A'
+												strong= item.quantity.toFixed(3)
+											td= item.unit
+											td= item.supplier || '-'
+											td= '₹' + item.costPrice.toFixed(2)
+											td= '₹' + item.sellingPrice.toFixed(2)
+											td= item.paymentType || '-'
 											td
-												if item.category
-													span.badge.bg-light.text-dark= item.category
-												else
-													span.text-muted -
-											td
-												if item.quantity <= item.reorderLevel
-													strong.text-danger= item.quantity.toFixed(2)
-												else
-													strong.text-success= item.quantity.toFixed(2)
-											td= item.reorderLevel
-											td= item.unit || 'gm'
-											td
-												| ₹
-												= item.costPrice.toFixed(2)
-											td
-												a.btn.btn-sm.btn-primary.me-1(href=`/inventory/${item.id}`)
-													i.ti.ti-eye.me-1
-													| View
-												a.btn.btn-sm.btn-warning(href=`/inventory/${item.id}/edit`)
-													i.ti.ti-edit.me-1
-													| Edit
+												a.btn.btn-sm.btn-warning.me-1(href=`/inventory/${item.id}/edit`)
+													i.ti.ti-edit
+												form.d-inline(action=`/inventory/${item.id}/delete` method="POST" onsubmit="return confirm('Delete this?')")
+													button.btn.btn-sm.btn-danger(type="submit")
+														i.ti.ti-trash
 
 		.copyright-footer.d-flex.align-items-center.justify-content-between.border-top.bg-white.gap-3.flex-wrap
 			p.fs-13.text-gray-9.mb-0 2025-2026 © Jewellery CRM. All Right Reserved
