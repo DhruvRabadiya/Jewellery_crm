@@ -69,10 +69,15 @@ router.get('/dashboard', async (req, res) => {
     })
     const lowStockItems = allItems.filter(item => item.quantity <= item.reorderLevel).slice(0, 10)
 
-    const totalValue = await models.Inventory.sum('quantity') || 0
-    
-    // Calculate total investment using JavaScript (not SQL)
-    const totalInvestment = allItems.reduce((sum, item) => sum + (item.quantity * item.costPrice), 0) || 0
+    const totalValue = allItems.reduce((sum, item) => sum + (item.quantity * item.sellingPrice), 0) || 0;
+    const totalInvestment = allItems.reduce((sum, item) => sum + (item.quantity * item.costPrice), 0) || 0;
+
+    const goldStock = await models.Inventory.findOne({
+      where: { productName: 'Gold Stock (Total)', metalType: 'GOLD' }
+    });
+    const silverStock = await models.Inventory.findOne({
+      where: { productName: 'Silver Stock (Total)', metalType: 'SILVER' }
+    });
 
     res.render('production/inventory/dashboard', {
       title: 'Inventory Dashboard',
@@ -80,7 +85,9 @@ router.get('/dashboard', async (req, res) => {
         totalProducts,
         lowStockCount: lowStockItems.length,
         totalValue,
-        totalInvestment
+        totalInvestment,
+        totalGoldGrams: goldStock ? goldStock.quantity : 0,
+        totalSilverGrams: silverStock ? silverStock.quantity : 0
       },
       lowStockItems
     })
@@ -93,18 +100,22 @@ router.get('/dashboard', async (req, res) => {
 // GET form to add new inventory
 router.get('/add', async (req, res) => {
   try {
-    const categories = await models.Inventory.findAll({
-      attributes: ['category'],
-      group: ['category'],
-      where: { category: { [Op.not]: null } },
-      raw: true
-    })
+    const [categories, merchants] = await Promise.all([
+      models.Inventory.findAll({
+        attributes: ['category'],
+        group: ['category'],
+        where: { category: { [Op.not]: null } },
+        raw: true
+      }),
+      models.BullionMerchant.findAll({ order: [['name', 'ASC']] })
+    ]);
     const categoryList = categories.map(c => c.category).filter(Boolean)
 
     res.render('production/inventory/form', {
       title: 'Add Inventory Item',
       isEdit: false,
       categories: categoryList,
+      merchants: merchants,
       item: {}
     })
   } catch (err) {
@@ -116,21 +127,38 @@ router.get('/add', async (req, res) => {
 // POST - Create new inventory
 router.post('/', async (req, res) => {
   try {
-    const { productName, productCode, category, quantity, unit, costPrice, sellingPrice, reorderLevel, supplier, location, description } = req.body
+    const { productName, productCode, category, metalType, quantity, costPrice, sellingPrice, reorderLevel, supplier, location, description, paymentType } = req.body
 
     const newItem = await models.Inventory.create({
       productName,
       productCode: productCode || null,
       category: category || null,
+      metalType: metalType || 'GOLD',
       quantity: parseFloat(quantity) || 0,
-      unit: unit || 'gm',
       costPrice: parseFloat(costPrice) || 0,
       sellingPrice: parseFloat(sellingPrice) || 0,
       reorderLevel: parseFloat(reorderLevel) || 10,
       supplier: supplier || null,
       location: location || null,
-      description: description || null
+      description: description || null,
+      paymentType: paymentType || 'CASH'
     })
+
+    // Update total gold/silver stock if the new item is gold or silver
+    if (newItem.metalType === 'GOLD' || newItem.metalType === 'SILVER') {
+      const totalStockItem = await models.Inventory.findOne({
+        where: { productName: `${newItem.metalType} Stock (Total)`, metalType: newItem.metalType }
+      });
+
+      if (totalStockItem) {
+        await totalStockItem.update({
+          quantity: totalStockItem.quantity + newItem.quantity,
+          lastUpdated: new Date()
+        });
+      } else {
+        console.warn(`Warning: ${newItem.metalType} Stock (Total) not found for updating after new item creation.`);
+      }
+    }
 
     res.redirect(`/inventory/${newItem.id}`)
   } catch (err) {
@@ -159,22 +187,27 @@ router.get('/:id', async (req, res) => {
 // GET form to edit inventory
 router.get('/:id/edit', async (req, res) => {
   try {
-    const item = await models.Inventory.findByPk(req.params.id)
+    const [item, categories, merchants] = await Promise.all([
+      models.Inventory.findByPk(req.params.id),
+      models.Inventory.findAll({
+        attributes: ['category'],
+        group: ['category'],
+        where: { category: { [Op.not]: null } },
+        raw: true
+      }),
+      models.BullionMerchant.findAll({ order: [['name', 'ASC']] })
+    ]);
+
     if (!item) return res.status(404).send('Item not found')
 
-    const categories = await models.Inventory.findAll({
-      attributes: ['category'],
-      group: ['category'],
-      where: { category: { [Op.not]: null } },
-      raw: true
-    })
     const categoryList = categories.map(c => c.category).filter(Boolean)
 
     res.render('production/inventory/form', {
       title: 'Edit Inventory Item',
       isEdit: true,
       item,
-      categories: categoryList
+      categories: categoryList,
+      merchants: merchants
     })
   } catch (err) {
     console.error(err)
@@ -188,22 +221,70 @@ router.post('/:id/edit', async (req, res) => {
     const item = await models.Inventory.findByPk(req.params.id)
     if (!item) return res.status(404).send('Item not found')
 
-    const { productName, productCode, category, quantity, unit, costPrice, sellingPrice, reorderLevel, supplier, location, description } = req.body
+    const oldQuantity = item.quantity;
+    const oldMetalType = item.metalType;
+
+    const { productName, productCode, category, metalType, quantity, costPrice, sellingPrice, reorderLevel, supplier, location, description, paymentType } = req.body
+    const newQuantity = parseFloat(quantity) || 0;
 
     await item.update({
       productName,
       productCode: productCode || null,
       category: category || null,
-      quantity: parseFloat(quantity) || 0,
-      unit: unit || 'gm',
+      metalType: metalType || 'GOLD',
+      quantity: newQuantity,
       costPrice: parseFloat(costPrice) || 0,
       sellingPrice: parseFloat(sellingPrice) || 0,
       reorderLevel: parseFloat(reorderLevel) || 10,
       supplier: supplier || null,
       location: location || null,
       description: description || null,
+      paymentType: paymentType || 'CASH',
       lastUpdated: new Date()
     })
+
+    // Adjust total gold/silver stock
+    if (oldMetalType !== item.metalType) {
+      // Metal type changed, subtract from old and add to new
+      const oldTotalStockItem = await models.Inventory.findOne({
+        where: { productName: `${oldMetalType} Stock (Total)`, metalType: oldMetalType }
+      });
+      if (oldTotalStockItem) {
+        await oldTotalStockItem.update({
+          quantity: oldTotalStockItem.quantity - oldQuantity,
+          lastUpdated: new Date()
+        });
+      } else {
+        console.warn(`Warning: ${oldMetalType} Stock (Total) not found for decrement.`);
+      }
+
+      const newTotalStockItem = await models.Inventory.findOne({
+        where: { productName: `${item.metalType} Stock (Total)`, metalType: item.metalType }
+      });
+      if (newTotalStockItem) {
+        await newTotalStockItem.update({
+          quantity: newTotalStockItem.quantity + newQuantity,
+          lastUpdated: new Date()
+        });
+      } else {
+        console.warn(`Warning: ${item.metalType} Stock (Total) not found for increment.`);
+      }
+
+    } else if (newQuantity !== oldQuantity) {
+      // Quantity changed, metal type is same
+      const quantityChange = newQuantity - oldQuantity;
+      const totalStockItem = await models.Inventory.findOne({
+        where: { productName: `${item.metalType} Stock (Total)`, metalType: item.metalType }
+      });
+      if (totalStockItem) {
+        await totalStockItem.update({
+          quantity: totalStockItem.quantity + quantityChange,
+          lastUpdated: new Date()
+        });
+      } else {
+        console.warn(`Warning: ${item.metalType} Stock (Total) not found for quantity adjustment.`);
+      }
+    }
 
     res.redirect(`/inventory/${item.id}`)
   } catch (err) {
@@ -217,6 +298,22 @@ router.post('/:id/delete', async (req, res) => {
   try {
     const item = await models.Inventory.findByPk(req.params.id)
     if (!item) return res.status(404).send('Item not found')
+
+    // Adjust total gold/silver stock before deleting the item
+    if (item.metalType === 'GOLD' || item.metalType === 'SILVER') {
+      const totalStockItem = await models.Inventory.findOne({
+        where: { productName: `${item.metalType} Stock (Total)`, metalType: item.metalType }
+      });
+
+      if (totalStockItem) {
+        await totalStockItem.update({
+          quantity: totalStockItem.quantity - item.quantity,
+          lastUpdated: new Date()
+        });
+      } else {
+        console.warn(`Warning: ${item.metalType} Stock (Total) not found for decrement before item deletion.`);
+      }
+    }
 
     await item.destroy()
     res.redirect('/inventory')

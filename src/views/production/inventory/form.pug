@@ -20,21 +20,21 @@ block content
 							form.row.g-3(method="post", action=isEdit ? `/inventory/${item.id}/edit` : "/inventory")
 								//- TODO 
 								.col-md-6
-									label.form-label GOLD / SILVER
-									input.form-control(type="text" name="productName", required, placeholder="e.g., Gold Ring 22K", value=item.productName)
+									label.form-label Product Name
+									input.form-control(type="text" name="productName", required, placeholder="e.g., Ring, Chain, etc.", value=item.productName)
 
 								.col-md-6
 									label.form-label Category
-									input.form-control(type="text" name="category" list="categories" placeholder="Gold, Silver, etc.", value=item.category)
+									input.form-control(type="text" name="category" list="categories" placeholder="Jewellery, Bullion, etc.", value=item.category)
 									datalist#categories
 										each cat in categories
 											option(value=cat)
 
 								.col-md-3
-									label.form-label Unit
-									select.form-control(name="unit")
-										option(value="gm", selected=item.unit === 'gm') Grams (gm)
-										option(value="kg", selected=item.unit === 'kg') Kilograms (kg)
+									label.form-label Metal Type
+									select.form-control(name="metalType")
+										option(value="GOLD", selected=item.metalType === 'GOLD') Gold
+										option(value="SILVER", selected=item.metalType === 'SILVER') Silver
 
 								.col-md-6
 									label.form-label Cost Price (₹)
@@ -46,19 +46,18 @@ block content
 
 								.col-md-6
 									label.form-label Supplier
-									//- name 
-									//- phone no
-									//- office no
-									//- office address
-									//- gst no
-									//- pan no (if)
-									input.form-control(type="text" name="supplier" placeholder="Supplier name", value=item.supplier)
+									select.form-control(name="supplier")
+										option(value="") Select Supplier
+										each merchant in merchants
+											option(value=merchant.name, selected=item.supplier === merchant.name)= merchant.name
 
-								.col-md-12
-									label.form-label Payment Type 
-									//- CASH
-									//- ONLINE (RTGS)
-									textarea.form-control(name="description" rows="3" placeholder="Item details...")= item.description
+								.col-md-6
+									label.form-label Payment Type
+									select.form-control(name="paymentType")
+										option(value="CASH", selected=item.paymentType === 'CASH') Cash
+										option(value="RTGS", selected=item.paymentType === 'RTGS') RTGS
+										option(value="Cheque", selected=item.paymentType === 'Cheque') Cheque
+										option(value="Other", selected=item.paymentType === 'Other') Other
 
 								.col-md-12
 									label.form-label Remark

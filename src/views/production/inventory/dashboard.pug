@@ -49,6 +49,24 @@ block content
                                 p.text-white.mb-1 Total Investment
                                 h4.text-white= '₹' + (stats.totalInvestment / 1000).toFixed(1) + 'K'
 
+                .col-xxl-3.col-sm-6.col-12.d-flex
+                    .card.bg-warning.sale-widget.flex-fill
+                        .card-body.d-flex.align-items-center
+                            span.sale-icon.bg-white.text-warning
+                                i.ti.ti-gold.fs-24
+                            .ms-2
+                                p.text-white.mb-1 Total Gold (gm)
+                                h4.text-white= stats.totalGoldGrams.toFixed(2) + ' gm'
+
+                .col-xxl-3.col-sm-6.col-12.d-flex
+                    .card.bg-light.sale-widget.flex-fill
+                        .card-body.d-flex.align-items-center
+                            span.sale-icon.bg-white.text-secondary
+                                i.ti.ti-silver-coin.fs-24
+                            .ms-2
+                                p.text-white.mb-1 Total Silver (gm)
+                                h4.text-white= stats.totalSilverGrams.toFixed(2) + ' gm'
+
             // Quick Actions & Status
             .row
                 .col-xxl-6.col-lg-6.d-flex

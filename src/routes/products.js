@@ -248,3 +248,5 @@ router.get('/api/stats', async (req, res) => {
 })
 
 export default router
+
+git remote set-url origin  git@github.com:DhruvRabadiya/Jewellery_crm.git

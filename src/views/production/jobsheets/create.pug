@@ -56,15 +56,15 @@ block content
                                     .col-md-6
                                         label.form-label.fw-semibold
                                             i.ti.ti-diamond.me-1
-                                            | Material 
+                                            | Metal Type 
                                             span.text-danger *
                                         .input-group.input-group-lg
                                             span.input-group-text.bg-light
                                                 i.ti.ti-coin
-                                            select.form-select#material(name="material" required autofocus)
-                                                option(value="" selected disabled) Choose Material
-                                                option(value="gold") 🟡 Gold (સોનું)
-                                                option(value="silver") ⚪ Silver (ચાંદી)
+                                            select.form-select#metalType(name="metalType" required autofocus)
+                                                option(value="" selected disabled) Choose Metal
+                                                option(value="GOLD") 🟡 Gold (સોનું)
+                                                option(value="SILVER") ⚪ Silver (ચાંદી)
                                     .col-md-6
                                         label.form-label.fw-semibold
                                             i.ti.ti-user.me-1
@@ -144,15 +144,15 @@ block content
         };
 
         function updateSizeOptions() {
-            const material = document.getElementById('material').value;
+            const metalType = document.getElementById('metalType').value;
             const sizeSelect = document.getElementById('size');
             
             // Clear existing options except the first one
             sizeSelect.innerHTML = '<option value="" selected disabled>Select Size</option>';
             
-            // Add options based on selected material
-            if (material && sizeOptions[material]) {
-                sizeOptions[material].forEach(size => {
+            // Add options based on selected metal type
+            if (metalType && sizeOptions[metalType.toLowerCase()]) { // Use .toLowerCase() for key lookup
+                sizeOptions[metalType.toLowerCase()].forEach(size => {
                     const option = document.createElement('option');
                     option.value = size;
                     option.textContent = size;
@@ -161,15 +161,15 @@ block content
             }
         }
         
-        // Auto-focus on material field for quick entry
+        // Auto-focus on metalType field for quick entry
         document.addEventListener('DOMContentLoaded', function() {
-            const materialSelect = document.getElementById('material');
+            const metalTypeSelect = document.getElementById('metalType');
             const sizeSelect = document.getElementById('size');
             
-            // Add change event listener for material
-            materialSelect.addEventListener('change', updateSizeOptions);
+            // Add change event listener for metalType
+            metalTypeSelect.addEventListener('change', updateSizeOptions);
             
-            materialSelect.focus();
+            metalTypeSelect.focus();
             
             // Add enter key navigation
             const form = document.getElementById('jobsheet-form');

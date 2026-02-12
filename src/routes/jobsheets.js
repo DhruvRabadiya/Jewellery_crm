@@ -115,7 +115,7 @@ router.get("/new", async (req, res) => {
 
 // POST create
 router.post("/", async (req, res) => {
-  const { jobNo, employeeId, issueWeight, material, size } = req.body;
+  const { jobNo, employeeId, issueWeight, metalType, size } = req.body;
 
   try {
     const issue = parseFloat(issueWeight);
@@ -124,7 +124,8 @@ router.post("/", async (req, res) => {
     const jobsheet = await models.JobSheet.create({
       jobNo,
       EmployeeId: employeeId,
-      metalType: material === "gold" ? "GOLD" : "SILVER",
+      metalType: metalType,
+      purity: "22K",
       purity: "22K",
       issueWeight: issue,
       issueDate: new Date(),
@@ -137,6 +138,25 @@ router.post("/", async (req, res) => {
       dustWeight: 0,
       returnWeight: 0,
     });
+
+    // Deduct from overall inventory stock
+    const stockToUpdate = await models.Inventory.findOne({
+      where: {
+        productName: `${jobsheet.metalType} Stock (Total)`,
+        metalType: jobsheet.metalType,
+      },
+    });
+
+    if (stockToUpdate) {
+      await stockToUpdate.update({
+        quantity: stockToUpdate.quantity - jobsheet.issueWeight,
+        lastUpdated: new Date(),
+      });
+    } else {
+      console.warn(
+        `Warning: ${jobsheet.metalType} Stock (Total) not found for deduction.`,
+      );
+    }
 
     // Create all steps for the workflow
     const steps = [

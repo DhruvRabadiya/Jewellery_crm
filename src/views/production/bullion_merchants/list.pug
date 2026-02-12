@@ -1,0 +1,45 @@
+extends ../layout
+
+block content
+    .page-wrapper
+        .content
+            .d-flex.align-items-center.justify-content-between.flex-wrap.gap-3.mb-4
+                .mb-3
+                    h1.mb-1 Bullion Merchants
+                    p.fw-medium Manage bullion merchants
+                .d-flex.gap-2
+                    a.btn.btn-primary(href="/bullion-merchants/new")
+                        i.ti.ti-plus.me-2
+                        | Add Merchant
+            .card
+                .card-body
+                    if merchants.length
+                        .table-responsive
+                            table.table.table-hover.mb-0
+                                thead.table-light
+                                    tr
+                                        th Name
+                                        th Mobile Number
+                                        th Address
+                                        th Actions
+                                tbody
+                                    each merchant in merchants
+                                        tr
+                                            td
+                                                strong= merchant.name
+                                            td= merchant.mobile_number
+                                            td= merchant.address
+                                            td
+                                                a.btn.btn-sm.btn-outline-primary.me-2(href=`/bullion-merchants/${merchant.id}/edit`)
+                                                    i.ti.ti-pencil
+                                                    | Edit
+                                                form.d-inline(method="post" action=`/bullion-merchants/${merchant.id}/delete`)
+                                                    button.btn.btn-sm.btn-outline-danger(type="submit" onclick="return confirm('Delete this merchant?');")
+                                                        i.ti.ti-trash
+                                                        | Delete
+                    else
+                        .text-center.py-5
+                            p.text-gray-9 No merchants yet
+                            a.btn.btn-primary(href="/bullion-merchants/new") Add First Merchant
+        .copyright-footer.d-flex.align-items-center.justify-content-between.border-top.bg-white.gap-3.flex-wrap
+            p.fs-13.text-gray-9.mb-0 2025- 2026 © DreamsPOS. All Right Reserved

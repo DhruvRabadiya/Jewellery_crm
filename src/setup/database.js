@@ -56,6 +56,12 @@ const Employee = sequelize.define('Employee', {
   rate: { type: DataTypes.FLOAT, defaultValue: 0 }
 })
 
+const BullionMerchant = sequelize.define('BullionMerchant', {
+  name: { type: DataTypes.STRING, allowNull: false },
+  mobile_number: { type: DataTypes.STRING },
+  address: { type: DataTypes.TEXT }
+})
+
 const Material = sequelize.define('Material', {
   name: { type: DataTypes.STRING, allowNull: false },
   cost: { type: DataTypes.FLOAT, defaultValue: 0 }
@@ -109,12 +115,13 @@ const Inventory = sequelize.define('Inventory', {
   productName: { type: DataTypes.STRING, allowNull: false },
   productCode: { type: DataTypes.STRING, unique: true },
   category: { type: DataTypes.STRING }, // e.g., "Gold", "Silver", "Diamonds", "Stones"
+  metalType: { type: DataTypes.ENUM('GOLD', 'SILVER'), defaultValue: 'GOLD' },
   quantity: { type: DataTypes.FLOAT, allowNull: false, defaultValue: 0 },
-  unit: { type: DataTypes.STRING, defaultValue: 'gm' }, // gm, pieces, carat, etc.
   costPrice: { type: DataTypes.FLOAT, allowNull: false, defaultValue: 0 },
   sellingPrice: { type: DataTypes.FLOAT, allowNull: false, defaultValue: 0 },
   reorderLevel: { type: DataTypes.FLOAT, defaultValue: 10 }, // minimum quantity to reorder
   supplier: { type: DataTypes.STRING },
+  paymentType: { type: DataTypes.ENUM('CASH', 'RTGS', 'Cheque', 'Other'), defaultValue: 'CASH' },
   location: { type: DataTypes.STRING }, // warehouse location
   description: { type: DataTypes.TEXT },
   lastUpdated: { type: DataTypes.DATE, defaultValue: DataTypes.NOW }
@@ -163,7 +170,45 @@ async function initDb() {
 
   await sequelize.authenticate()
   // SQLite can carry legacy tables without a proper unique id; repair before sync/alter
-  await sequelize.sync()
+  await sequelize.sync({ alter: true })
+
+  // Create dedicated "Gold Stock (Total)" and "Silver Stock (Total)" inventory items if they don't exist
+  await Promise.all([
+    models.Inventory.findOrCreate({
+      where: { productName: 'Gold Stock (Total)', metalType: 'GOLD' },
+      defaults: {
+        productName: 'Gold Stock (Total)',
+        productCode: 'GOLD_STOCK',
+        category: 'Bullion',
+        metalType: 'GOLD',
+        quantity: 0,
+        costPrice: 0,
+        sellingPrice: 0,
+        reorderLevel: 0,
+        supplier: 'System',
+        paymentType: 'Other',
+        location: 'Vault',
+        description: 'Automatically managed total gold stock.'
+      }
+    }),
+    models.Inventory.findOrCreate({
+      where: { productName: 'Silver Stock (Total)', metalType: 'SILVER' },
+      defaults: {
+        productName: 'Silver Stock (Total)',
+        productCode: 'SILVER_STOCK',
+        category: 'Bullion',
+        metalType: 'SILVER',
+        quantity: 0,
+        costPrice: 0,
+        sellingPrice: 0,
+        reorderLevel: 0,
+        supplier: 'System',
+        paymentType: 'Other',
+        location: 'Vault',
+        description: 'Automatically managed total silver stock.'
+      }
+    })
+  ]);
   console.log('Database initialized (SQLite)')
 }
 
@@ -174,6 +219,7 @@ const models = {
   Purchase,
   Sale,
   Employee,
+  BullionMerchant,
   Material,
   JobSheet,
   JobSheetStep,

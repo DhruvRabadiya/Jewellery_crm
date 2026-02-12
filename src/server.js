@@ -37,6 +37,9 @@ app.get('/pos', async (req, res) => {
 import employeeRoutes from './routes/employees.js'
 app.use('/employees', employeeRoutes)
 
+import bullionMerchantRoutes from './routes/bullion_merchants.js'
+app.use('/bullion-merchants', bullionMerchantRoutes)
+
 import jobsheetRoutes from './routes/jobsheets.js'
 app.use('/jobsheets', jobsheetRoutes)
 

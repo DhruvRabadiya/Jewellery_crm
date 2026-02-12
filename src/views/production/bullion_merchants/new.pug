@@ -1,0 +1,35 @@
+extends ../layout
+
+block content
+    .page-wrapper
+        .content
+            .d-flex.align-items-center.justify-content-between.flex-wrap.gap-3.mb-4
+                .mb-3
+                    h1.mb-1 Add Bullion Merchant
+                    p.fw-medium Add a new bullion merchant
+                a.btn.btn-secondary(href="/bullion-merchants")
+                    i.ti.ti-arrow-left.me-2
+                    | Back to List
+            .row
+                .col-xxl-6.col-lg-7.d-flex
+                    .card.flex-fill
+                        .card-body
+                            form(action="/bullion-merchants" method="post")
+                                .mb-3
+                                    label.form-label(for="name")
+                                        | Full Name 
+                                        span.text-danger *
+                                    input.form-control#name(type="text" name="name" placeholder="Enter name" required)
+                                .mb-3
+                                    label.form-label(for="mobile_number") Mobile Number
+                                    input.form-control#mobile_number(type="text" name="mobile_number" placeholder="Enter mobile number")
+                                .mb-3
+                                    label.form-label(for="address") Address
+                                    textarea.form-control#address(name="address" placeholder="Enter address")
+                                .d-flex.gap-2.justify-content-end
+                                    button.btn.btn-secondary(type="reset") Clear
+                                    button.btn.btn-primary(type="submit")
+                                        i.ti.ti-check.me-2
+                                        | Save
+        .copyright-footer.d-flex.align-items-center.justify-content-between.border-top.bg-white.gap-3.flex-wrap
+            p.fs-13.text-gray-9.mb-0 2025- 2026 © DreamsPOS. All Right Reserved
