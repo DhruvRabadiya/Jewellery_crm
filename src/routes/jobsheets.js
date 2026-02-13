@@ -39,8 +39,17 @@ router.get("/dashboard", async (req, res) => {
   today.setHours(0, 0, 0, 0);
   const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
 
-  // Total issued weight (all time)
-  const totalIssued = (await models.JobSheet.sum("issueWeight")) || 0;
+  // Total issued weight (Gold)
+  const totalIssuedGold =
+    (await models.JobSheet.sum("issueWeight", {
+      where: { metalType: "GOLD" },
+    })) || 0;
+
+  // Total issued weight (Silver)
+  const totalIssuedSilver =
+    (await models.JobSheet.sum("issueWeight", {
+      where: { metalType: "SILVER" },
+    })) || 0;
 
   // Total returned weight (all time)
   const totalReturned = (await models.JobSheet.sum("returnWeight")) || 0;
@@ -82,7 +91,9 @@ router.get("/dashboard", async (req, res) => {
 
   res.render("production/jobsheets/dashboard", {
     title: "Job Sheet Dashboard",
-    totalIssued,
+    title: "Job Sheet Dashboard",
+    totalIssuedGold,
+    totalIssuedSilver,
     totalReturned,
     totalScrap,
     totalDust,
