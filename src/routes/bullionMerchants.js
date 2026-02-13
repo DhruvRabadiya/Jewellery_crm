@@ -46,7 +46,46 @@ router.get("/add", (req, res) => {
 // POST create new merchant
 router.post("/", async (req, res) => {
   try {
-    const { name, personName, phone, mobile, gstNumber, address } = req.body;
+    const {
+      name,
+      personName,
+      phone,
+      mobile,
+      gstNumber,
+      address,
+      bankName,
+      accountHolderName,
+      accountNumber,
+      ifscCode,
+      branchName,
+      aadharNumber,
+    } = req.body;
+
+    // --- Server-Side Validation ---
+    const errors = [];
+    if (aadharNumber && !/^\d{12}$/.test(aadharNumber)) {
+      errors.push("Aadhar Number must be exactly 12 digits.");
+    }
+    if (accountNumber && !/^\d{9,18}$/.test(accountNumber)) {
+      errors.push("Account Number must be between 9 and 18 digits.");
+    }
+    if (ifscCode && !/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifscCode)) {
+      errors.push("Invalid IFSC Code format (e.g., SBIN0123456).");
+    }
+    // GST Validation (Standard Format)
+    if (
+      gstNumber &&
+      !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(
+        gstNumber,
+      )
+    ) {
+      errors.push("Invalid GST Number format.");
+    }
+
+    if (errors.length > 0) {
+      throw new Error(errors.join(" "));
+    }
+    // -----------------------------
 
     await models.BullionMerchant.create({
       name,
@@ -55,6 +94,12 @@ router.post("/", async (req, res) => {
       mobile,
       gstNumber,
       address,
+      bankName,
+      accountHolderName,
+      accountNumber,
+      ifscCode,
+      branchName,
+      aadharNumber,
     });
 
     res.redirect("/bullion-merchants");
@@ -92,7 +137,51 @@ router.post("/:id/edit", async (req, res) => {
     const merchant = await models.BullionMerchant.findByPk(req.params.id);
     if (!merchant) return res.status(404).send("Merchant not found");
 
-    const { name, personName, phone, mobile, gstNumber, address } = req.body;
+    const {
+      name,
+      personName,
+      phone,
+      mobile,
+      gstNumber,
+      address,
+      bankName,
+      accountHolderName,
+      accountNumber,
+      ifscCode,
+      branchName,
+      aadharNumber,
+    } = req.body;
+
+    // --- Server-Side Validation ---
+    const errors = [];
+    if (aadharNumber && !/^\d{12}$/.test(aadharNumber)) {
+      errors.push("Aadhar Number must be exactly 12 digits.");
+    }
+    if (accountNumber && !/^\d{9,18}$/.test(accountNumber)) {
+      errors.push("Account Number must be between 9 and 18 digits.");
+    }
+    if (ifscCode && !/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifscCode)) {
+      errors.push("Invalid IFSC Code format (e.g., SBIN0123456).");
+    }
+    if (
+      gstNumber &&
+      !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(
+        gstNumber,
+      )
+    ) {
+      errors.push("Invalid GST Number format.");
+    }
+
+    if (errors.length > 0) {
+      // Re-render form with errors
+      return res.status(400).render("production/bullion_merchants/form", {
+        title: "Edit Bullion Merchant",
+        merchant: { ...req.body, id: req.params.id }, // Merge ID back
+        isEdit: true,
+        error: errors.join(" "),
+      });
+    }
+    // -----------------------------
 
     await merchant.update({
       name,
@@ -101,6 +190,12 @@ router.post("/:id/edit", async (req, res) => {
       mobile,
       gstNumber,
       address,
+      bankName,
+      accountHolderName,
+      accountNumber,
+      ifscCode,
+      branchName,
+      aadharNumber,
     });
 
     res.redirect("/bullion-merchants");

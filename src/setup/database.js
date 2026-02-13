@@ -134,6 +134,12 @@ const BullionMerchant = sequelize.define("BullionMerchant", {
   mobile: { type: DataTypes.STRING },
   gstNumber: { type: DataTypes.STRING },
   address: { type: DataTypes.TEXT },
+  bankName: { type: DataTypes.STRING },
+  accountHolderName: { type: DataTypes.STRING },
+  accountNumber: { type: DataTypes.STRING },
+  ifscCode: { type: DataTypes.STRING },
+  branchName: { type: DataTypes.STRING },
+  aadharNumber: { type: DataTypes.STRING },
 });
 
 const Inventory = sequelize.define("Inventory", {
