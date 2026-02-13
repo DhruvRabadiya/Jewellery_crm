@@ -1,0 +1,83 @@
+extends ../layout
+
+block content
+    .page-wrapper
+        .content
+            .d-flex.align-items-center.justify-content-between.flex-wrap.gap-3.mb-4
+                .mb-3
+                    h1.mb-1 Merchant Details
+                    p.fw-medium View full details of the bullion merchant
+                div
+                    a.btn.btn-secondary.me-2(href="/bullion-merchants")
+                        i.ti.ti-arrow-left.me-2
+                        | Back to List
+                    a.btn.btn-warning(href=`/bullion-merchants/${merchant.id}/edit`)
+                        i.ti.ti-edit.me-2
+                        | Edit Merchant
+
+            .row
+                .col-md-6.d-flex
+                    .card.flex-fill
+                        .card-header
+                            h5.card-title.mb-0 Business Information
+                        .card-body
+                            .row.g-3
+                                .col-sm-12
+                                    label.form-label.text-muted Business Name
+                                    h5= merchant.name
+                                .col-sm-6
+                                    label.form-label.text-muted GST Number
+                                    p.fw-medium= merchant.gstNumber || '-'
+                                .col-sm-6
+                                    label.form-label.text-muted Contact Person
+                                    p.fw-medium= merchant.personName || '-'
+                                .col-sm-6
+                                    label.form-label.text-muted Mobile Number
+                                    p.fw-medium= merchant.mobile || '-'
+                                .col-sm-6
+                                    label.form-label.text-muted Telephone
+                                    p.fw-medium= merchant.phone || '-'
+                                .col-sm-6
+                                    label.form-label.text-muted Aadhar Number
+                                    p.fw-medium= merchant.aadharNumber || '-'
+                                .col-sm-12
+                                    label.form-label.text-muted Address
+                                    p.fw-medium= merchant.address || '-'
+
+                .col-md-6.d-flex
+                    .card.flex-fill
+                        .card-header
+                            h5.card-title.mb-0 Bank Details
+                        .card-body
+                            .row.g-3
+                                .col-sm-12
+                                    label.form-label.text-muted Bank Name
+                                    h5= merchant.bankName || '-'
+                                .col-sm-6
+                                    label.form-label.text-muted Branch Name
+                                    p.fw-medium= merchant.branchName || '-'
+                                .col-sm-6
+                                    label.form-label.text-muted IFSC Code
+                                    p.fw-medium= merchant.ifscCode || '-'
+                                .col-sm-12
+                                    label.form-label.text-muted Account Holder Name
+                                    p.fw-medium= merchant.accountHolderName || '-'
+                                .col-sm-12
+                                    label.form-label.text-muted Account Number
+                                    h5= merchant.accountNumber || '-'
+
+            .card.mt-3
+                .card-header
+                    h5.card-title.mb-0 System Information
+                .card-body
+                    .row
+                        .col-sm-6
+                            p.mb-0
+                                span.text-muted Created At: 
+                                | #{new Date(merchant.createdAt).toLocaleString('en-IN')}
+                        .col-sm-6
+                            p.mb-0
+                                span.text-muted Last Updated: 
+                                | #{new Date(merchant.updatedAt).toLocaleString('en-IN')}
+        .copyright-footer.d-flex.align-items-center.justify-content-between.border-top.bg-white.gap-3.flex-wrap
+            p.fs-13.text-gray-9.mb-0 2025-2026 © Jewellery CRM. All Right Reserved

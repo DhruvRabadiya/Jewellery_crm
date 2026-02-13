@@ -64,7 +64,6 @@ router.get("/dashboard", async (req, res) => {
     res.render("production/inventory/dashboard", {
       title: "Inventory Dashboard",
       stats: {
-        totalProducts: allItems.length,
         totalValue: 0, // Placeholder
         goldStock: goldStock.toFixed(2), // in grams
         silverStock: silverStock.toFixed(2), // in grams
@@ -208,6 +207,23 @@ router.post("/:id/delete", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send("Error deleting item");
+  }
+});
+
+// GET single inventory item details
+router.get("/:id", async (req, res) => {
+  try {
+    const item = await models.Inventory.findByPk(req.params.id);
+    if (!item) {
+      return res.status(404).send("Item not found");
+    }
+    res.render("production/inventory/view", {
+      title: item.productName,
+      item,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error fetching item details");
   }
 });
 

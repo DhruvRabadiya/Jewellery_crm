@@ -224,4 +224,21 @@ router.post("/:id/delete", async (req, res) => {
   }
 });
 
+// GET single merchant details
+router.get("/:id", async (req, res) => {
+  try {
+    const merchant = await models.BullionMerchant.findByPk(req.params.id);
+    if (!merchant) {
+      return res.status(404).send("Merchant not found");
+    }
+    res.render("production/bullion_merchants/view", {
+      title: merchant.name,
+      merchant,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error fetching merchant details");
+  }
+});
+
 export default router;

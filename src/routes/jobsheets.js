@@ -203,15 +203,32 @@ router.post("/", async (req, res) => {
     const stockItems = await models.Inventory.findAll({
       where: {
         productName: { [Op.like]: `%${targetMetal}%` },
+        // Exclude Finished and Scrap items from initial deduction if possible
+        [Op.and]: [
+          { productName: { [Op.notLike]: "Finished%" } },
+          { productName: { [Op.notLike]: "Scrap%" } },
+        ],
       },
-      order: [["quantity", "DESC"]], // This might prioritize 1 KG over 500g, which is fine
+      order: [["quantity", "DESC"]],
     });
+
+    // If no raw stock found, fallback to anything (including Scrap/Finished if really needed, though unlikely for issue)
+    let fallbackStockItems = [];
+    if (stockItems.length === 0) {
+      fallbackStockItems = await models.Inventory.findAll({
+        where: { productName: { [Op.like]: `%${targetMetal}%` } },
+        order: [["quantity", "DESC"]],
+      });
+    }
+
+    const candidateItems =
+      stockItems.length > 0 ? stockItems : fallbackStockItems;
 
     let sourceItem = null;
     let deductionAmount = 0; // In item's unit
 
     // First pass: Find item with enough stock
-    for (const item of stockItems) {
+    for (const item of candidateItems) {
       let availableGrams = item.quantity;
       if (item.unit === "KG") availableGrams *= 1000;
 
@@ -237,7 +254,7 @@ router.post("/", async (req, res) => {
       );
     } else {
       // Fallback: Deduct from largest available item, converting units properly
-      const largestItem = stockItems[0]; // We fetched all above, ordered by qty
+      const largestItem = candidateItems[0]; // We fetched all above, ordered by qty
 
       if (largestItem) {
         let amountToDeduct = issue;
@@ -488,11 +505,17 @@ router.post("/:id/complete-step", async (req, res) => {
         dustWeight: newDustWeight,
         totalLoss: newTotalLoss,
         returnPieces: parseInt(returnPieces || 0),
+        returnPieces: parseInt(returnPieces || 0),
       });
     } else {
       // Step completed but not last
 
       if (nextStep) {
+        // Update next step's issue weight to match current step's return weight
+        await nextStep.update({
+          issueWeight: returned,
+        });
+
         // Do NOT auto-start next step. Just update status to indicate we are waiting.
         // The next step remains "pending" until manually started.
 
@@ -534,20 +557,12 @@ router.post("/:id/complete-step", async (req, res) => {
       },
     });
 
-    // --- STOCK RETURN LOGIC (Scrap/Dust) ---
+    // --- STOCK RETURN LOGIC (Scrap/Dust ONLY) ---
     // If scrap or dust is generated, add it back to inventory.
     const totalScrapReturn = scrap + dust;
 
     if (totalScrapReturn > 0) {
       const metalCategory = jobsheet.metalType === "GOLD" ? "Gold" : "Silver";
-      // We can just add it back to a generic "Gold" or "Silver" item, OR a specific "Scrap" item.
-      // User simplified inventory, so let's check if they want separate "Scrap Gold" or just "Gold".
-      // For now, I'll stick to "Gold" (Raw Material) to keep it simple as per "remove Category" instruction.
-      // Or I can name it "Scrap Gold" to distinguish source. Let's stick to "Gold" to allow reuse?
-      // Actually, safely, let's look for "Gold" with supplier="Scrap" or just "Scrap Gold".
-      // Given the "remove category" simplification, I will create/add to an item named "Gold" but maybe with description "Scrap"?
-      // safer: "Scrap Gold".
-
       const scrapItemName = `Scrap ${metalCategory}`;
 
       let scrapItem = await models.Inventory.findOne({
@@ -563,6 +578,7 @@ router.post("/:id/complete-step", async (req, res) => {
           costPrice: 0,
           sellingPrice: 0,
           paymentType: "Internal",
+          description: "Scrap generated from production",
         });
       }
 

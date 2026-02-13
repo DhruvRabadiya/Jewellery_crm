@@ -32,12 +32,15 @@ block content
 										th Price (Buy)
 										th Rate (Cur)
 										th Payment
+										th Description
+										th Last Updated
 										th Actions
 								tbody
 									each item in inventory
 										tr
 											td
-												strong.text-dark= item.productName
+												strong
+													a.text-dark(href=`/inventory/${item.id}` style="text-decoration: none;")= item.productName
 											td
 												strong= item.quantity.toFixed(3)
 											td= item.unit
@@ -45,6 +48,8 @@ block content
 											td= '₹' + item.costPrice.toFixed(2)
 											td= '₹' + item.sellingPrice.toFixed(2)
 											td= item.paymentType || '-'
+											td= item.description || '-'
+											td= item.lastUpdated ? new Date(item.lastUpdated).toLocaleString('en-IN') : '-'
 											td
 												a.btn.btn-sm.btn-warning.me-1(href=`/inventory/${item.id}/edit`)
 													i.ti.ti-edit

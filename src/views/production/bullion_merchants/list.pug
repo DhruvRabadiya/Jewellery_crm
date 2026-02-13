@@ -41,7 +41,8 @@ block content
                 tbody
                   each m in merchants
                     tr
-                      td.fw-bold= m.name
+                      td.fw-bold
+                        a.text-primary(href=`/bullion-merchants/${m.id}` style="text-decoration: none;")= m.name
                       td= m.personName || '-'
                       td
                         div= m.mobile
